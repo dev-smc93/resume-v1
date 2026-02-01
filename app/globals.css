@@ -559,3 +559,17 @@ html:not(.dark) button[class*="dark:bg-gray-100"] .text-yellow-500 {
 html {
   scroll-behavior: smooth;
 }
+
+/* 빠른 커서 깜빡임 애니메이션 */
+@keyframes blink-fast {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.animate-blink-fast {
+  animation: blink-fast 0.8s infinite;
+}

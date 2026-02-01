@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { ArrowDown, Mail, MapPin, Phone } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 
@@ -39,6 +40,43 @@ const scrollIndicatorVariants = {
 };
 
 export default function Hero() {
+  const typingTexts = personalInfo.typingTexts || ["개발자"];
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(100);
+
+  useEffect(() => {
+    const currentFullText = typingTexts[currentTextIndex];
+    
+    const handleTyping = () => {
+      if (!isDeleting) {
+        // 타이핑 중
+        if (currentText.length < currentFullText.length) {
+          setCurrentText(currentFullText.substring(0, currentText.length + 1));
+          setTypingSpeed(100);
+        } else {
+          // 타이핑 완료 후 잠시 대기
+          setTimeout(() => setIsDeleting(true), 1500);
+        }
+      } else {
+        // 삭제 중
+        if (currentText.length > 0) {
+          setCurrentText(currentText.substring(0, currentText.length - 1));
+          setTypingSpeed(50);
+        } else {
+          // 삭제 완료 후 다음 텍스트로
+          setIsDeleting(false);
+          setCurrentTextIndex((prev) => (prev + 1) % typingTexts.length);
+          setTypingSpeed(300);
+        }
+      }
+    };
+
+    const timer = setTimeout(handleTyping, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [currentText, isDeleting, currentTextIndex, typingTexts, typingSpeed]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50">
       <div className="absolute inset-0 overflow-hidden">
@@ -58,25 +96,34 @@ export default function Hero() {
           variants={itemVariants}
         >
           <motion.div
-            className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 shadow-2xl"
+            className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 shadow-2xl overflow-hidden relative"
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: "spring", stiffness: 300 }}
-          />
+          >
+            {personalInfo.profileImage ? (
+              <img
+                src={personalInfo.profileImage}
+                alt={personalInfo.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500" />
+            )}
+          </motion.div>
         </motion.div>
 
         <motion.h1
-          className="text-6xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+          className="text-4xl md:text-6xl font-bold mb-4 text-center flex flex-col items-center gap-2"
           variants={itemVariants}
         >
-          {personalInfo.name}
+            <div className="flex items-center gap-2">
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                {currentText}
+              </span>
+              <span className="animate-blink-fast text-blue-600 relative -top-1">|</span>
+            </div>
+          <span className="text-gray-300 dark:text-gray-600">필요하신가요?</span>
         </motion.h1>
-
-        <motion.p
-          className="text-2xl md:text-3xl text-gray-300 dark:text-gray-600 mb-8"
-          variants={itemVariants}
-        >
-          {personalInfo.title}
-        </motion.p>
 
         <motion.p
           className="text-lg text-gray-400 dark:text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed"
