@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
@@ -101,29 +101,36 @@ export default function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <motion.div
-            className="md:hidden mt-4 space-y-2"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            {navItems.map((item) => (
-              <motion.button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                  activeSection === item.href.substring(1)
-                    ? "text-blue-600 dark:text-blue-400 font-semibold bg-blue-100 dark:bg-gray-700"
-                    : "text-gray-600 dark:text-gray-400"
-                }`}
-                whileTap={{ scale: 0.95 }}
-              >
-                {item.name}
-              </motion.button>
-            ))}
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              className="md:hidden mt-4 space-y-2 overflow-hidden"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              {navItems.map((item, index) => (
+                <motion.button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                    activeSection === item.href.substring(1)
+                      ? "text-blue-600 dark:text-blue-400 font-semibold bg-blue-100 dark:bg-gray-700"
+                      : "text-gray-600 dark:text-gray-400"
+                  }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.2, delay: index * 0.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {item.name}
+                </motion.button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   );
