@@ -139,21 +139,15 @@ html:not(.dark) nav[class*="bg-gray-800"] {
   background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
-html.dark nav[class*="bg-white"] {
-  background-color: rgba(31, 41, 55, 0.9) !important;
-}
 
-html:not(.dark) nav[class*="bg-white"] {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-}
-
-/* Navigation 모바일 메뉴 선택 항목 배경 - 다크모드 (회색 계열) */
-html.dark nav [class*="bg-blue-50"] {
+/* Navigation 선택된 항목 배경 - 다크모드 (회색 배경) */
+html.dark nav button[class*="bg-gray-700"] {
   background-color: rgb(55, 65, 81) !important;
 }
 
-html.dark nav [class*="bg-gray-700"] {
-  background-color: rgb(55, 65, 81) !important;
+/* Navigation 선택된 항목 배경 - 라이트모드 (밝은 파란색 배경) */
+html:not(.dark) nav button[class*="bg-gray-700"] {
+  background-color: rgb(219, 234, 254) !important;
 }
 
 /* Footer 강제 스타일 */
@@ -344,14 +338,47 @@ html.dark nav .text-gray-300 {
   color: rgb(209, 213, 219) !important;
 }
 
+/* Navigation 선택된 항목 텍스트 색상 - 다크모드 (밝은 파란색) */
+html.dark nav .text-blue-400 {
+  color: rgb(96, 165, 250) !important;
+}
+
+html.dark nav button[class*="text-blue-400"] {
+  color: rgb(96, 165, 250) !important;
+}
+
+html.dark nav button[class*="dark:text-blue-400"] {
+  color: rgb(96, 165, 250) !important;
+}
+
 /* Navigation 텍스트 색상 - 라이트모드 (검은색 텍스트) */
 html:not(.dark) nav .text-gray-600 {
-  color: #000000 !important;
+  color: #4b5563 !important;
 }
 
 html:not(.dark) nav .text-gray-500 {
-  color: #000000 !important;
+  color: #6b7280 !important;
 }
+
+html:not(.dark) nav button[class*="text-gray-600"] {
+  color: #4b5563 !important;
+}
+
+/* Navigation 선택된 항목 배경 색상 - 라이트모드 (밝은 파란색 배경) */
+html:not(.dark) nav button[class*="bg-blue-100"],
+html:not(.dark) nav button[class*="bg-blue-900"] {
+  background-color: rgb(219, 234, 254) !important;
+}
+
+/* Navigation 선택된 항목 텍스트 색상 - 라이트모드 (어두운 파란색) */
+html:not(.dark) nav .text-blue-600 {
+  color: rgb(37, 99, 235) !important;
+}
+
+html:not(.dark) nav button[class*="text-blue-600"] {
+  color: rgb(37, 99, 235) !important;
+}
+
 
 /* Skills 섹션 제목 텍스트 색상 - 다크모드 (밝은 텍스트) */
 html.dark div[class*="bg-gray-800"] h3[class*="text-blue-400"] {

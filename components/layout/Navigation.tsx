@@ -76,8 +76,8 @@ export default function Navigation() {
                 onClick={() => scrollToSection(item.href)}
                 className={`px-4 py-2 rounded-lg transition-colors ${
                   activeSection === item.href.substring(1)
-                    ? "text-blue-400 dark:text-blue-600 font-semibold"
-                    : "text-gray-400 dark:text-gray-600 hover:text-blue-400 dark:hover:text-blue-600"
+                    ? "text-blue-600 dark:text-blue-400 font-semibold bg-blue-100 dark:bg-gray-700"
+                    : "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 }`}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -114,8 +114,8 @@ export default function Navigation() {
                 onClick={() => scrollToSection(item.href)}
                 className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
                   activeSection === item.href.substring(1)
-                    ? "text-blue-400 dark:text-blue-600 font-semibold bg-blue-900/20 dark:bg-gray-700"
-                    : "text-gray-400 dark:text-gray-600"
+                    ? "text-blue-600 dark:text-blue-400 font-semibold bg-blue-100 dark:bg-gray-700"
+                    : "text-gray-600 dark:text-gray-400"
                 }`}
                 whileTap={{ scale: 0.95 }}
               >
