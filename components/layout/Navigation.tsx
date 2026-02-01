@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const navItems = [
   { name: "홈", href: "#hero" },
@@ -51,7 +52,7 @@ export default function Navigation() {
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg"
+          ? "bg-gray-900/90 dark:bg-gray-800/90 backdrop-blur-md shadow-lg"
           : "bg-transparent"
       }`}
       initial={{ y: -100 }}
@@ -68,15 +69,15 @@ export default function Navigation() {
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex gap-6">
+          <div className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <motion.button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
                 className={`px-4 py-2 rounded-lg transition-colors ${
                   activeSection === item.href.substring(1)
-                    ? "text-blue-600 dark:text-blue-400 font-semibold"
-                    : "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                    ? "text-blue-400 dark:text-blue-600 font-semibold"
+                    : "text-gray-400 dark:text-gray-600 hover:text-blue-400 dark:hover:text-blue-600"
                 }`}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -84,15 +85,19 @@ export default function Navigation() {
                 {item.name}
               </motion.button>
             ))}
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-gray-600 dark:text-gray-400"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              className="text-gray-400 dark:text-gray-600"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -109,8 +114,8 @@ export default function Navigation() {
                 onClick={() => scrollToSection(item.href)}
                 className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
                   activeSection === item.href.substring(1)
-                    ? "text-blue-600 dark:text-blue-400 font-semibold bg-blue-50 dark:bg-blue-900/20"
-                    : "text-gray-600 dark:text-gray-400"
+                    ? "text-blue-400 dark:text-blue-600 font-semibold bg-blue-900/20 dark:bg-gray-700"
+                    : "text-gray-400 dark:text-gray-600"
                 }`}
                 whileTap={{ scale: 0.95 }}
               >

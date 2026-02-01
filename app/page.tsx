@@ -9,27 +9,27 @@ import Contact from "@/components/sections/Contact";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white dark:bg-gray-900">
+    <main className="min-h-screen bg-gray-900 dark:bg-white">
       <Navigation />
       <div id="hero">
         <Hero />
       </div>
-      <Section id="experience" title="경력" className="bg-gray-50 dark:bg-gray-800">
+      <Section id="experience" title="경력" className="bg-gray-800 dark:bg-gray-50">
         <Experience />
       </Section>
-      <Section id="skills" title="기술 스택" className="bg-white dark:bg-gray-900">
+      <Section id="skills" title="기술 스택" className="bg-gray-900 dark:bg-white">
         <Skills />
       </Section>
-      <Section id="projects" title="프로젝트" className="bg-gray-50 dark:bg-gray-800">
+      <Section id="projects" title="프로젝트" className="bg-gray-800 dark:bg-gray-50">
         <Projects />
       </Section>
-      <Section id="education" title="학력" className="bg-white dark:bg-gray-900">
+      <Section id="education" title="학력" className="bg-gray-900 dark:bg-white">
         <Education />
       </Section>
-      <Section id="contact" title="연락처" className="bg-gray-50 dark:bg-gray-800">
+      <Section id="contact" title="연락처" className="bg-gray-800 dark:bg-gray-50">
         <Contact />
       </Section>
-      <footer className="bg-gray-900 dark:bg-black text-white text-center py-8">
+      <footer className="bg-black dark:bg-gray-100 text-gray-400 dark:text-gray-600 text-center py-8">
         <p className="text-gray-400">
           © {new Date().getFullYear()} Portfolio. All rights reserved.
         </p>

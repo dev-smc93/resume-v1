@@ -15,13 +15,13 @@ export default function Skills() {
       {skills.map((skillGroup, groupIndex) => (
         <motion.div
           key={skillGroup.category}
-          className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
+          className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.6, delay: groupIndex * 0.2 }}
           whileHover={{ scale: 1.05, rotateY: 5 }}
         >
-          <h3 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">
+          <h3 className="text-2xl font-bold mb-4 text-blue-400 dark:text-blue-600">
             {skillGroup.category}
           </h3>
           <div className="flex flex-wrap gap-3">

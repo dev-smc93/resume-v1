@@ -22,7 +22,7 @@ const itemVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut",
+      ease: [0.6, -0.05, 0.01, 0.99] as const,
     },
   },
 };
@@ -33,14 +33,14 @@ const scrollIndicatorVariants = {
     transition: {
       duration: 1.5,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: [0.42, 0, 0.58, 1] as const,
     },
   },
 };
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-20 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
         <div className="absolute top-40 right-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
@@ -72,14 +72,14 @@ export default function Hero() {
         </motion.h1>
 
         <motion.p
-          className="text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-8"
+          className="text-2xl md:text-3xl text-gray-300 dark:text-gray-600 mb-8"
           variants={itemVariants}
         >
           {personalInfo.title}
         </motion.p>
 
         <motion.p
-          className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-lg text-gray-400 dark:text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed"
           variants={itemVariants}
         >
           {personalInfo.bio}
@@ -110,7 +110,7 @@ export default function Hero() {
           </motion.a>
 
           <motion.div
-            className="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-800 rounded-full"
+            className="flex items-center gap-2 px-6 py-3 bg-gray-800 dark:bg-gray-100 rounded-full text-gray-300 dark:text-gray-600"
             whileHover={{ scale: 1.05 }}
           >
             <MapPin size={20} />
@@ -123,7 +123,7 @@ export default function Hero() {
           variants={scrollIndicatorVariants}
           animate="animate"
         >
-          <span className="text-sm text-gray-500 dark:text-gray-400">스크롤하여 더 보기</span>
+          <span className="text-sm text-gray-400 dark:text-gray-500">스크롤하여 더 보기</span>
           <ArrowDown size={24} className="text-gray-400" />
         </motion.div>
       </motion.div>

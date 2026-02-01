@@ -36,7 +36,7 @@ export default function Contact() {
   ];
 
   return (
-    <div ref={ref} className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 rounded-2xl p-8 md:p-12">
+    <div ref={ref} className="bg-gradient-to-br from-gray-900 to-gray-800 dark:from-blue-50 dark:to-purple-50 rounded-2xl p-8 md:p-12">
       <motion.div
         className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
         initial={{ opacity: 0, y: 30 }}
@@ -49,7 +49,7 @@ export default function Contact() {
             <motion.a
               key={item.label}
               href={item.href}
-              className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-all group"
+              className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all group"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -58,10 +58,10 @@ export default function Contact() {
               <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                 <Icon className="text-white" size={24} />
               </div>
-              <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1">
+              <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-600 mb-1">
                 {item.label}
               </h3>
-              <p className="text-lg font-bold text-gray-800 dark:text-gray-100">
+              <p className="text-lg font-bold text-gray-100 dark:text-gray-800">
                 {item.value}
               </p>
             </motion.a>
@@ -70,13 +70,13 @@ export default function Contact() {
       </motion.div>
 
       <motion.div
-        className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg"
+        className="bg-gray-800 dark:bg-white rounded-lg p-8 shadow-lg"
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         transition={{ duration: 0.6, delay: 0.3 }}
       >
-        <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100 flex items-center gap-2">
-          <Send className="text-blue-600" size={28} />
+        <h3 className="text-2xl font-bold mb-6 text-gray-100 dark:text-gray-800 flex items-center gap-2">
+          <Send className="text-blue-400 dark:text-blue-600" size={28} />
           메시지 보내기
         </h3>
         <form className="space-y-4">
@@ -84,21 +84,21 @@ export default function Contact() {
             <input
               type="text"
               placeholder="이름"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
             <input
               type="email"
               placeholder="이메일"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
             <textarea
               placeholder="메시지"
               rows={5}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
           <motion.button
