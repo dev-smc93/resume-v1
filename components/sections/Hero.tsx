@@ -109,13 +109,17 @@ export default function Hero() {
             <span>전화</span>
           </motion.a>
 
-          <motion.div
-            className="flex items-center gap-2 px-6 py-3 bg-gray-800 dark:bg-gray-100 rounded-full text-gray-300 dark:text-gray-600"
+          <motion.a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-6 py-3 bg-gray-800 dark:bg-gray-100 rounded-full text-gray-300 dark:text-gray-600 hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors cursor-pointer"
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             <MapPin size={20} />
             <span>{personalInfo.location}</span>
-          </motion.div>
+          </motion.a>
         </motion.div>
 
         <motion.div

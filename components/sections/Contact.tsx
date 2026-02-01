@@ -30,7 +30,7 @@ export default function Contact() {
       icon: MapPin,
       label: "위치",
       value: personalInfo.location,
-      href: "#",
+      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`,
       color: "from-pink-500 to-pink-600",
     },
   ];
@@ -49,6 +49,8 @@ export default function Contact() {
             <motion.a
               key={item.label}
               href={item.href}
+              target={item.label === "위치" ? "_blank" : undefined}
+              rel={item.label === "위치" ? "noopener noreferrer" : undefined}
               className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all group"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
