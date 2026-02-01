@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ArrowDown, Mail, MapPin, Phone } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
+import PersonalityModal from "@/components/ui/PersonalityModal";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -45,6 +46,7 @@ export default function Hero() {
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(100);
+  const [isPersonalityModalOpen, setIsPersonalityModalOpen] = useState(false);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -129,7 +131,19 @@ export default function Hero() {
           className="text-lg text-gray-400 dark:text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed"
           variants={itemVariants}
         >
-          {personalInfo.bio}
+          {personalInfo.bio.split("성향").map((part, index, array) => (
+            <span key={index}>
+              {part}
+              {index < array.length - 1 && (
+                <button
+                  onClick={() => setIsPersonalityModalOpen(true)}
+                  className="text-blue-400 dark:text-blue-500 hover:text-blue-300 dark:hover:text-blue-400 underline cursor-pointer transition-colors"
+                >
+                  성향
+                </button>
+              )}
+            </span>
+          ))}
         </motion.p>
 
         <motion.div
@@ -174,10 +188,16 @@ export default function Hero() {
           variants={scrollIndicatorVariants}
           animate="animate"
         >
-          <span className="text-sm text-gray-400 dark:text-gray-500">스크롤하여 더 보기</span>
+          <span className="text-base md:text-lg text-gray-400 dark:text-gray-500">스크롤하여 더 보기</span>
           <ArrowDown size={24} className="text-gray-400" />
         </motion.div>
       </motion.div>
+
+      {/* 성향 정보 모달 */}
+      <PersonalityModal
+        isOpen={isPersonalityModalOpen}
+        onClose={() => setIsPersonalityModalOpen(false)}
+      />
     </section>
   );
 }

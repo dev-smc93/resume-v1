@@ -7,6 +7,12 @@ export interface PersonalInfo {
   location: string;
   bio: string;
   profileImage?: string;
+  typingTexts?: string[];
+  personality?: {
+    mbti: string;
+    traits: string[];
+    values?: string[];
+  };
 }
 
 export interface Experience {
@@ -41,12 +47,25 @@ export interface Education {
 }
 
 export const personalInfo: PersonalInfo = {
-  name: "홍길동",
+  name: "조성만",
   title: "풀스택 개발자",
-  email: "hong@example.com",
-  phone: "010-1234-5678",
-  location: "서울, 대한민국",
-  bio: "열정적인 개발자로서 사용자 경험을 중시하며, 최신 기술 트렌드를 학습하고 적용하는 것을 즐깁니다. 팀과의 협업을 통해 더 나은 솔루션을 만들어가는 것을 목표로 합니다.",
+  email: "sungman93.dev@gmail.com",
+  phone: "010-5094-5763",
+  location: "수원시 영통구",
+  bio: "개발을 포함한 다양한 업무 중에서, 제 성향에 맞는 직무를 찾고 있어요.",
+  profileImage: "/profile.jpg",
+  typingTexts: [
+    "유지보수",
+    "PC조립",
+    "모니터링",
+    "웹 개발자",
+    "전산보조",
+  ],
+  personality: {
+    mbti: "INFP",
+    traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"],
+    values: ["작은 일이라도 도움이 되었다고 느낄때"],
+  },
 };
 
 export const experiences: Experience[] = [
