@@ -24,9 +24,14 @@ export interface Experience {
   technologies: string[];
 }
 
+export interface SkillItem {
+  name: string;
+  image?: string;
+}
+
 export interface Skill {
   category: string;
-  items: string[];
+  items: (string | SkillItem)[];
 }
 
 export interface Project {
@@ -71,43 +76,68 @@ export const personalInfo: PersonalInfo = {
 export const experiences: Experience[] = [
   {
     id: "exp-1",
-    company: "테크 스타트업",
-    position: "시니어 프론트엔드 개발자",
-    period: "2022.01 - 현재",
+    company: "에코라이프밸런스",
+    position: "웹·자동화 개발",
+    period: "2023.01 - 2026-02-10(퇴직예정)",
     description: [
-      "React와 Next.js를 활용한 웹 애플리케이션 개발 및 유지보수",
-      "팀 리드로서 코드 리뷰 및 기술적 의사결정 참여",
-      "성능 최적화를 통한 페이지 로딩 속도 40% 개선",
-      "TypeScript 도입으로 타입 안정성 향상",
+      "고객 입력폼 기반 웹사이트 구축을 통해 접수 및 관리 업무 효율화",
+      "네이버 지식인 자동 답변 시스템 구축",
+      "네이버 블로그 콘텐츠 자동 생성·등록 시스템 개발",
+      "고객 예약금 실시간 확인 웹사이트 개발",
     ],
-    technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+    technologies: ["Python","Flask", "React", "Next.js", "TypeScript"],
   },
   {
     id: "exp-2",
-    company: "웹 에이전시",
-    position: "프론트엔드 개발자",
-    period: "2020.06 - 2021.12",
+    company: "메타빌드",
+    position: "웹 개발·구축 및 유지보수",
+    period: "2020.04 - 2023.01",
     description: [
-      "다양한 클라이언트 프로젝트의 프론트엔드 개발 담당",
-      "반응형 웹 디자인 구현 및 크로스 브라우저 호환성 확보",
-      "RESTful API 연동 및 상태 관리 구현",
+      "여수 통합플랫폼 구축, 스마트 버스정류장 장비 업체 연계 개발",
+      "안산 통합플랫폼 구축, 공공데이터 포털(무더위쉼터) 연계 개발",
+      "의정부 통합플랫폼 구축, 스쿨존 장비 업체 연계 개발",
     ],
-    technologies: ["React", "Vue.js", "JavaScript", "SCSS"],
+    technologies: ["Java", "Spring Boot", "Angular"],
+  },
+  {
+    id: "exp-3",
+    company: "삼성전자",
+    position: "PL 서포트",
+    period: "2011.01 - 2019-09",
+    description: [
+      "모바일 시료 배송·회수 및 이력 관리",
+      "양산 전 모바일 시료 승인 테스트 수행 및 결과 정리",
+    ],
+    technologies: [],
   },
 ];
 
 export const skills: Skill[] = [
   {
     category: "프론트엔드",
-    items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    items: [
+      { name: "React", image: "/tech-icons/react.svg" },
+      { name: "Angular", image: "/tech-icons/angular.svg" },
+      { name: "Next.js", image: "/tech-icons/nextjs.svg" },
+    ],
   },
   {
     category: "백엔드",
-    items: ["Node.js", "Express", "MongoDB", "PostgreSQL"],
+    items: [
+      { name: "Flask", image: "/tech-icons/flask.svg" },
+      { name: "Next.js", image: "/tech-icons/nextjs.svg" },
+      { name: "Spring Boot", image: "/tech-icons/spring.svg" },
+    ],
   },
   {
-    category: "도구",
-    items: ["Git", "Docker", "AWS", "Figma", "VS Code"],
+    category: "인프라·운영",
+    items: [
+      { name: "Git", image: "/tech-icons/git.svg" },
+      { name: "GCP", image: "/tech-icons/gcp.svg" },
+      { name: "Apache", image: "/tech-icons/apache.svg" },
+      { name: "Linux", image: "/tech-icons/linux.svg" },
+      { name: "Windows Server", image: "/tech-icons/windows.svg" },
+    ],
   },
 ];
 

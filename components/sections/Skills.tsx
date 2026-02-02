@@ -25,24 +25,41 @@ export default function Skills() {
             {skillGroup.category}
           </h3>
           <div className="flex flex-wrap gap-3">
-            {skillGroup.items.map((skill, skillIndex) => (
-              <motion.div
-                key={skill}
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium shadow-md"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: groupIndex * 0.2 + skillIndex * 0.05,
-                  type: "spring",
-                  stiffness: 200,
-                }}
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {skill}
-              </motion.div>
-            ))}
+            {skillGroup.items.map((skill, skillIndex) => {
+              const skillName = typeof skill === "string" ? skill : skill.name;
+              const skillImage = typeof skill === "string" ? undefined : skill.image;
+              const skillKey = typeof skill === "string" ? skill : skill.name;
+
+              return (
+                <motion.div
+                  key={skillKey}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium shadow-md flex items-center gap-2"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: groupIndex * 0.2 + skillIndex * 0.05,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {skillImage && (
+                    <img
+                      src={skillImage}
+                      alt={skillName}
+                      className="w-5 h-5 object-contain"
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 숨김
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  )}
+                  <span>{skillName}</span>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       ))}

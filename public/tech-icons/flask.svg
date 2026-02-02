@@ -1,0 +1,17 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="512" height="512">
+  <title>Flask Icon</title>
+
+  <g fill="none" stroke="#000000" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Neck -->
+    <path d="M104 24h48"></path>
+    <path d="M112 24v72"></path>
+    <path d="M144 24v72"></path>
+
+    <!-- Body -->
+    <path d="M112 96L48 200c-12 20 2 32 24 32h112c22 0 36-12 24-32L144 96"></path>
+
+    <!-- Liquid -->
+    <path d="M80 176c16 12 40 18 48 18s32-6 48-18"></path>
+  </g>
+</svg>

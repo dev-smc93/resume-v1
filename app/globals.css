@@ -382,7 +382,7 @@ html:not(.dark) nav button[class*="text-blue-600"] {
 
 /* Skills 섹션 제목 텍스트 색상 - 다크모드 (밝은 텍스트) */
 html.dark div[class*="bg-gray-800"] h3[class*="text-blue-400"] {
-  color: rgb(96, 165, 250) !important;
+  color: rgb(230, 235, 240) !important;
 }
 
 /* Skills 섹션 제목 텍스트 색상 - 라이트모드 (검은색 텍스트) */

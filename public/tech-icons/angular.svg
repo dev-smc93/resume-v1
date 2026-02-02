@@ -1,0 +1,13 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="512" height="512">
+  <title>Angular Logo</title>
+
+  <!-- Shield -->
+  <polygon points="128 16 32 48 48 192 128 240 208 192 224 48" fill="#DD0031"></polygon>
+
+  <!-- Inner shield -->
+  <polygon points="128 32 48 64 64 182 128 220 192 182 208 64" fill="#C3002F"></polygon>
+
+  <!-- A letter -->
+  <path d="M128 64L88 176h20l8-24h24l8 24h20L128 64zm-8 72l8-24 8 24h-16z" fill="#FFFFFF"></path>
+</svg>

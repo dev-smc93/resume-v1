@@ -64,11 +64,10 @@ export default function Experience() {
               {exp.technologies.map((tech, i) => (
                 <motion.span
                   key={i}
-                  className="px-3 py-1 bg-blue-800 dark:bg-blue-100 text-blue-200 dark:text-blue-700 rounded-full text-sm font-medium"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.2 + i * 0.05 }}
-                  whileHover={{ scale: 1.1 }}
+                  className="px-2 py-1 bg-gray-700 dark:bg-gray-100 text-gray-300 dark:text-gray-700 rounded-lg text-xs"
+                  initial={{ opacity: 0 }}
+                  animate={inView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ delay: index * 0.2 + i * 0.05 }}
                 >
                   {tech}
                 </motion.span>

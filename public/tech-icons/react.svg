@@ -1,0 +1,14 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-160 -160 320 320" width="512" height="512">
+  <title>React Logo</title>
+
+  <!-- React atom ellipses -->
+  <g fill="none" stroke="#61DAFB" stroke-width="12">
+    <ellipse rx="120" ry="46"></ellipse>
+    <ellipse rx="120" ry="46" transform="rotate(60)"></ellipse>
+    <ellipse rx="120" ry="46" transform="rotate(120)"></ellipse>
+  </g>
+
+  <!-- Center dot -->
+  <circle cx="0" cy="0" r="22" fill="#61DAFB"></circle>
+</svg>

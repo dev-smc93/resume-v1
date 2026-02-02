@@ -1,0 +1,13 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="512" height="512">
+  <title>Next.js Logo</title>
+
+  <!-- Circle -->
+  <circle cx="128" cy="128" r="112" fill="#000000"></circle>
+
+  <!-- Stylized N -->
+  <path d="M92 84h18l54 86V84h18v120h-18l-54-86v86H92V84z" fill="#FFFFFF"></path>
+
+  <!-- Small diagonal cut to hint Next style -->
+  <path d="M170 188l10 16c-3 2-7 4-12 6l-10-16c4-2 8-4 12-6z" fill="#FFFFFF" opacity="0.85"></path>
+</svg>
