@@ -124,7 +124,9 @@ export default function Hero() {
               </span>
               <span className="animate-blink-fast text-blue-600 relative -top-1">|</span>
             </div>
-          <span className="text-gray-300 dark:text-gray-600">열심히 할 수 있어요!</span>
+            
+          {/* <span className="text-gray-300 dark:text-gray-600">필요하신가요?</span> */}
+          <span className="text-gray-300 dark:text-gray-600">이런 분 찾고 있나요?</span>
         </motion.h1>
 
         <motion.p

@@ -68,14 +68,20 @@ export const personalInfo: PersonalInfo = {
   email: "sungman93.dev@gmail.com",
   phone: "010-5094-5763",
   location: "수원시 영통구",
-  bio: "개발을 포함한 다양한 업무 중에서, 제 성향에 맞는 직무를 찾고 있어요.",
+  bio: "다양한 업무 중, 성향에 맞는 영역에서 기여하고 싶어요.",
   profileImage: "/profile.jpg",
+  // typingTexts: [
+  //   "유지보수",
+  //   "PC조립",
+  //   "모니터링",
+  //   "웹 개발자",
+  //   "전산보조",
+  // ],
   typingTexts: [
-    "유지보수",
-    "PC조립",
-    "모니터링",
-    "웹 개발자",
-    "전산보조",
+    "기본을 중시",
+    "책임감 기반",
+    "성실함",
+    "업무 몰입형"
   ],
   personality: {
     mbti: "INFP",
