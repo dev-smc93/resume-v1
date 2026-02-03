@@ -27,6 +27,7 @@ export interface Experience {
 export interface SkillItem {
   name: string;
   image?: string;
+  link?: string;
 }
 
 export interface Skill {
@@ -116,27 +117,27 @@ export const skills: Skill[] = [
   {
     category: "프론트엔드",
     items: [
-      { name: "React", image: "/tech-icons/react.svg" },
-      { name: "Angular", image: "/tech-icons/angular.svg" },
-      { name: "Next.js", image: "/tech-icons/nextjs.svg" },
+      { name: "React", image: "/tech-icons/react.svg", link: "https://react.dev" },
+      { name: "Angular", image: "/tech-icons/angular.svg", link: "https://angular.io" },
+      { name: "Next.js", image: "/tech-icons/nextjs.svg", link: "https://nextjs.org" },
     ],
   },
   {
     category: "백엔드",
     items: [
-      { name: "Flask", image: "/tech-icons/flask.svg" },
-      { name: "Next.js", image: "/tech-icons/nextjs.svg" },
-      { name: "Spring Boot", image: "/tech-icons/spring.svg" },
+      { name: "Flask", image: "/tech-icons/flask.svg", link: "https://flask.palletsprojects.com" },
+      { name: "Next.js", image: "/tech-icons/nextjs.svg", link: "https://nextjs.org" },
+      { name: "Spring Boot", image: "/tech-icons/spring.svg", link: "https://spring.io/projects/spring-boot" },
     ],
   },
   {
     category: "인프라·운영",
     items: [
-      { name: "Git", image: "/tech-icons/git.svg" },
-      { name: "GCP", image: "/tech-icons/gcp.svg" },
-      { name: "Apache", image: "/tech-icons/apache.svg" },
-      { name: "Linux", image: "/tech-icons/linux.svg" },
-      { name: "Windows Server", image: "/tech-icons/windows.svg" },
+      { name: "Git", image: "/tech-icons/git.svg", link: "https://git-scm.com" },
+      { name: "GCP", image: "/tech-icons/gcp.svg", link: "https://cloud.google.com" },
+      { name: "Apache", image: "/tech-icons/apache.svg", link: "https://httpd.apache.org" },
+      { name: "Linux", image: "/tech-icons/linux.svg", link: "https://www.linux.org" },
+      { name: "Windows Server", image: "/tech-icons/windows.svg", link: "https://www.microsoft.com/windows-server" },
     ],
   },
 ];

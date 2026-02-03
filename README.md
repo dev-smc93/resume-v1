@@ -130,7 +130,7 @@ npm start
   - `typingTexts`: 타이핑 애니메이션에 사용될 텍스트 배열
   - `personality`: 성향 정보 (MBTI, 특성, 가치관)
 - `experiences`: 경력 사항
-- `skills`: 기술 스택
+- `skills`: 기술 스택 (이미지 및 링크 포함)
 - `projects`: 프로젝트
 - `education`: 학력
 
@@ -144,6 +144,24 @@ personality: {
   values: ["작은 일이라도 도움이 되었다고 느낄때"],
 }
 ```
+
+### 기술 스택 수정 예시
+```typescript
+skills: [
+  {
+    category: "프론트엔드",
+    items: [
+      { 
+        name: "React", 
+        image: "/tech-icons/react.svg",  // 선택사항
+        link: "https://react.dev"        // 선택사항
+      },
+    ],
+  },
+]
+```
+
+**이미지 파일 위치**: `public/tech-icons/` 폴더에 SVG 파일을 추가하세요.
 
 ## 🎨 커스터마이징
 
@@ -167,6 +185,12 @@ personality: {
 - `app/icon.png` 파일을 추가하면 자동으로 파비콘으로 인식됩니다
 - Next.js 13+ App Router에서는 `app/icon.png`가 자동으로 `/icon` 경로로 제공됩니다
 - 권장 크기: 최소 512x512px, 불투명 배경 사용
+
+### 기술 스택 아이콘 추가
+- `public/tech-icons/` 폴더에 SVG 아이콘 파일을 추가하세요
+- 파일명은 `data/resume-data.ts`의 `image` 필드와 일치해야 합니다
+- 예: `react.svg`, `angular.svg`, `nextjs.svg` 등
+- 이미지가 없어도 텍스트만으로 표시됩니다
 
 ## 📦 사용된 기술 스택
 
@@ -195,6 +219,9 @@ personality: {
 - "스크롤하여 더 보기" 텍스트 크기 반응형 조정 (PC에서 더 크게)
 - 파비콘 자동 인식 (`app/icon.png`)
 - 기술 태그 그라데이션 효과 (Skills 섹션)
+- 기술 스택 아이콘 이미지 지원 (좌측에 표시)
+- 기술 스택 클릭 시 공식 사이트로 이동 기능
+- 경력 섹션 태그 스타일 통일 (Projects 섹션과 동일, rounded-lg)
 
 ## 🔄 향후 개선 사항
 

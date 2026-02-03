@@ -28,23 +28,11 @@ export default function Skills() {
             {skillGroup.items.map((skill, skillIndex) => {
               const skillName = typeof skill === "string" ? skill : skill.name;
               const skillImage = typeof skill === "string" ? undefined : skill.image;
+              const skillLink = typeof skill === "string" ? undefined : skill.link;
               const skillKey = typeof skill === "string" ? skill : skill.name;
 
-              return (
-                <motion.div
-                  key={skillKey}
-                  className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium shadow-md flex items-center gap-2"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-                  transition={{
-                    duration: 0.3,
-                    delay: groupIndex * 0.2 + skillIndex * 0.05,
-                    type: "spring",
-                    stiffness: 200,
-                  }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+              const content = (
+                <>
                   {skillImage && (
                     <img
                       src={skillImage}
@@ -57,6 +45,41 @@ export default function Skills() {
                     />
                   )}
                   <span>{skillName}</span>
+                </>
+              );
+
+              const commonProps = {
+                key: skillKey,
+                className: "px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium shadow-md flex items-center gap-2",
+                initial: { opacity: 0, scale: 0 },
+                animate: inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 },
+                transition: {
+                  duration: 0.3,
+                  delay: groupIndex * 0.2 + skillIndex * 0.05,
+                  type: "spring",
+                  stiffness: 200,
+                },
+                whileHover: { scale: 1.1, rotate: 5 },
+                whileTap: { scale: 0.95 },
+              };
+
+              if (skillLink) {
+                return (
+                  <motion.a
+                    {...commonProps}
+                    href={skillLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${commonProps.className} cursor-pointer hover:opacity-90 transition-opacity`}
+                  >
+                    {content}
+                  </motion.a>
+                );
+              }
+
+              return (
+                <motion.div {...commonProps}>
+                  {content}
                 </motion.div>
               );
             })}
