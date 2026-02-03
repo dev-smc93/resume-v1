@@ -41,9 +41,50 @@ export default function Experience() {
               </div>
             </div>
 
-            <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600 mb-4">
-              {exp.company}
-            </h4>
+            <div className="mb-4">
+              {exp.link ? (
+                <motion.a
+                  href={exp.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 group cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  {exp.logo && (
+                    <img
+                      src={exp.logo}
+                      alt={exp.company}
+                      className="w-10 h-10 object-contain rounded-lg bg-white dark:bg-gray-100 p-1 group-hover:opacity-80 transition-opacity"
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 숨김
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  )}
+                  <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600 group-hover:text-blue-300 dark:group-hover:text-blue-500 transition-colors">
+                    {exp.company}
+                  </h4>
+                </motion.a>
+              ) : (
+                <div className="flex items-center gap-3">
+                  {exp.logo && (
+                    <img
+                      src={exp.logo}
+                      alt={exp.company}
+                      className="w-10 h-10 object-contain rounded-lg bg-white dark:bg-gray-100 p-1"
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 숨김
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  )}
+                  <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600">
+                    {exp.company}
+                  </h4>
+                </div>
+              )}
+            </div>
 
             <ul className="space-y-2 mb-4">
               {exp.description.map((desc, i) => (

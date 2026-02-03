@@ -22,6 +22,8 @@ export interface Experience {
   period: string;
   description: string[];
   technologies: string[];
+  logo?: string; // 회사 로고 이미지 경로 (선택사항)
+  link?: string; // 회사 웹사이트 링크 (선택사항)
 }
 
 export interface SkillItem {
@@ -85,7 +87,7 @@ export const personalInfo: PersonalInfo = {
 export const experiences: Experience[] = [
   {
     id: "exp-1",
-    company: "에코라이프밸런스",
+    company: "우아한정리",
     position: "웹·자동화 개발",
     period: "2023.01 - 2026-02-10(퇴직예정)",
     description: [
@@ -95,6 +97,8 @@ export const experiences: Experience[] = [
       "고객 예약금 실시간 확인 웹사이트 개발",
     ],
     technologies: ["Python","Flask", "React", "Next.js", "TypeScript"],
+    logo: "/company-logos/ecolife-balance.png", // 회사 로고 이미지 경로 (선택사항)
+    link: "https://www.woowarhanclean.com/", // 회사 웹사이트 링크 (선택사항)
   },
   {
     id: "exp-2",
@@ -107,6 +111,8 @@ export const experiences: Experience[] = [
       "의정부 통합플랫폼 구축, 스쿨존 장비 업체 연계 개발",
     ],
     technologies: ["Java", "Spring Boot", "Angular"],
+    logo: "/company-logos/metabuild.png", // 회사 로고 이미지 경로 (선택사항)
+    link: "https://www.metabuild.co.kr/", // 회사 웹사이트 링크 (선택사항)
   },
   {
     id: "exp-3",
@@ -118,6 +124,8 @@ export const experiences: Experience[] = [
       "양산 전 모바일 시료 승인 테스트 수행 및 결과 정리",
     ],
     technologies: [],
+    logo: "/company-logos/samsung.png", // 회사 로고 이미지 경로 (선택사항)
+    link: "https://www.samsungcareers.com/", // 회사 웹사이트 링크 (선택사항)
   },
 ];
 
