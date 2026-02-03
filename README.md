@@ -30,13 +30,16 @@ resume-v1/
 │   │   ├── Skills.tsx    # 기술 스택 섹션
 │   │   ├── Projects.tsx  # 프로젝트 섹션
 │   │   ├── Education.tsx # 학력 섹션
+│   │   ├── Certifications.tsx # 자격 및 수상 섹션
 │   │   └── Contact.tsx   # 연락처 섹션
 │   ├── layout/           # 레이아웃 관련 컴포넌트
 │   │   └── Navigation.tsx # 네비게이션 바
 │   └── ui/               # 재사용 가능한 UI 컴포넌트
 │       ├── Section.tsx   # 재사용 가능한 섹션 래퍼
 │       ├── ThemeToggle.tsx # 다크 모드 토글 버튼
-│       └── PersonalityModal.tsx # 성향 정보 모달
+│       ├── PersonalityModal.tsx # 성향 정보 모달
+│       ├── ImageModal.tsx # 이미지 확대 모달
+│       └── modal-animations.ts # 모달 애니메이션 variants (재활용)
 ├── contexts/            # React Context
 │   └── ThemeContext.tsx # 다크 모드 테마 관리
 └── data/
@@ -86,10 +89,11 @@ resume-v1/
 #### 6. 섹션 구성
 1. **Hero**: 이름, 직책, 소개, 연락처 버튼, 타이핑 애니메이션, 성향 정보 모달
 2. **Experience**: 경력 사항 (타임라인 형식)
-3. **Skills**: 기술 스택 (카테고리별, 그라데이션 태그)
+3. **Skills**: 기술 스택 (카테고리별, 그라데이션 태그, 아이콘 이미지, 링크)
 4. **Projects**: 프로젝트 포트폴리오
 5. **Education**: 학력 사항
-6. **Contact**: 연락처 및 메시지 폼
+6. **Certifications**: 자격 및 수상 (이미지 슬라이드, 무한 루프, 이미지 확대)
+7. **Contact**: 연락처 및 메시지 폼
 
 #### 7. 성향 정보 모달 기능 (최신)
 - ✅ Hero 섹션의 "성향" 텍스트 클릭 시 모달 표시
@@ -108,6 +112,34 @@ resume-v1/
   - `ui/`: 재사용 가능한 UI 컴포넌트
 - ✅ 명확한 파일 구조로 유지보수성 향상
 - ✅ 확장 가능한 구조로 향후 기능 추가 용이
+
+#### 9. 자격 및 수상 섹션 (최신)
+- ✅ 이미지 슬라이드 형식으로 자격증 및 수상 내역 표시
+- ✅ 좌에서 우로 무한 루프 자동 스크롤 (requestAnimationFrame 기반)
+- ✅ 반응형 디스플레이 (모바일 2개, 태블릿 3개, 데스크톱 4-5개)
+- ✅ 마우스 호버 시 일시정지 기능
+- ✅ 이미지 클릭 시 확대 모달 표시
+- ✅ 자격증/수상 태그에 이모지 추가 (📜 자격증, 🏆 수상)
+- ✅ `data/resume-data.ts`의 `certifications` 배열로 데이터 관리
+- ✅ 각 항목에 이미지, 이름, 취득월, 타입(자격증/수상) 정보 표시
+
+#### 10. 이미지 확대 모달 (최신)
+- ✅ 자격 및 수상 섹션의 이미지 클릭 시 확대 모달 표시
+- ✅ 성향 모달과 동일한 카드 뒤집기 애니메이션 적용
+- ✅ 이미지 제목 표시
+- ✅ 반응형 레이아웃 (최대 너비 4xl)
+- ✅ 배경 클릭 또는 X 버튼으로 닫기
+
+#### 11. 모달 애니메이션 재활용 구조화 (최신)
+- ✅ `components/ui/modal-animations.ts` 파일 생성
+- ✅ 공통 애니메이션 variants 추출:
+  - `modalBackdropVariants`: 배경 오버레이 애니메이션
+  - `modalContainerVariants`: 컨테이너 애니메이션
+  - `modalCardVariants`: 카드 뒤집기 애니메이션 (rotateY, scale, opacity)
+  - `modalCardStyle`: 3D 변환 스타일
+- ✅ PersonalityModal과 ImageModal에서 동일한 애니메이션 사용
+- ✅ 코드 중복 제거 및 유지보수성 향상
+- ✅ 향후 새로운 모달 추가 시 쉽게 재사용 가능
 
 ## 🚀 실행 방법
 
@@ -133,6 +165,7 @@ npm start
 - `skills`: 기술 스택 (이미지 및 링크 포함)
 - `projects`: 프로젝트
 - `education`: 학력
+- `certifications`: 자격 및 수상 (이미지, 이름, 취득월, 타입)
 
 데이터만 수정하면 자동으로 페이지에 반영됩니다.
 
@@ -161,7 +194,22 @@ skills: [
 ]
 ```
 
-**이미지 파일 위치**: `public/tech-icons/` 폴더에 SVG 파일을 추가하세요.
+**이미지 파일 위치**: 
+- 기술 스택 아이콘: `public/tech-icons/` 폴더에 SVG 파일을 추가하세요
+- 자격증/수상 이미지: `public/certifications/` 폴더에 이미지 파일을 추가하세요
+
+### 자격 및 수상 수정 예시
+```typescript
+certifications: [
+  {
+    id: "cert-1",
+    name: "정보처리기사",
+    image: "/certifications/info-processor.png",
+    acquiredDate: "2024.01",
+    type: "certification", // 또는 "award"
+  },
+]
+```
 
 ## 🎨 커스터마이징
 
@@ -173,13 +221,14 @@ skills: [
 - `framer-motion`의 `transition` 속성 수정
 - `app/globals.css`의 `@keyframes blob` 수정
 - `app/globals.css`의 `@keyframes blink-fast`로 커서 깜빡임 속도 조정
-- `components/ui/PersonalityModal.tsx`의 `transition.duration`으로 모달 애니메이션 속도 조정
+- `components/ui/modal-animations.ts`의 `modalCardVariants.transition.duration`으로 모달 애니메이션 속도 조정 (모든 모달에 일괄 적용)
+- `components/sections/Certifications.tsx`의 `speed` 변수로 슬라이드 이동 속도 조정
 
 ### 컴포넌트 추가/수정
 - **새 섹션 추가**: `components/sections/` 폴더에 새 컴포넌트 생성 후 `app/page.tsx`에 import
 - **레이아웃 수정**: `components/layout/` 폴더의 컴포넌트 수정
 - **UI 컴포넌트 추가**: `components/ui/` 폴더에 재사용 가능한 컴포넌트 추가
-- **모달 추가**: `components/ui/PersonalityModal.tsx` 참고하여 새로운 모달 컴포넌트 생성
+- **모달 추가**: `components/ui/modal-animations.ts`의 variants를 import하여 새로운 모달 컴포넌트 생성 (예: `ImageModal.tsx`, `PersonalityModal.tsx` 참고)
 
 ### 파비콘 설정
 - `app/icon.png` 파일을 추가하면 자동으로 파비콘으로 인식됩니다
@@ -191,6 +240,12 @@ skills: [
 - 파일명은 `data/resume-data.ts`의 `image` 필드와 일치해야 합니다
 - 예: `react.svg`, `angular.svg`, `nextjs.svg` 등
 - 이미지가 없어도 텍스트만으로 표시됩니다
+
+### 자격증/수상 이미지 추가
+- `public/certifications/` 폴더에 이미지 파일을 추가하세요
+- 파일명은 `data/resume-data.ts`의 `image` 필드와 일치해야 합니다
+- 권장 형식: PNG, JPG (최적화된 이미지 권장)
+- 이미지가 없으면 기본 placeholder가 표시됩니다
 
 ## 📦 사용된 기술 스택
 
@@ -222,6 +277,10 @@ skills: [
 - 기술 스택 아이콘 이미지 지원 (좌측에 표시)
 - 기술 스택 클릭 시 공식 사이트로 이동 기능
 - 경력 섹션 태그 스타일 통일 (Projects 섹션과 동일, rounded-lg)
+- 자격 및 수상 섹션 추가 (이미지 슬라이드, 무한 루프, 호버 일시정지)
+- 자격증/수상 태그에 이모지 추가 (📜 자격증, 🏆 수상)
+- 이미지 확대 모달 기능 (자격 및 수상 섹션)
+- 모달 애니메이션 재활용 구조화 (`modal-animations.ts`)
 
 ## 🔄 향후 개선 사항
 

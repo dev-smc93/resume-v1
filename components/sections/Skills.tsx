@@ -49,7 +49,6 @@ export default function Skills() {
               );
 
               const commonProps = {
-                key: skillKey,
                 className: "px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-medium shadow-md flex items-center gap-2",
                 initial: { opacity: 0, scale: 0 },
                 animate: inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 },
@@ -66,6 +65,7 @@ export default function Skills() {
               if (skillLink) {
                 return (
                   <motion.a
+                    key={skillKey}
                     {...commonProps}
                     href={skillLink}
                     target="_blank"
@@ -78,7 +78,7 @@ export default function Skills() {
               }
 
               return (
-                <motion.div {...commonProps}>
+                <motion.div key={skillKey} {...commonProps}>
                   {content}
                 </motion.div>
               );

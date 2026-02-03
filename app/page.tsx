@@ -5,6 +5,7 @@ import Experience from "@/components/sections/Experience";
 import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Education from "@/components/sections/Education";
+import Certifications from "@/components/sections/Certifications";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
@@ -26,7 +27,10 @@ export default function Home() {
       <Section id="education" title="학력" className="bg-gray-900 dark:bg-white">
         <Education />
       </Section>
-      <Section id="contact" title="연락처" className="bg-gray-800 dark:bg-gray-50">
+      <Section id="certifications" title="자격 및 수상" className="bg-gray-800 dark:bg-gray-50 !py-28 min-h-[70vh]">
+        <Certifications />
+      </Section>
+      <Section id="contact" title="연락처" className="bg-gray-900 dark:bg-white">
         <Contact />
       </Section>
       <footer className="bg-black dark:bg-gray-100 text-gray-400 dark:text-gray-600 text-center py-8">

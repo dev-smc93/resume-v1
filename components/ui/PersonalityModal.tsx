@@ -3,6 +3,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Info } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
+import {
+  modalBackdropVariants,
+  modalContainerVariants,
+  modalCardVariants,
+  modalCardStyle,
+} from "./modal-animations";
 
 interface PersonalityModalProps {
   isOpen: boolean;
@@ -21,44 +27,18 @@ export default function PersonalityModal({
         <>
           <motion.div
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            {...modalBackdropVariants}
             onClick={onClose}
           />
           <motion.div
             className="fixed inset-0 flex items-center justify-center z-50 p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            {...modalContainerVariants}
           >
             <motion.div
               className="bg-gray-800/80 dark:bg-white/80 rounded-2xl p-8 max-w-md w-full shadow-2xl relative backdrop-blur-sm"
               onClick={(e) => e.stopPropagation()}
-              initial={{ 
-                opacity: 0,
-                rotateY: -90,
-                scale: 0.8
-              }}
-              animate={{ 
-                opacity: 1,
-                rotateY: 0,
-                scale: 1
-              }}
-              exit={{ 
-                opacity: 0,
-                rotateY: 90,
-                scale: 0.8
-              }}
-              transition={{ 
-                duration: 0.7,
-                ease: [0.34, 1.56, 0.64, 1]
-              }}
-              style={{
-                transformStyle: "preserve-3d",
-                perspective: "1000px"
-              }}
+              {...modalCardVariants}
+              style={modalCardStyle}
             >
               <button
                 onClick={onClose}

@@ -11,6 +11,7 @@ const navItems = [
   { name: "기술", href: "#skills" },
   { name: "프로젝트", href: "#projects" },
   { name: "학력", href: "#education" },
+  { name: "자격 및 수상", href: "#certifications" },
   { name: "연락처", href: "#contact" },
 ];
 
@@ -25,17 +26,49 @@ export default function Navigation() {
 
       // 현재 활성 섹션 감지
       const sections = navItems.map((item) => item.href.substring(1));
-      const current = sections.find((section) => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
+      const navHeight = 80; // 네비게이션 바 높이
+      const threshold = navHeight + 50; // 활성화 기준점
+      
+      // 스크롤이 페이지 하단에 가까운지 확인 (200px 이내)
+      const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
+      
+      let current = "";
+      
+      // 페이지 하단에 가까우면 마지막 섹션(연락처)을 우선 활성화
+      if (isNearBottom) {
+        const lastSection = sections[sections.length - 1];
+        const lastElement = document.getElementById(lastSection);
+        if (lastElement) {
+          const rect = lastElement.getBoundingClientRect();
+          // 마지막 섹션이 화면에 보이면 활성화
+          if (rect.top < window.innerHeight) {
+            current = lastSection;
+          }
         }
-        return false;
-      });
+      }
+      
+      // 그렇지 않으면 역순으로 확인하여 가장 위에 있는 활성 섹션을 찾음
+      if (!current) {
+        for (let i = sections.length - 1; i >= 0; i--) {
+          const section = sections[i];
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            // 섹션이 화면 상단 기준점을 지나갔는지 확인
+            if (rect.top <= threshold) {
+              current = section;
+              break;
+            }
+          }
+        }
+      }
+      
       setActiveSection(current || "");
     };
 
+    // 초기 실행
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

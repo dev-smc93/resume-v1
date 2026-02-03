@@ -52,6 +52,14 @@ export interface Education {
   description?: string;
 }
 
+export interface Certification {
+  id: string;
+  name: string;
+  image: string;
+  acquiredDate: string; // 취득월 (예: "2024.01")
+  type: "certification" | "award"; // 자격증 또는 수상
+}
+
 export const personalInfo: PersonalInfo = {
   name: "조성만",
   title: "풀스택 개발자",
@@ -164,6 +172,58 @@ export const projects: Project[] = [
     description: "날씨 API를 활용한 인터랙티브한 대시보드입니다. 애니메이션과 차트를 통해 직관적인 데이터 시각화를 제공합니다.",
     technologies: ["React", "Chart.js", "OpenWeather API"],
     link: "https://example.com",
+  },
+];
+
+export const certifications: Certification[] = [
+  {
+    id: "cert-1",
+    name: "운전면허2종보통",
+    image: "/certifications/info-processor.png",
+    acquiredDate: "2024.01",
+    type: "certification",
+  },
+  {
+    id: "cert-1",
+    name: "정보처리산업기사",
+    image: "/certifications/info-processor.png",
+    acquiredDate: "2024.01",
+    type: "certification",
+  },
+  {
+    id: "cert-2",
+    name: "컴퓨터활용능력1급",
+    image: "/certifications/sqld.jpg",
+    acquiredDate: "2023.06",
+    type: "certification",
+  },
+  {
+    id: "cert-2",
+    name: "E-Test",
+    image: "/certifications/sqld.jpg",
+    acquiredDate: "2023.06",
+    type: "certification",
+  },
+  {
+    id: "cert-2",
+    name: "ITQ A등급",
+    image: "/certifications/sqld.jpg",
+    acquiredDate: "2023.06",
+    type: "certification",
+  },
+  {
+    id: "award-1",
+    name: "지방 기능경기대회(금상)",
+    image: "/certifications/award.jpg",
+    acquiredDate: "2023.12",
+    type: "award",
+  },
+  {
+    id: "award-1",
+    name: "전국 기능경기대회(은상)",
+    image: "/certifications/award.jpg",
+    acquiredDate: "2023.12",
+    type: "award",
   },
 ];
 
