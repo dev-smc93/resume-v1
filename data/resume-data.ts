@@ -81,7 +81,8 @@ export const personalInfo: PersonalInfo = {
     "기본을 중시",
     "책임감 기반",
     "성실함",
-    "업무 몰입형"
+    "업무 몰입형",
+    "지속성"
   ],
   personality: {
     mbti: "INFP",
