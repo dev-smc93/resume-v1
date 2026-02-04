@@ -8,15 +8,14 @@ export interface PersonalInfo {
   bio: string;
   profileImage?: string;
   typingTexts?: string[];
-  personality?: {
-    mbti: string;
-    traits: string[];
-    values?: string[];
-  };
   personalDetails?: {
     birthDate: string;
     gender: string;
     introduction: string;
+    mbti?: string;
+    traits?: string[];
+    values?: string[];
+    audioUrl?: string;
   };
 }
 
@@ -89,15 +88,14 @@ export const personalInfo: PersonalInfo = {
     "업무 몰입형",
     "지속성"
   ],
-  personality: {
-    mbti: "INFP",
-    traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"],
-    values: ["작은 일이라도 도움이 되었다고 느낄때"],
-  },
   personalDetails: {
     birthDate: "1993.02.05",
     gender: "남자",
     introduction: "Java, Python, Next.js 기반의 웹 구축 경험이 있으며, 반복적인 업무를 통해 완성도를 높여가는 데 강점이 있어 개발 직무에만 국한하지 않고 다양한 업무 방향을 열어두고 있습니다. 연봉보다는 직무 적합성과 지속 가능성을 기준으로 지원하고 있습니다 :D",
+    audioUrl: "/audio/introduction.mp3", // public 폴더 기준 경로 (샘플파일)
+    mbti: "INFP",
+    traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"],
+    values: ["작은 일이라도 도움이 되었다고 느낄때"],
   },
 };
 
