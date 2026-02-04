@@ -229,7 +229,7 @@ export default function Hero() {
           <span className="text-gray-300 dark:text-gray-600">이런 분 찾고 있나요?</span>
         </motion.h1>
 
-        <motion.p
+        {/* <motion.p
           className="text-lg text-gray-400 dark:text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed"
           variants={itemVariants}
         >
@@ -246,7 +246,7 @@ export default function Hero() {
               )}
             </span>
           ))}
-        </motion.p>
+        </motion.p> */}
 
         <motion.div
           className="flex flex-wrap justify-center gap-6 mb-10"
