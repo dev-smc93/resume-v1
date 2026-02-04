@@ -75,6 +75,51 @@ export default function PersonalInfoModal({
                     {personalInfo.personalDetails.introduction}
                   </p>
                 </div>
+                
+                {personalInfo.personality && (
+                  <>
+                    <div className="border-t border-gray-700 dark:border-gray-300 pt-4 mt-4">
+                      <div className="mb-4">
+                        <span className="text-sm text-gray-400 dark:text-gray-600 drop-shadow-md">MBTI</span>
+                        <p className="text-lg font-semibold text-purple-400 dark:text-purple-600 mt-1 drop-shadow-md">
+                          {personalInfo.personality.mbti}
+                        </p>
+                      </div>
+                      
+                      {personalInfo.personality.traits && personalInfo.personality.traits.length > 0 && (
+                        <div className="mb-4">
+                          <span className="text-sm text-gray-400 dark:text-gray-600 drop-shadow-md">특징</span>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {personalInfo.personality.traits.map((trait, index) => (
+                              <span
+                                key={index}
+                                className="px-3 py-1.5 bg-blue-500/20 dark:bg-blue-500/30 text-blue-300 dark:text-blue-700 rounded-full text-sm font-medium drop-shadow-md"
+                              >
+                                {trait}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {personalInfo.personality.values && personalInfo.personality.values.length > 0 && (
+                        <div>
+                          <span className="text-sm text-gray-400 dark:text-gray-600 drop-shadow-md">가치관</span>
+                          <div className="mt-2 space-y-2">
+                            {personalInfo.personality.values.map((value, index) => (
+                              <p
+                                key={index}
+                                className="text-gray-300 dark:text-gray-700 leading-relaxed drop-shadow-md pl-4 border-l-2 border-teal-400 dark:border-teal-600"
+                              >
+                                {value}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
             </motion.div>
           </motion.div>

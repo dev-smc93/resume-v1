@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ArrowDown, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowDown, Mail, MapPin, Phone, User } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
-import PersonalityModal from "@/components/ui/PersonalityModal";
 import VisitCounter from "@/components/ui/VisitCounter";
 import VisitCounterModal from "@/components/ui/VisitCounterModal";
 import PersonalInfoModal from "@/components/ui/PersonalInfoModal";
@@ -49,11 +48,9 @@ export default function Hero() {
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(100);
-  const [isPersonalityModalOpen, setIsPersonalityModalOpen] = useState(false);
   const [visitCount, setVisitCount] = useState(0);
   const [isVisitCounterModalOpen, setIsVisitCounterModalOpen] = useState(false);
   const [isPersonalInfoModalOpen, setIsPersonalInfoModalOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -131,31 +128,6 @@ export default function Hero() {
     return () => clearInterval(intervalId);
   }, []);
 
-  // 프로필 이미지 툴팁 자동 표시 (무한 반복: 2초 후 나타남 → 3초 표시 → 2초 대기 → 반복)
-  useEffect(() => {
-    let showTimer: NodeJS.Timeout;
-    let hideTimer: NodeJS.Timeout;
-    
-    const showTooltipCycle = () => {
-      showTimer = setTimeout(() => {
-        setShowTooltip(true);
-        hideTimer = setTimeout(() => {
-          setShowTooltip(false);
-          // 다시 시작 (2초 대기 후 다시 나타남)
-          showTooltipCycle();
-        }, 3000); // 3초 후 사라짐
-      }, 2000); // 2초 후 나타남
-    };
-    
-    // 첫 시작
-    showTooltipCycle();
-
-    return () => {
-      if (showTimer) clearTimeout(showTimer);
-      if (hideTimer) clearTimeout(hideTimer);
-    };
-  }, []);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50">
       <div className="absolute inset-0 overflow-hidden">
@@ -182,32 +154,12 @@ export default function Hero() {
             onClick={() => setIsPersonalInfoModalOpen(true)}
           >
             {personalInfo.profileImage ? (
-              <>
-                <img
-                  src={personalInfo.profileImage}
-                  alt={personalInfo.name}
-                  className="w-full h-full object-cover rounded-full"
-                  style={{ borderRadius: "50%" }}
-                />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center rounded-full" style={{ borderRadius: "50%" }}>
-                  <motion.div
-                    className="text-white text-xs font-semibold bg-black/40 dark:bg-black/50 px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none"
-                    initial={{ opacity: 0, scale: 0.8, y: 5 }}
-                    animate={{ 
-                      opacity: showTooltip ? 1 : 0,
-                      scale: showTooltip ? 1 : 0.8,
-                      y: showTooltip ? 0 : 5
-                    }}
-                    whileHover={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ 
-                      duration: 0.4,
-                      ease: "easeOut"
-                    }}
-                  >
-                    클릭하여 인적사항 보기
-                  </motion.div>
-                </div>
-              </>
+              <img
+                src={personalInfo.profileImage}
+                alt={personalInfo.name}
+                className="w-full h-full object-cover rounded-full"
+                style={{ borderRadius: "50%" }}
+              />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500" />
             )}
@@ -252,6 +204,16 @@ export default function Hero() {
           className="flex flex-wrap justify-center gap-6 mb-10"
           variants={itemVariants}
         >
+          <motion.button
+            onClick={() => setIsPersonalInfoModalOpen(true)}
+            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-full hover:from-teal-600 hover:to-cyan-600 transition-colors shadow-lg cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <User size={20} />
+            <span className="hidden md:inline">인적사항</span>
+          </motion.button>
+
           <motion.button
             onClick={() => {
               const contactSection = document.getElementById("contact");
@@ -311,16 +273,15 @@ export default function Hero() {
 
         <div className="flex flex-col items-center gap-2">
           <span className="text-base md:text-lg text-gray-400 dark:text-gray-500">스크롤하여 더 보기</span>
-          <ArrowDown size={24} className="text-gray-400" />
+          <motion.div
+            variants={scrollIndicatorVariants}
+            animate="animate"
+          >
+            <ArrowDown size={24} className="text-gray-400" />
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* 성향 정보 모달 */}
-      <PersonalityModal
-        isOpen={isPersonalityModalOpen}
-        onClose={() => setIsPersonalityModalOpen(false)}
-      />
-      
       {/* 방문 카운터 모달 */}
       <VisitCounterModal
         isOpen={isVisitCounterModalOpen}
