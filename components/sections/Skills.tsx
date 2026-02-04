@@ -55,7 +55,7 @@ export default function Skills() {
                 transition: {
                   duration: 0.3,
                   delay: groupIndex * 0.2 + skillIndex * 0.05,
-                  type: "spring",
+                  type: "spring" as const,
                   stiffness: 200,
                 },
                 whileHover: { scale: 1.1, rotate: 5 },

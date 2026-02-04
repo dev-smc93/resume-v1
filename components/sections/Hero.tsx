@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { ArrowDown, Mail, MapPin, Phone } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 import PersonalityModal from "@/components/ui/PersonalityModal";
+import VisitCounter from "@/components/ui/VisitCounter";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -47,6 +48,7 @@ export default function Hero() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(100);
   const [isPersonalityModalOpen, setIsPersonalityModalOpen] = useState(false);
+  const [visitCount, setVisitCount] = useState(0);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -78,6 +80,51 @@ export default function Hero() {
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, currentTextIndex, typingTexts, typingSpeed]);
+
+  // 방문 카운트 증가 및 조회
+  useEffect(() => {
+    const incrementVisitCount = async () => {
+      try {
+        const response = await fetch("/api/visits", {
+          method: "POST",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setVisitCount(data.count);
+        }
+      } catch (error) {
+        console.error("Failed to increment visit count:", error);
+        // 에러 발생 시에도 기존 카운트 조회 시도
+        try {
+          const response = await fetch("/api/visits");
+          if (response.ok) {
+            const data = await response.json();
+            setVisitCount(data.count);
+          }
+        } catch (err) {
+          console.error("Failed to fetch visit count:", err);
+        }
+      }
+    };
+
+    // 초기 카운트 증가
+    incrementVisitCount();
+
+    // 주기적으로 카운트 조회 (4초마다)
+    const intervalId = setInterval(async () => {
+      try {
+        const response = await fetch("/api/visits");
+        if (response.ok) {
+          const data = await response.json();
+          setVisitCount(data.count);
+        }
+      } catch (error) {
+        console.error("Failed to fetch visit count:", error);
+      }
+    }, 4000); // 4초마다 업데이트
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50">
@@ -149,40 +196,61 @@ export default function Hero() {
         </motion.p>
 
         <motion.div
-          className="flex flex-wrap justify-center gap-6 mb-16"
+          className="flex flex-wrap justify-center gap-6 mb-10"
           variants={itemVariants}
         >
-          <motion.a
-            href={`mailto:${personalInfo.email}`}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg"
+          <motion.button
+            onClick={() => {
+              const contactSection = document.getElementById("contact");
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <Mail size={20} />
             <span>이메일</span>
-          </motion.a>
+          </motion.button>
 
-          <motion.a
-            href={`tel:${personalInfo.phone}`}
-            className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-lg"
+          <motion.button
+            onClick={() => {
+              const contactSection = document.getElementById("contact");
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <Phone size={20} />
             <span>전화</span>
-          </motion.a>
+          </motion.button>
 
-          <motion.a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full hover:from-pink-600 hover:to-pink-700 transition-colors shadow-lg"
+          <motion.button
+            onClick={() => {
+              const contactSection = document.getElementById("contact");
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full hover:from-pink-600 hover:to-pink-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <MapPin size={20} />
-            <span>{personalInfo.location}</span>
-          </motion.a>
+            <span>위치</span>
+          </motion.button>
+        </motion.div>
+
+        {/* 방문 카운터 - 스크롤하여 더 보기 위에 표시 */}
+        <motion.div
+          className="mb-8"
+          variants={itemVariants}
+        >
+          <VisitCounter count={visitCount} />
         </motion.div>
 
         <motion.div
