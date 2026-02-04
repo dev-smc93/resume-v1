@@ -10,7 +10,7 @@ const navItems = [
   { name: "경력", href: "#experience" },
   { name: "기술", href: "#skills" },
   { name: "프로젝트", href: "#projects" },
-  { name: "학력", href: "#education" },
+  { name: "학력 및 병적", href: "#education" },
   { name: "자격 및 수상", href: "#certifications" },
   { name: "연락처", href: "#contact" },
 ];

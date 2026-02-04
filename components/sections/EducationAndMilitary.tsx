@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { GraduationCap, Calendar } from "lucide-react";
 import { education } from "@/data/resume-data";
 
-export default function Education() {
+export default function EducationAndMilitary() {
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: false,
