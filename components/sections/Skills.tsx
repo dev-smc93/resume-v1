@@ -19,7 +19,6 @@ export default function Skills() {
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.6, delay: groupIndex * 0.2 }}
-          whileHover={{ scale: 1.05, rotateY: 5 }}
         >
           <h3 className="text-2xl font-bold mb-4 text-blue-400 dark:text-blue-600">
             {skillGroup.category}

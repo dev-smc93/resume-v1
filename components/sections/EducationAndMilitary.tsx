@@ -20,7 +20,6 @@ export default function EducationAndMilitary() {
           initial={{ opacity: 0, x: -50 }}
           animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
           transition={{ duration: 0.6, delay: index * 0.2 }}
-          whileHover={{ scale: 1.02, x: 10 }}
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-blue-900 dark:bg-blue-100 rounded-lg">

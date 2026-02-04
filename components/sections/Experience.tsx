@@ -25,8 +25,6 @@ export default function Experience() {
           
           <motion.div
             className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
-            whileHover={{ scale: 1.02, x: 10 }}
-            transition={{ type: "spring", stiffness: 300 }}
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
               <div className="flex items-center gap-3 mb-2 md:mb-0">
