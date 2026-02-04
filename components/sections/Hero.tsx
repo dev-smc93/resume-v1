@@ -206,12 +206,12 @@ export default function Hero() {
                 contactSection.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg cursor-pointer"
+            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <Mail size={20} />
-            <span>이메일</span>
+            <span className="hidden md:inline">이메일</span>
           </motion.button>
 
           <motion.button
@@ -221,12 +221,12 @@ export default function Hero() {
                 contactSection.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-lg cursor-pointer"
+            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <Phone size={20} />
-            <span>전화</span>
+            <span className="hidden md:inline">전화</span>
           </motion.button>
 
           <motion.button
@@ -236,12 +236,12 @@ export default function Hero() {
                 contactSection.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full hover:from-pink-600 hover:to-pink-700 transition-colors shadow-lg cursor-pointer"
+            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full hover:from-pink-600 hover:to-pink-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <MapPin size={20} />
-            <span>위치</span>
+            <span className="hidden md:inline">위치</span>
           </motion.button>
         </motion.div>
 

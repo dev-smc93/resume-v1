@@ -15,6 +15,8 @@
 - **framer-motion**: 부드러운 애니메이션 효과
 - **react-intersection-observer**: 스크롤 기반 인터랙션 감지
 - **lucide-react**: 모던한 아이콘 라이브러리
+- **Prisma**: ORM (데이터베이스 관리)
+- **PostgreSQL**: 데이터베이스 (방문 카운터 저장)
 
 #### 3. 프로젝트 구조
 ```
@@ -23,6 +25,12 @@ resume-v1/
 │   ├── page.tsx          # 메인 페이지
 │   ├── layout.tsx        # 레이아웃 설정
 │   └── globals.css       # 전역 스타일 및 애니메이션
+├── app/
+│   ├── api/             # API 라우트
+│   │   └── visits/      # 방문 카운터 API
+│   │       ├── route.ts # 오늘의 방문 카운트 (GET, POST)
+│   │       └── total/
+│   │           └── route.ts # 전체 방문 카운트 (GET)
 ├── components/
 │   ├── sections/         # 페이지 섹션 컴포넌트들
 │   │   ├── Hero.tsx      # 히어로 섹션 (메인 소개)
@@ -39,11 +47,17 @@ resume-v1/
 │       ├── ThemeToggle.tsx # 다크 모드 토글 버튼
 │       ├── PersonalityModal.tsx # 성향 정보 모달
 │       ├── ImageModal.tsx # 이미지 확대 모달
+│       ├── VisitCounter.tsx # 방문 카운터 디스플레이
 │       └── modal-animations.ts # 모달 애니메이션 variants (재활용)
 ├── contexts/            # React Context
 │   └── ThemeContext.tsx # 다크 모드 테마 관리
-└── data/
-    └── resume-data.ts    # 이력서 데이터 (중앙 집중식 관리)
+├── data/
+│   └── resume-data.ts    # 이력서 데이터 (중앙 집중식 관리)
+├── lib/
+│   └── prisma.ts         # Prisma 클라이언트 설정
+└── prisma/
+    ├── schema.prisma     # 데이터베이스 스키마
+    └── migrations/       # 데이터베이스 마이그레이션
 ```
 
 **구조화 특징:**
@@ -87,7 +101,7 @@ resume-v1/
 - 모던한 UI/UX
 
 #### 6. 섹션 구성
-1. **Hero**: 이름, 직책, 소개, 연락처 버튼, 타이핑 애니메이션, 성향 정보 모달
+1. **Hero**: 이름, 직책, 소개, 연락처 버튼, 타이핑 애니메이션, 성향 정보 모달, 방문 카운터
 2. **Experience**: 경력 사항 (타임라인 형식)
 3. **Skills**: 기술 스택 (카테고리별, 그라데이션 태그, 아이콘 이미지, 링크)
 4. **Projects**: 프로젝트 포트폴리오
@@ -141,8 +155,47 @@ resume-v1/
 - ✅ 코드 중복 제거 및 유지보수성 향상
 - ✅ 향후 새로운 모달 추가 시 쉽게 재사용 가능
 
+#### 12. 방문 카운터 기능 (최신)
+- ✅ Prisma ORM을 사용한 데이터베이스 연동
+- ✅ PostgreSQL 데이터베이스 사용 (Supabase 호스팅)
+- ✅ 날짜별 방문 카운트 추적 (`VisitCount` 모델)
+- ✅ API 엔드포인트:
+  - `POST /api/visits`: 오늘의 방문 카운트 증가
+  - `GET /api/visits`: 오늘의 방문 카운트 조회
+  - `GET /api/visits/total`: 전체 방문 카운트 조회
+- ✅ `VisitCounter` 컴포넌트: 디지털 디스플레이 스타일 카운터
+  - 숫자별 개별 애니메이션 (fade-in + slide-up)
+  - 4자리 숫자 표시 (앞자리 0으로 패딩)
+- ✅ Hero 섹션에 방문 카운터 통합
+- ✅ 실시간 업데이트 (4초마다 자동 갱신)
+- ✅ 페이지 로드 시 자동 카운트 증가
+
+#### 13. Hero 섹션 버튼 기능 개선 (최신)
+- ✅ 연락처 버튼 클릭 시 연락처 섹션으로 부드러운 스크롤 이동
+- ✅ 모바일 반응형 디자인:
+  - 모바일: 아이콘만 표시 (공간 절약)
+  - 데스크톱: 아이콘 + 텍스트 표시
+- ✅ 버튼 타입 변경: `motion.a` → `motion.button` (스크롤 이동 기능)
+
 ## 🚀 실행 방법
 
+### 환경 변수 설정
+프로젝트 루트에 `.env` 파일을 생성하고 다음 내용을 추가하세요:
+
+```env
+DATABASE_URL="postgresql://user:password@host:port/database"
+```
+
+### 데이터베이스 마이그레이션
+```bash
+# Prisma 마이그레이션 실행
+npx prisma migrate dev
+
+# Prisma Client 생성
+npx prisma generate
+```
+
+### 개발 서버 실행
 ```bash
 # 개발 서버 실행
 npm run dev
@@ -152,6 +205,12 @@ npm run build
 
 # 프로덕션 서버 실행
 npm start
+```
+
+### 데이터베이스 관리
+```bash
+# Prisma Studio 실행 (데이터베이스 GUI)
+npx prisma studio
 ```
 
 ## 📝 데이터 수정 방법
@@ -256,6 +315,9 @@ certifications: [
 - **Animation**: Framer Motion
 - **Icons**: Lucide React
 - **Scroll Detection**: React Intersection Observer
+- **Database**: PostgreSQL (Supabase)
+- **ORM**: Prisma 7
+- **Database Adapter**: @prisma/adapter-pg
 
 ## ✨ 최신 기능 (2026년)
 
@@ -281,6 +343,14 @@ certifications: [
 - 자격증/수상 태그에 이모지 추가 (📜 자격증, 🏆 수상)
 - 이미지 확대 모달 기능 (자격 및 수상 섹션)
 - 모달 애니메이션 재활용 구조화 (`modal-animations.ts`)
+- Hero 섹션 연락처 버튼 모바일 반응형 (아이콘만 표시)
+- Hero 섹션 버튼 클릭 시 연락처 섹션으로 스크롤 이동
+
+### 방문 카운터 기능
+- 실시간 방문 카운트 추적 (날짜별)
+- 디지털 디스플레이 스타일 카운터 UI
+- 자동 카운트 증가 및 실시간 업데이트 (4초마다)
+- PostgreSQL 데이터베이스 연동
 
 ## 🔄 향후 개선 사항
 
