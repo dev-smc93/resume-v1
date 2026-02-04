@@ -30,6 +30,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
 /* 강제로 다크모드 스타일 적용 */
@@ -558,6 +559,7 @@ html:not(.dark) button[class*="dark:bg-gray-100"] .text-yellow-500 {
 /* 스크롤 부드럽게 */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* 빠른 커서 깜빡임 애니메이션 */

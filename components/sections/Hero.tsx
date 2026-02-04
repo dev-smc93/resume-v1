@@ -6,6 +6,7 @@ import { ArrowDown, Mail, MapPin, Phone } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 import PersonalityModal from "@/components/ui/PersonalityModal";
 import VisitCounter from "@/components/ui/VisitCounter";
+import VisitCounterModal from "@/components/ui/VisitCounterModal";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -49,6 +50,7 @@ export default function Hero() {
   const [typingSpeed, setTypingSpeed] = useState(100);
   const [isPersonalityModalOpen, setIsPersonalityModalOpen] = useState(false);
   const [visitCount, setVisitCount] = useState(0);
+  const [isVisitCounterModalOpen, setIsVisitCounterModalOpen] = useState(false);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -177,7 +179,7 @@ export default function Hero() {
         </motion.h1>
 
         <motion.p
-          className="text-lg text-gray-400 dark:text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-lg text-gray-400 dark:text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed"
           variants={itemVariants}
         >
           {personalInfo.bio.split("성향").map((part, index, array) => (
@@ -250,7 +252,10 @@ export default function Hero() {
           className="mb-8"
           variants={itemVariants}
         >
-          <VisitCounter count={visitCount} />
+          <VisitCounter 
+            count={visitCount} 
+            onClick={() => setIsVisitCounterModalOpen(true)}
+          />
         </motion.div>
 
         <motion.div
@@ -267,6 +272,12 @@ export default function Hero() {
       <PersonalityModal
         isOpen={isPersonalityModalOpen}
         onClose={() => setIsPersonalityModalOpen(false)}
+      />
+      
+      {/* 방문 카운터 모달 */}
+      <VisitCounterModal
+        isOpen={isVisitCounterModalOpen}
+        onClose={() => setIsVisitCounterModalOpen(false)}
       />
     </section>
   );

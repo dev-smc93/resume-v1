@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface VisitCounterProps {
   count: number;
   label?: string;
+  onClick?: () => void;
 }
 
 // 숫자를 개별 자릿수로 분리
@@ -26,7 +27,7 @@ function DigitBox({
     <AnimatePresence mode="wait">
       <motion.div
         key={keyValue}
-        className="w-8 h-10 bg-black rounded-md flex items-center justify-center shadow-lg border border-gray-800"
+        className="w-8 h-10 bg-gray-800 dark:bg-gray-700 rounded-md flex items-center justify-center shadow-lg border border-gray-700 dark:border-gray-600"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 10 }}
@@ -40,7 +41,7 @@ function DigitBox({
   );
 }
 
-export default function VisitCounter({ count, label }: VisitCounterProps) {
+export default function VisitCounter({ count, label, onClick }: VisitCounterProps) {
   const [displayCount, setDisplayCount] = useState(count);
   const maxDigits = 4;
 
@@ -52,10 +53,13 @@ export default function VisitCounter({ count, label }: VisitCounterProps) {
 
   return (
     <motion.div
-      className="flex flex-col items-center gap-2"
+      className={`flex flex-col items-center gap-2 ${onClick ? "cursor-pointer" : ""}`}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
+      onClick={onClick}
+      whileHover={onClick ? { scale: 1.05 } : {}}
+      whileTap={onClick ? { scale: 0.95 } : {}}
     >
       <div className="flex items-center gap-1">
         {digits.map((digit, index) => (

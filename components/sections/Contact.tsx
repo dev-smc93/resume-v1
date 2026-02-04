@@ -63,7 +63,7 @@ export default function Contact() {
               <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-600 mb-1">
                 {item.label}
               </h3>
-              <p className="text-lg font-bold text-gray-100 dark:text-gray-800">
+              <p className="text-base md:text-lg font-bold text-gray-100 dark:text-gray-800 break-words" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                 {item.value}
               </p>
             </motion.a>
