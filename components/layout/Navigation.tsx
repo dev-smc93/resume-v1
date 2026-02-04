@@ -98,7 +98,7 @@ export default function Navigation() {
             className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
             whileHover={{ scale: 1.1 }}
           >
-            Portfolio
+            이력서
           </motion.div>
 
           {/* Desktop Menu */}

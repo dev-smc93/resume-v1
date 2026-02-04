@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio | sungman93",
-  description: "sungman93의 포트폴리오",
+  title: "이력서 | sungman93",
+  description: "sungman93의 이력서",
 };
 
 export default function RootLayout({
