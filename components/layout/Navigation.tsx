@@ -74,16 +74,35 @@ export default function Navigation() {
   }, []);
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    // 모바일 메뉴가 열려있으면 먼저 완전히 제거
+    if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
+      // 메뉴를 즉시 DOM에서 제거 (display: none)
+      const mobileMenu = document.querySelector('.md\\:hidden.mt-4') as HTMLElement;
+      if (mobileMenu) {
+        mobileMenu.style.display = 'none';
+      }
     }
+
+    // requestAnimationFrame으로 다음 프레임에 스크롤 시작 (레이아웃 안정화 후)
+    requestAnimationFrame(() => {
+      const element = document.querySelector(href);
+      if (element) {
+        const navHeight = 40; // 네비게이션 바 높이
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    });
   };
 
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-gray-900/40 dark:bg-gray-800/40 backdrop-blur-md shadow-lg"
+      className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300 bg-gray-900/40 dark:bg-gray-800/40 backdrop-blur-md shadow-lg"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}

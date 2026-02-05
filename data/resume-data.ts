@@ -104,7 +104,7 @@ export const experiences: Experience[] = [
     id: "exp-1",
     company: "우아한정리",
     position: "웹·자동화 개발",
-    period: "2023.01 - 2026-02-10(퇴직예정)",
+    period: "2023.01 - 2026-02-10",
     description: [
       "고객 입력폼 기반 웹사이트 구축을 통해 접수 및 관리 업무 효율화",
       "네이버 지식인 자동 답변 시스템 구축",
