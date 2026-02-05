@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GraduationCap, Calendar } from "lucide-react";
+import { GraduationCap, Calendar, Shield } from "lucide-react";
 import { education } from "@/data/resume-data";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { ANIMATION_DURATION } from "@/constants/animations";
@@ -21,7 +21,11 @@ export default function EducationAndMilitary() {
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-blue-900 dark:bg-blue-100 rounded-lg">
-              <GraduationCap className="text-blue-400 dark:text-blue-600" size={32} />
+              {edu.type === "military" ? (
+                <Shield className="text-blue-400 dark:text-blue-600" size={32} />
+              ) : (
+                <GraduationCap className="text-blue-400 dark:text-blue-600" size={32} />
+              )}
             </div>
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-gray-100 dark:text-gray-800 mb-2">

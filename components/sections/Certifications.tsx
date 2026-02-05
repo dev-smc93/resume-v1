@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { certifications } from "@/data/resume-data";
 import { useState, useEffect, useRef, useMemo } from "react";
 import ImageModal from "@/components/ui/ImageModal";
@@ -13,6 +13,7 @@ export default function Certifications() {
   const [offset, setOffset] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [selectedImage, setSelectedImage] = useState<{
     src: string;
     alt: string;
@@ -38,6 +39,7 @@ export default function Certifications() {
   useEffect(() => {
     const updateItemsPerView = () => {
       const width = window.innerWidth;
+      setIsMobile(width < 768); // 모바일 감지
       if (width < 768) {
         setItemsPerView(2); // 모바일: 2개
       } else if (width < 1024) {
@@ -99,12 +101,49 @@ export default function Certifications() {
   if (certifications.length === 0) return null;
 
   return (
-    <div ref={ref} className="w-full overflow-hidden flex items-center min-h-[60vh]">
-      <div 
-        className="relative flex justify-center w-full"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
+    <div 
+      ref={ref} 
+      className="w-full overflow-hidden flex flex-col items-center min-h-[60vh] relative"
+      onMouseEnter={() => {
+        if (!isMobile) {
+          setIsHovered(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!isMobile) {
+          setIsHovered(false);
+        }
+      }}
+      onTouchStart={() => {
+        // 모바일 터치 시 호버 상태 변경 방지
+        setIsHovered(false);
+      }}
+    >
+      {/* 일시정지 툴팁 - 호버 시에만 표시 (모바일 제외) */}
+      {isHovered && !isMobile && (
+        <motion.div
+          className="absolute top-4 z-10 px-4 py-2 bg-blue-500/70 dark:bg-blue-600/70 text-white text-sm font-medium rounded-lg shadow-lg backdrop-blur-sm pointer-events-none"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ 
+            opacity: [0.7, 1, 0.7],
+            y: 0,
+          }}
+          transition={{
+            opacity: {
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            y: {
+              duration: 0.3,
+            },
+          }}
+        >
+          일시정지 중 · 마우스를 떼면 재생
+        </motion.div>
+      )}
+
+      <div className="relative flex justify-center w-full flex-1">
         <motion.ul
           className="flex gap-4 list-none p-0 m-0 items-center"
           animate={{
@@ -130,11 +169,23 @@ export default function Certifications() {
               <div className="bg-gray-800 dark:bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center h-full w-full">
                 <div 
                   className="w-full h-48 md:h-56 lg:h-64 xl:h-72 mb-3 rounded-lg overflow-hidden bg-gray-700 dark:bg-gray-100 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => setSelectedImage({
-                    src: cert.image,
-                    alt: cert.name,
-                    title: cert.name,
-                  })}
+                  onClick={() => {
+                    setSelectedImage({
+                      src: cert.image,
+                      alt: cert.name,
+                      title: cert.name,
+                    });
+                    // 모바일에서 클릭 시 호버 상태 리셋
+                    if (isMobile) {
+                      setIsHovered(false);
+                    }
+                  }}
+                  onMouseEnter={(e) => {
+                    // 모바일이 아닐 때만 호버 처리
+                    if (!isMobile) {
+                      e.stopPropagation();
+                    }
+                  }}
                 >
                   <img
                     src={cert.image}

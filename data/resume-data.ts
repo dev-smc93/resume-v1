@@ -56,6 +56,7 @@ export interface Education {
   degree: string;
   period: string;
   description?: string;
+  type?: "education" | "military"; // 학력 또는 군복무 구분
 }
 
 export interface Certification {
@@ -201,60 +202,74 @@ export const projects: Project[] = [
 export const certifications: Certification[] = [
   {
     id: "cert-1",
-    name: "운전면허2종보통",
-    image: "/certifications/info-processor.png",
-    acquiredDate: "2024.01",
+    name: "2종보통",
+    image: "/certifications/drivers_license.png",
+    acquiredDate: "2012.06",
     type: "certification",
   },
   {
     id: "cert-1",
     name: "정보처리산업기사",
-    image: "/certifications/info-processor.png",
-    acquiredDate: "2024.01",
+    image: "/certifications/info_processor.png",
+    acquiredDate: "2013.06",
     type: "certification",
   },
   {
     id: "cert-2",
     name: "컴퓨터활용능력1급",
-    image: "/certifications/sqld.jpg",
-    acquiredDate: "2023.06",
+    image: "/certifications/computer_specialist.png",
+    acquiredDate: "2008.09",
     type: "certification",
   },
   {
     id: "cert-2",
-    name: "E-Test",
-    image: "/certifications/sqld.jpg",
-    acquiredDate: "2023.06",
+    name: "정보기기기능사",
+    image: "/certifications/info_equipment_operation_certificate.png",
+    acquiredDate: "2006.12",
     type: "certification",
   },
+  // {
+  //   id: "cert-2",
+  //   name: "E-Test(1등급)",
+  //   image: "/certifications/sqld.jpg",
+  //   acquiredDate: "2016.10",
+  //   type: "certification",
+  // },
   {
     id: "cert-2",
-    name: "ITQ A등급",
-    image: "/certifications/sqld.jpg",
-    acquiredDate: "2023.06",
+    name: "ITQ(A등급)",
+    image: "/certifications/itq.png",
+    acquiredDate: "2006.04~12",
     type: "certification",
   },
   {
     id: "award-1",
-    name: "지방 기능경기대회(금상)",
-    image: "/certifications/award.jpg",
-    acquiredDate: "2023.12",
+    name: "지방기능대회(금)",
+    image: "/certifications/Skills_Competition_Gold_Award.png",
+    acquiredDate: "2010",
     type: "award",
   },
   {
     id: "award-1",
-    name: "전국 기능경기대회(은상)",
-    image: "/certifications/award.jpg",
-    acquiredDate: "2023.12",
+    name: "전국기능대회(은)",
+    image: "/certifications/Skills_Competition_Silver_Award.png",
+    acquiredDate: "2010",
     type: "award",
   },
 ];
 
 export const education: Education[] = [
   {
-    school: "서울대학교",
-    degree: "컴퓨터공학과 학사",
-    period: "2016.03 - 2020.02",
-    description: "컴퓨터 과학 기초 이론 및 소프트웨어 공학을 전공했습니다.",
+    school: "대전동아고등학교 졸업",
+    degree: "전자정보과",
+    period: "2008.03 - 2011.02",
+    description: "전자·IT 전반의 기초 지식을 배우며 컴퓨터 활용 역량을 쌓았습니다.",
+  },
+  {
+    school: "육군 병장 만기 복무",
+    degree: "행정/PC운용",
+    period: "2012.06 - 2014.03",
+    description: "행정 업무 지원과 PC·전산 장비 운용을 수행했습니다.",
+    type: "military",
   },
 ];
