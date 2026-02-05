@@ -35,7 +35,7 @@ export default function Home() {
       </Section>
       <footer className="bg-black dark:bg-gray-100 text-gray-400 dark:text-gray-600 text-center py-8">
         <p className="text-gray-400">
-          © {new Date().getFullYear()} Portfolio. All rights reserved.
+          © {new Date().getFullYear()} Sungman93. Resume.
         </p>
       </footer>
     </main>

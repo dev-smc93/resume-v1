@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Send, CheckCircle, XCircle, Loader2 } from "lucide
 import { personalInfo } from "@/data/resume-data";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { ANIMATION_DURATION } from "@/constants/animations";
+import { scrollToSection } from "@/utils/scroll";
 
 export default function Contact() {
   const [ref, inView] = useSectionInView();
@@ -110,13 +111,30 @@ export default function Contact() {
       >
         {contactItems.map((item, index) => {
           const Icon = item.icon;
+          const isEmail = item.label === "이메일";
+          
+          const handleClick = (e: React.MouseEvent) => {
+            if (isEmail) {
+              e.preventDefault();
+              const formElement = document.getElementById("contact-form");
+              if (formElement) {
+                formElement.scrollIntoView({ behavior: "smooth", block: "start" });
+                // 네비게이션 바 높이 고려하여 약간 위로 스크롤
+                setTimeout(() => {
+                  window.scrollBy({ top: -80, behavior: "smooth" });
+                }, 100);
+              }
+            }
+          };
+
           return (
             <motion.a
               key={item.label}
-              href={item.href}
+              href={isEmail ? "#contact-form" : item.href}
+              onClick={handleClick}
               target={item.label === "위치" ? "_blank" : undefined}
               rel={item.label === "위치" ? "noopener noreferrer" : undefined}
-              className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all group"
+              className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all group cursor-pointer"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -136,6 +154,7 @@ export default function Contact() {
       </motion.div>
 
       <motion.div
+        id="contact-form"
         className="bg-gray-800 dark:bg-white rounded-lg p-8 shadow-lg"
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}

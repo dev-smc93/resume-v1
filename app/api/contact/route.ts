@@ -43,9 +43,9 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
-      from: "Portfolio Contact <onboarding@resend.dev>", // Resend에서 도메인 설정 후 변경 필요
+      from: "이력서 Contact <onboarding@resend.dev>", // Resend에서 도메인 설정 후 변경 필요
       to: personalInfo.email,
-      subject: `이력서 문의: ${name}님으로부터`,
+      subject: `이력서 관련 메시지: ${name}님으로부터`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #3b82f6;">새로운 문의 메시지</h2>
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
             <p><strong>메시지:</strong></p>
             <p style="white-space: pre-wrap; background-color: white; padding: 15px; border-radius: 4px;">${message}</p>
           </div>
-          <p style="color: #6b7280; font-size: 12px;">이 메시지는 이력서 웹사이트의 연락처 폼을 통해 전송되었습니다.</p>
+          <p style="color: #6b7280; font-size: 12px;">이 메시지는 sungman93의 이력서 웹사이트의 연락처 폼을 통해 전송되었습니다.</p>
         </div>
       `,
       replyTo: email,
