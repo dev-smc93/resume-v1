@@ -13,7 +13,7 @@ export async function GET() {
     });
 
     return NextResponse.json({
-      dailyCounts: dailyCounts.map((item) => ({
+      dailyCounts: dailyCounts.map((item: { date: string; count: number }) => ({
         date: item.date,
         count: item.count,
       })),
