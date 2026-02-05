@@ -1,14 +1,10 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { X, TrendingUp, Calendar } from "lucide-react";
+import { TrendingUp, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
-import {
-  modalBackdropVariants,
-  modalContainerVariants,
-  modalCardVariants,
-  modalCardStyle,
-} from "./modal-animations";
+import { motion } from "framer-motion";
+import BaseModal from "./BaseModal";
+import { formatDate } from "@/utils/date";
 
 interface VisitCounterModalProps {
   isOpen: boolean;
@@ -50,54 +46,21 @@ export default function VisitCounterModal({
         setTotalCount(total);
       }
     } catch (error) {
-      console.error("Failed to fetch daily visits:", error);
+      // 조용히 실패
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString + "T00:00:00");
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
-    const weekday = weekdays[date.getDay()];
-    return `${year}.${month}.${day} (${weekday})`;
-  };
-
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-            {...modalBackdropVariants}
-            onClick={onClose}
-          />
-          <motion.div
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
-            {...modalContainerVariants}
-          >
-            <motion.div
-              className="bg-gray-800/80 dark:bg-white/80 rounded-2xl p-6 md:p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto overflow-x-hidden shadow-2xl relative backdrop-blur-sm"
-              onClick={(e) => e.stopPropagation()}
-              {...modalCardVariants}
-              style={modalCardStyle}
-            >
-              <button
-                onClick={onClose}
-                className="absolute top-4 right-4 text-gray-400 dark:text-gray-600 hover:text-gray-300 dark:hover:text-gray-700 transition-colors z-10"
-              >
-                <X size={24} />
-              </button>
-              
-              <h3 className="text-2xl font-bold mb-6 text-gray-100 dark:text-gray-800 flex items-center gap-2 drop-shadow-lg">
-                <TrendingUp size={24} className="text-blue-400 dark:text-blue-600 drop-shadow-md" />
-                <span className="drop-shadow-lg">방문 통계</span>
-              </h3>
-
-              {loading ? (
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="방문 통계"
+      titleIcon={<TrendingUp size={24} className="text-blue-400 dark:text-blue-600 drop-shadow-md" />}
+      maxWidth="2xl"
+    >
+      {loading ? (
                 <div className="flex items-center justify-center py-12">
                   <motion.div
                     className="w-12 h-12 border-4 border-gray-600 dark:border-gray-400 border-t-blue-500 dark:border-t-blue-600 rounded-full"
@@ -157,11 +120,7 @@ export default function VisitCounterModal({
                     </div>
                   </div>
                 </div>
-              )}
-            </motion.div>
-          </motion.div>
-        </>
       )}
-    </AnimatePresence>
+    </BaseModal>
   );
 }

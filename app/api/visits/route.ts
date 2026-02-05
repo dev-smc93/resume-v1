@@ -1,14 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-// 오늘 날짜를 YYYY-MM-DD 형식으로 반환
-function getTodayDateString(): string {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
+import { getTodayDateString } from "@/utils/date";
+import { handleApiError } from "@/utils/api";
 
 // 방문 카운트 증가
 export async function POST() {
@@ -32,10 +25,7 @@ export async function POST() {
       return NextResponse.json({ count: created.count, date: today });
     }
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to increment visit count" },
-      { status: 500 }
-    );
+    return handleApiError("Failed to increment visit count");
   }
 }
 
@@ -53,9 +43,6 @@ export async function GET() {
       date: today,
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch visit count" },
-      { status: 500 }
-    );
+    return handleApiError("Failed to fetch visit count");
   }
 }

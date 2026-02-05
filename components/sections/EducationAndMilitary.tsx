@@ -1,15 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { GraduationCap, Calendar } from "lucide-react";
 import { education } from "@/data/resume-data";
+import { useSectionInView } from "@/hooks/useSectionInView";
+import { ANIMATION_DURATION } from "@/constants/animations";
 
 export default function EducationAndMilitary() {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
+  const [ref, inView] = useSectionInView();
 
   return (
     <div ref={ref} className="space-y-6">
@@ -19,7 +17,7 @@ export default function EducationAndMilitary() {
           className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
           initial={{ opacity: 0, x: -50 }}
           animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-          transition={{ duration: 0.6, delay: index * 0.2 }}
+          transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.2 }}
         >
           <div className="flex items-start gap-4">
             <div className="p-3 bg-blue-900 dark:bg-blue-100 rounded-lg">

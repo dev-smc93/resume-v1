@@ -24,20 +24,21 @@ resume-v1/
 ├── app/
 │   ├── page.tsx          # 메인 페이지
 │   ├── layout.tsx        # 레이아웃 설정
-│   └── globals.css       # 전역 스타일 및 애니메이션
-├── app/
-│   ├── api/             # API 라우트
-│   │   └── visits/      # 방문 카운터 API
-│   │       ├── route.ts # 오늘의 방문 카운트 (GET, POST)
-│   │       └── total/
-│   │           └── route.ts # 전체 방문 카운트 (GET)
+│   ├── globals.css       # 전역 스타일 및 애니메이션
+│   └── api/              # API 라우트
+│       ├── visits/       # 방문 카운터 API
+│       │   ├── route.ts  # 오늘의 방문 카운트 (GET, POST)
+│       │   ├── total/    # 전체 방문 카운트 (GET)
+│       │   └── daily/    # 일자별 방문 카운트 (GET)
+│       └── contact/      # 연락처 폼 API
+│           └── route.ts  # 메시지 전송 (POST)
 ├── components/
 │   ├── sections/         # 페이지 섹션 컴포넌트들
 │   │   ├── Hero.tsx      # 히어로 섹션 (메인 소개)
 │   │   ├── Experience.tsx # 경력 섹션
 │   │   ├── Skills.tsx    # 기술 스택 섹션
 │   │   ├── Projects.tsx  # 프로젝트 섹션
-│   │   ├── Education.tsx # 학력 섹션
+│   │   ├── EducationAndMilitary.tsx # 학력 및 병적 섹션
 │   │   ├── Certifications.tsx # 자격 및 수상 섹션
 │   │   └── Contact.tsx   # 연락처 섹션
 │   ├── layout/           # 레이아웃 관련 컴포넌트
@@ -45,13 +46,23 @@ resume-v1/
 │   └── ui/               # 재사용 가능한 UI 컴포넌트
 │       ├── Section.tsx   # 재사용 가능한 섹션 래퍼
 │       ├── ThemeToggle.tsx # 다크 모드 토글 버튼
-│       ├── PersonalInfoModal.tsx # 인적사항 모달 (성향 정보 포함)
+│       ├── BaseModal.tsx # 공통 모달 컴포넌트 (재사용)
+│       ├── PersonalInfoModal.tsx # 인적사항 모달
 │       ├── ImageModal.tsx # 이미지 확대 모달
 │       ├── VisitCounter.tsx # 방문 카운터 디스플레이
 │       ├── VisitCounterModal.tsx # 방문 카운터 상세 모달
-│       └── modal-animations.ts # 모달 애니메이션 variants (재활용)
-├── contexts/            # React Context
-│   └── ThemeContext.tsx # 다크 모드 테마 관리
+│       └── modal-animations.ts # 모달 애니메이션 variants
+├── hooks/                # 커스텀 React 훅
+│   └── useSectionInView.ts # 섹션 뷰포트 감지 훅
+├── utils/                # 유틸리티 함수
+│   ├── api.ts            # API 에러 핸들링
+│   ├── date.ts           # 날짜 포맷팅 함수
+│   ├── image.ts          # 이미지 에러 핸들링
+│   └── scroll.ts         # 스크롤 유틸리티
+├── constants/            # 상수 정의
+│   └── animations.ts     # 애니메이션 duration 상수
+├── contexts/             # React Context
+│   └── ThemeContext.tsx  # 다크 모드 테마 관리
 ├── data/
 │   └── resume-data.ts    # 이력서 데이터 (중앙 집중식 관리)
 ├── lib/
@@ -69,6 +80,9 @@ resume-v1/
 - **sections/**: 페이지의 주요 섹션 컴포넌트들을 그룹화
 - **layout/**: 레이아웃 관련 컴포넌트 (네비게이션, 헤더, 푸터 등)
 - **ui/**: 재사용 가능한 범용 UI 컴포넌트
+- **hooks/**: 커스텀 React 훅 (재사용 가능한 로직)
+- **utils/**: 유틸리티 함수 (날짜, 이미지, API, 스크롤 등)
+- **constants/**: 상수 정의 (애니메이션 duration 등)
 - 역할별로 명확하게 분리되어 확장성과 유지보수성이 향상됨
 
 #### 4. 주요 기능 구현
@@ -106,13 +120,13 @@ resume-v1/
 - 모던한 UI/UX
 
 #### 6. 섹션 구성
-1. **Hero**: 이름, 직책, 소개, 연락처 버튼, 타이핑 애니메이션, 성향 정보 모달, 방문 카운터
+1. **Hero**: 이름, 직책, 소개, 연락처 버튼, 타이핑 애니메이션, 인적사항 모달, 방문 카운터
 2. **Experience**: 경력 사항 (타임라인 형식)
 3. **Skills**: 기술 스택 (카테고리별, 그라데이션 태그, 아이콘 이미지, 링크)
 4. **Projects**: 프로젝트 포트폴리오
-5. **Education**: 학력 사항
+5. **EducationAndMilitary**: 학력 및 병적 사항
 6. **Certifications**: 자격 및 수상 (이미지 슬라이드, 무한 루프, 이미지 확대)
-7. **Contact**: 연락처 및 메시지 폼
+7. **Contact**: 연락처 및 메시지 폼 (Resend를 통한 이메일 전송)
 
 #### 7. 인적사항 모달 기능 (최신)
 - ✅ Hero 섹션의 인적사항 버튼 클릭 시 모달 표시
@@ -159,7 +173,8 @@ resume-v1/
   - `modalContainerVariants`: 컨테이너 애니메이션
   - `modalCardVariants`: 카드 뒤집기 애니메이션 (rotateY, scale, opacity)
   - `modalCardStyle`: 3D 변환 스타일
-- ✅ PersonalityModal과 ImageModal에서 동일한 애니메이션 사용
+- ✅ `BaseModal` 컴포넌트 생성으로 모든 모달 통합
+- ✅ PersonalityModal, ImageModal, VisitCounterModal에서 BaseModal 사용
 - ✅ 코드 중복 제거 및 유지보수성 향상
 - ✅ 향후 새로운 모달 추가 시 쉽게 재사용 가능
 
@@ -171,21 +186,29 @@ resume-v1/
   - `POST /api/visits`: 오늘의 방문 카운트 증가
   - `GET /api/visits`: 오늘의 방문 카운트 조회
   - `GET /api/visits/total`: 전체 방문 카운트 조회
+  - `GET /api/visits/daily`: 일자별 방문 카운트 조회 (최근 30일)
 - ✅ `VisitCounter` 컴포넌트: 디지털 디스플레이 스타일 카운터
   - 숫자별 개별 애니메이션 (fade-in + slide-up)
   - 4자리 숫자 표시 (앞자리 0으로 패딩)
+  - 변경된 숫자만 애니메이션 적용
+- ✅ `VisitCounterModal` 컴포넌트: 방문 통계 상세 모달
+  - 전체 방문 수 표시
+  - 일자별 방문 수 목록 (최근 30일)
+  - 로딩 스피너 표시
 - ✅ Hero 섹션에 방문 카운터 통합
 - ✅ 실시간 업데이트 (4초마다 자동 갱신)
 - ✅ 페이지 로드 시 자동 카운트 증가
+- ✅ 방문 카운터 클릭 시 상세 통계 모달 표시
 
 #### 13. Hero 섹션 버튼 기능 개선 (최신)
-- ✅ 연락처 버튼 클릭 시 연락처 섹션으로 부드러운 스크롤 이동
+- ✅ 연락처 버튼 클릭 시 연락처 섹션으로 부드러운 스크롤 이동 (`utils/scroll.ts` 사용)
 - ✅ 인적사항 버튼 추가 (청록-시안 그라데이션)
 - ✅ 모바일 반응형 디자인:
   - 모바일: 아이콘만 표시 (공간 절약)
   - 데스크톱: 아이콘 + 텍스트 표시
 - ✅ 버튼 타입 변경: `motion.a` → `motion.button` (스크롤 이동 기능)
 - ✅ 프로필 이미지 툴팁 제거
+- ✅ 스크롤 인디케이터 애니메이션 재추가 (화살표 아래로 이동)
 
 #### 14. 인적사항 모달 개선 (최신)
 - ✅ personality 데이터를 personalDetails로 통합
@@ -198,6 +221,28 @@ resume-v1/
   - 오디오 종료 시 자동 정지
   - 모달 닫을 때 오디오 자동 정지 및 초기화
   - `personalDetails.audioUrl`로 오디오 파일 경로 지정
+
+#### 15. 코드 리팩토링 및 구조화 (최신)
+- ✅ **커스텀 훅 추출**: `hooks/useSectionInView.ts` - 섹션 뷰포트 감지 로직 통합
+- ✅ **유틸리티 함수 통합**:
+  - `utils/date.ts`: 날짜 포맷팅 함수 (`getTodayDateString`, `formatDate`)
+  - `utils/image.ts`: 이미지 에러 핸들링 함수 (`handleImageError`)
+  - `utils/scroll.ts`: 스크롤 유틸리티 함수 (`scrollToSection`)
+  - `utils/api.ts`: API 에러 핸들링 함수 (`handleApiError`)
+- ✅ **상수 정의**: `constants/animations.ts` - 애니메이션 duration 상수화 (FAST, NORMAL, SLOW)
+- ✅ **공통 모달 컴포넌트**: `components/ui/BaseModal.tsx` - 모든 모달의 공통 로직 통합
+- ✅ **코드 정리**:
+  - 사용하지 않는 패키지 제거 (`@libsql/client`, `@prisma/adapter-libsql`)
+  - 주석 처리된 코드 제거
+  - 개발용 `console.log` 제거
+  - 불필요한 import 제거
+  - 인라인 스타일 제거
+  - 불필요한 변수 제거
+- ✅ **메모이제이션**: `Certifications.tsx`의 `duplicatedCerts` 배열에 `useMemo` 적용
+- ✅ **애니메이션 통일**: 모든 섹션 컴포넌트에서 `ANIMATION_DURATION` 상수 사용
+- ✅ **모달 배경 색상 통일**: `BaseModal`에서 일관된 스타일 적용
+- ✅ **geistMono 폰트 제거**: 사용하지 않는 폰트 제거
+- ✅ **VisitCounter 개선**: `label` prop 제거로 인터페이스 단순화
 
 ## 🚀 실행 방법
 
@@ -327,14 +372,27 @@ certifications: [
 - `framer-motion`의 `transition` 속성 수정
 - `app/globals.css`의 `@keyframes blob` 수정
 - `app/globals.css`의 `@keyframes blink-fast`로 커서 깜빡임 속도 조정
+- `constants/animations.ts`의 `ANIMATION_DURATION` 상수로 애니메이션 속도 통일 관리
+  - `ANIMATION_DURATION.FAST` (0.3초)
+  - `ANIMATION_DURATION.NORMAL` (0.6초)
+  - `ANIMATION_DURATION.SLOW` (1.0초)
 - `components/ui/modal-animations.ts`의 `modalCardVariants.transition.duration`으로 모달 애니메이션 속도 조정 (모든 모달에 일괄 적용)
 - `components/sections/Certifications.tsx`의 `speed` 변수로 슬라이드 이동 속도 조정
 
 ### 컴포넌트 추가/수정
 - **새 섹션 추가**: `components/sections/` 폴더에 새 컴포넌트 생성 후 `app/page.tsx`에 import
+  - `useSectionInView` 훅 사용 권장 (`hooks/useSectionInView.ts`)
+  - `ANIMATION_DURATION` 상수 사용 권장 (`constants/animations.ts`)
 - **레이아웃 수정**: `components/layout/` 폴더의 컴포넌트 수정
 - **UI 컴포넌트 추가**: `components/ui/` 폴더에 재사용 가능한 컴포넌트 추가
-- **모달 추가**: `components/ui/modal-animations.ts`의 variants를 import하여 새로운 모달 컴포넌트 생성 (예: `ImageModal.tsx`, `PersonalityModal.tsx` 참고)
+- **모달 추가**: `components/ui/BaseModal.tsx`를 사용하여 새로운 모달 컴포넌트 생성
+  - 예: `PersonalInfoModal.tsx`, `ImageModal.tsx`, `VisitCounterModal.tsx` 참고
+  - `BaseModal`의 `title`, `titleIcon`, `maxWidth` props 활용
+- **유틸리티 함수 사용**: 
+  - 날짜 포맷팅: `utils/date.ts`의 `formatDate` 함수
+  - 이미지 에러 핸들링: `utils/image.ts`의 `handleImageError` 함수
+  - 스크롤 이동: `utils/scroll.ts`의 `scrollToSection` 함수
+  - API 에러 핸들링: `utils/api.ts`의 `handleApiError` 함수
 
 ### 파비콘 설정
 - `app/icon.png` 파일을 추가하면 자동으로 파비콘으로 인식됩니다
@@ -371,6 +429,8 @@ certifications: [
 - **Database**: PostgreSQL (Supabase)
 - **ORM**: Prisma 7
 - **Database Adapter**: @prisma/adapter-pg
+- **Email Service**: Resend
+- **Environment Variables**: dotenv
 
 ## ✨ 최신 기능 (2026년)
 
@@ -409,6 +469,23 @@ certifications: [
 - 변경된 숫자만 애니메이션 효과 (위에서 아래로 페이드)
 - 자동 카운트 증가 및 실시간 업데이트 (4초마다)
 - PostgreSQL 데이터베이스 연동
+- 방문 카운터 클릭 시 일자별 통계 모달 표시
+
+### 연락처 메시지 전송 기능
+- Resend를 통한 이메일 전송
+- 연락처 폼에서 이름, 이메일, 메시지 입력
+- 입력 검증 (필수 필드, 이메일 형식)
+- 선택적 데이터베이스 저장 (Prisma)
+- 전송 상태 표시 (로딩, 성공, 에러)
+- 에러 핸들링 통합 (`utils/api.ts`)
+
+### 코드 구조화 및 리팩토링
+- 커스텀 훅 추출 (`hooks/useSectionInView.ts`)
+- 유틸리티 함수 통합 (`utils/` 폴더)
+- 상수 정의 (`constants/animations.ts`)
+- 공통 모달 컴포넌트 (`components/ui/BaseModal.tsx`)
+- 코드 중복 제거 및 유지보수성 향상
+- 타입 안정성 강화
 
 ## 🔄 향후 개선 사항
 

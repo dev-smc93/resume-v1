@@ -2,15 +2,13 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { Mail, Phone, MapPin, Send, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
+import { useSectionInView } from "@/hooks/useSectionInView";
+import { ANIMATION_DURATION } from "@/constants/animations";
 
 export default function Contact() {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
+  const [ref, inView] = useSectionInView();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -108,7 +106,7 @@ export default function Contact() {
         className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: ANIMATION_DURATION.NORMAL }}
       >
         {contactItems.map((item, index) => {
           const Icon = item.icon;
@@ -129,7 +127,7 @@ export default function Contact() {
               <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-600 mb-1">
                 {item.label}
               </h3>
-              <p className="text-base md:text-lg font-bold text-gray-100 dark:text-gray-800 break-words" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+              <p className="text-base md:text-lg font-bold text-gray-100 dark:text-gray-800 break-words">
                 {item.value}
               </p>
             </motion.a>
@@ -141,7 +139,7 @@ export default function Contact() {
         className="bg-gray-800 dark:bg-white rounded-lg p-8 shadow-lg"
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: 0.6, delay: 0.3 }}
+        transition={{ duration: ANIMATION_DURATION.NORMAL, delay: 0.3 }}
       >
         <h3 className="text-2xl font-bold mb-6 text-gray-100 dark:text-gray-800 flex items-center gap-2">
           <Send className="text-blue-400 dark:text-blue-600" size={28} />

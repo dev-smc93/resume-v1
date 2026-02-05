@@ -1,14 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { skills } from "@/data/resume-data";
+import { useSectionInView } from "@/hooks/useSectionInView";
+import { handleImageError } from "@/utils/image";
+import { ANIMATION_DURATION } from "@/constants/animations";
 
 export default function Skills() {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
+  const [ref, inView] = useSectionInView();
 
   return (
     <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -18,7 +17,7 @@ export default function Skills() {
           className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.6, delay: groupIndex * 0.2 }}
+          transition={{ duration: ANIMATION_DURATION.NORMAL, delay: groupIndex * 0.2 }}
         >
           <h3 className="text-2xl font-bold mb-4 text-blue-400 dark:text-blue-600">
             {skillGroup.category}
@@ -37,10 +36,7 @@ export default function Skills() {
                       src={skillImage}
                       alt={skillName}
                       className="w-5 h-5 object-contain"
-                      onError={(e) => {
-                        // 이미지 로드 실패 시 숨김
-                        e.currentTarget.style.display = "none";
-                      }}
+                      onError={handleImageError}
                     />
                   )}
                   <span>{skillName}</span>
@@ -52,7 +48,7 @@ export default function Skills() {
                 initial: { opacity: 0, scale: 0 },
                 animate: inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 },
                 transition: {
-                  duration: 0.3,
+                  duration: ANIMATION_DURATION.FAST,
                   delay: groupIndex * 0.2 + skillIndex * 0.05,
                   type: "spring" as const,
                   stiffness: 200,

@@ -74,8 +74,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const toggleTheme = () => {
     const newTheme: Theme = theme === "dark" ? "light" : "dark";
     
-    console.log("Toggle theme:", { current: theme, new: newTheme });
-    
     // localStorage 저장
     if (typeof window !== "undefined") {
       localStorage.setItem("theme", newTheme);
@@ -86,8 +84,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       if (newTheme === "dark") {
         root.classList.add("dark");
       }
-      console.log("HTML classes after toggle:", root.className);
-      console.log("Has dark class:", root.classList.contains("dark"));
       
       // 강제로 스타일 재계산
       void root.offsetHeight;

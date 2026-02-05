@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { handleApiError } from "@/utils/api";
 
 // 일자별 방문 카운트 조회 (최근 순)
 export async function GET() {
@@ -18,9 +19,6 @@ export async function GET() {
       })),
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch daily visit counts" },
-      { status: 500 }
-    );
+    return handleApiError("Failed to fetch daily visit counts");
   }
 }

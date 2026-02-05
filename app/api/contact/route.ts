@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { prisma } from "@/lib/prisma";
 import { personalInfo } from "@/data/resume-data";
+import { handleApiError } from "@/utils/api";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,19 +11,13 @@ export async function POST(request: NextRequest) {
 
     // 입력 검증
     if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: "모든 필드를 입력해주세요." },
-        { status: 400 }
-      );
+      return handleApiError("모든 필드를 입력해주세요.", 400);
     }
 
     // 이메일 형식 검증
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: "올바른 이메일 형식을 입력해주세요." },
-        { status: 400 }
-      );
+      return handleApiError("올바른 이메일 형식을 입력해주세요.", 400);
     }
 
     // 데이터베이스에 메시지 저장 (선택사항 - 테이블이 없어도 에러 발생 안 함)
@@ -43,10 +38,7 @@ export async function POST(request: NextRequest) {
 
     // Resend를 통해 이메일 전송
     if (!process.env.RESEND_API_KEY) {
-      return NextResponse.json(
-        { error: "이메일 서비스가 설정되지 않았습니다." },
-        { status: 500 }
-      );
+      return handleApiError("이메일 서비스가 설정되지 않았습니다.");
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -70,10 +62,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      return NextResponse.json(
-        { error: "이메일 전송에 실패했습니다. 다시 시도해주세요." },
-        { status: 500 }
-      );
+      return handleApiError("이메일 전송에 실패했습니다. 다시 시도해주세요.");
     }
 
     return NextResponse.json(
@@ -81,9 +70,6 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json(
-      { error: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요." },
-      { status: 500 }
-    );
+    return handleApiError("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
   }
 }

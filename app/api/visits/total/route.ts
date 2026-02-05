@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { handleApiError } from "@/utils/api";
 
 // 전체 방문 카운트 조회
 export async function GET() {
@@ -14,9 +15,6 @@ export async function GET() {
       total: totalCount._sum.count || 0,
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch total visit count" },
-      { status: 500 }
-    );
+    return handleApiError("Failed to fetch total visit count");
   }
 }

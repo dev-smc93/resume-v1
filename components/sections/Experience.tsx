@@ -1,15 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { Briefcase, Calendar } from "lucide-react";
 import { experiences } from "@/data/resume-data";
+import { useSectionInView } from "@/hooks/useSectionInView";
+import { handleImageError } from "@/utils/image";
+import { ANIMATION_DURATION } from "@/constants/animations";
 
 export default function Experience() {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
+  const [ref, inView] = useSectionInView();
 
   return (
     <div ref={ref} className="space-y-8">
@@ -19,7 +18,7 @@ export default function Experience() {
           className="relative pl-8 border-l-4 border-blue-400 dark:border-blue-500"
           initial={{ opacity: 0, x: -50 }}
           animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-          transition={{ duration: 0.6, delay: index * 0.2 }}
+          transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.2 }}
         >
           <div className="absolute -left-3 top-0 w-6 h-6 bg-blue-400 dark:bg-blue-500 rounded-full border-4 border-gray-800 dark:border-white"></div>
           
@@ -54,10 +53,7 @@ export default function Experience() {
                       src={exp.logo}
                       alt={exp.company}
                       className="w-10 h-10 object-contain rounded-lg bg-white dark:bg-gray-100 p-1 group-hover:opacity-80 transition-opacity"
-                      onError={(e) => {
-                        // 이미지 로드 실패 시 숨김
-                        e.currentTarget.style.display = "none";
-                      }}
+                      onError={handleImageError}
                     />
                   )}
                   <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600 group-hover:text-blue-300 dark:group-hover:text-blue-500 transition-colors">
@@ -71,10 +67,7 @@ export default function Experience() {
                       src={exp.logo}
                       alt={exp.company}
                       className="w-10 h-10 object-contain rounded-lg bg-white dark:bg-gray-100 p-1"
-                      onError={(e) => {
-                        // 이미지 로드 실패 시 숨김
-                        e.currentTarget.style.display = "none";
-                      }}
+                      onError={handleImageError}
                     />
                   )}
                   <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600">
@@ -91,7 +84,7 @@ export default function Experience() {
                   className="flex items-start gap-2 text-gray-300 dark:text-gray-600"
                   initial={{ opacity: 0, x: -20 }}
                   animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                  transition={{ duration: 0.4, delay: index * 0.2 + i * 0.1 }}
+                  transition={{ duration: ANIMATION_DURATION.FAST, delay: index * 0.2 + i * 0.1 }}
                 >
                   <span className="text-blue-400 dark:text-blue-500 mt-1">•</span>
                   <span>{desc}</span>

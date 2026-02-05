@@ -1,15 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { ExternalLink, Github, Code } from "lucide-react";
 import { projects } from "@/data/resume-data";
+import { useSectionInView } from "@/hooks/useSectionInView";
+import { ANIMATION_DURATION } from "@/constants/animations";
 
 export default function Projects() {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
+  const [ref, inView] = useSectionInView();
 
   return (
     <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -19,7 +17,7 @@ export default function Projects() {
           className="bg-gray-800 dark:bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all group"
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.6, delay: index * 0.15 }}
+          transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.15 }}
           whileHover={{ y: -10 }}
         >
           <div className="h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">

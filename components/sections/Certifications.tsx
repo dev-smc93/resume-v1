@@ -1,16 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useInView } from "react-intersection-observer";
 import { certifications } from "@/data/resume-data";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import ImageModal from "@/components/ui/ImageModal";
+import { useSectionInView } from "@/hooks/useSectionInView";
+import { handleImageError } from "@/utils/image";
 
 export default function Certifications() {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: false,
-  });
+  const [ref, inView] = useSectionInView();
 
   const [offset, setOffset] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
@@ -24,14 +22,17 @@ export default function Certifications() {
   const lastTimeRef = useRef<number>(0);
   const speed = 0.06; // 이동 속도 (더 느리게)
 
-  // 무한 루프를 위한 충분히 복제된 배열
-  const duplicatedCerts = [
-    ...certifications,
-    ...certifications,
-    ...certifications,
-    ...certifications,
-    ...certifications,
-  ];
+  // 무한 루프를 위한 충분히 복제된 배열 (메모이제이션)
+  const duplicatedCerts = useMemo(
+    () => [
+      ...certifications,
+      ...certifications,
+      ...certifications,
+      ...certifications,
+      ...certifications,
+    ],
+    [certifications]
+  );
 
   // 반응형으로 화면 크기에 따라 보여줄 항목 수 조정
   useEffect(() => {
@@ -56,10 +57,8 @@ export default function Certifications() {
   // 각 항목의 너비 계산 - CSS calc 사용
   const gapSize = 16; // gap-4 = 1rem = 16px
   const itemWidthPercent = 100 / itemsPerView;
-  // gap을 고려한 실제 항목 너비 (퍼센트)
-  const actualItemWidth = itemWidthPercent;
   // 한 세트(원본 배열 길이)의 총 너비
-  const singleSetWidth = certifications.length * actualItemWidth;
+  const singleSetWidth = certifications.length * itemWidthPercent;
 
   // 연속적으로 좌에서 우로 이동
   useEffect(() => {
@@ -141,9 +140,7 @@ export default function Certifications() {
                     src={cert.image}
                     alt={cert.name}
                     className="w-full h-full object-contain"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
+                    onError={handleImageError}
                   />
                 </div>
                 <div className="text-center flex-1 flex flex-col justify-between">

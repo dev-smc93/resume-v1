@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface VisitCounterProps {
   count: number;
-  label?: string;
   onClick?: () => void;
 }
 
@@ -15,7 +14,7 @@ function splitDigits(num: number, maxDigits: number = 4): string[] {
   return numStr.split("");
 }
 
-export default function VisitCounter({ count, label, onClick }: VisitCounterProps) {
+export default function VisitCounter({ count, onClick }: VisitCounterProps) {
   const [displayCount, setDisplayCount] = useState(count);
   const [animationKey, setAnimationKey] = useState(0);
   const maxDigits = 4;
@@ -61,11 +60,6 @@ export default function VisitCounter({ count, label, onClick }: VisitCounterProp
           </div>
         ))}
       </div>
-      {label && (
-        <p className="text-sm text-gray-400 dark:text-gray-500 font-medium">
-          {label}
-        </p>
-      )}
     </motion.div>
   );
 }

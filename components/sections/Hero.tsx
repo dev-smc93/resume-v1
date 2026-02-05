@@ -7,6 +7,7 @@ import { personalInfo } from "@/data/resume-data";
 import VisitCounter from "@/components/ui/VisitCounter";
 import VisitCounterModal from "@/components/ui/VisitCounterModal";
 import PersonalInfoModal from "@/components/ui/PersonalInfoModal";
+import { scrollToSection } from "@/utils/scroll";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -94,19 +95,18 @@ export default function Hero() {
           const data = await response.json();
           setVisitCount(data.count);
         }
-      } catch (error) {
-        console.error("Failed to increment visit count:", error);
-        // 에러 발생 시에도 기존 카운트 조회 시도
-        try {
-          const response = await fetch("/api/visits");
-          if (response.ok) {
-            const data = await response.json();
-            setVisitCount(data.count);
+        } catch (error) {
+          // 에러 발생 시에도 기존 카운트 조회 시도
+          try {
+            const response = await fetch("/api/visits");
+            if (response.ok) {
+              const data = await response.json();
+              setVisitCount(data.count);
+            }
+          } catch (err) {
+            // 조용히 실패
           }
-        } catch (err) {
-          console.error("Failed to fetch visit count:", err);
         }
-      }
     };
 
     // 초기 카운트 증가
@@ -121,7 +121,7 @@ export default function Hero() {
           setVisitCount(data.count);
         }
       } catch (error) {
-        console.error("Failed to fetch visit count:", error);
+        // 조용히 실패
       }
     }, 4000); // 4초마다 업데이트
 
@@ -176,29 +176,8 @@ export default function Hero() {
               </span>
               <span className="animate-blink-fast text-blue-600 relative -top-1">|</span>
             </div>
-            
-          {/* <span className="text-gray-300 dark:text-gray-600">필요하신가요?</span> */}
           <span className="text-gray-300 dark:text-gray-600">이런 분 찾고 있나요?</span>
         </motion.h1>
-
-        {/* <motion.p
-          className="text-lg text-gray-400 dark:text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed"
-          variants={itemVariants}
-        >
-          {personalInfo.bio.split("성향").map((part, index, array) => (
-            <span key={index}>
-              {part}
-              {index < array.length - 1 && (
-                <button
-                  onClick={() => setIsPersonalityModalOpen(true)}
-                  className="text-blue-400 dark:text-blue-500 hover:text-blue-300 dark:hover:text-blue-400 underline cursor-pointer transition-colors"
-                >
-                  성향
-                </button>
-              )}
-            </span>
-          ))}
-        </motion.p> */}
 
         <motion.div
           className="flex flex-wrap justify-center gap-6 mb-10"
@@ -215,12 +194,7 @@ export default function Hero() {
           </motion.button>
 
           <motion.button
-            onClick={() => {
-              const contactSection = document.getElementById("contact");
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
+            onClick={() => scrollToSection("contact")}
             className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -230,12 +204,7 @@ export default function Hero() {
           </motion.button>
 
           <motion.button
-            onClick={() => {
-              const contactSection = document.getElementById("contact");
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
+            onClick={() => scrollToSection("contact")}
             className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -245,12 +214,7 @@ export default function Hero() {
           </motion.button>
 
           <motion.button
-            onClick={() => {
-              const contactSection = document.getElementById("contact");
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
+            onClick={() => scrollToSection("contact")}
             className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full hover:from-pink-600 hover:to-pink-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
