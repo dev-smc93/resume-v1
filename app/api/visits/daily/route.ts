@@ -18,7 +18,6 @@ export async function GET() {
       })),
     });
   } catch (error) {
-    console.error("Error fetching daily visit counts:", error);
     return NextResponse.json(
       { error: "Failed to fetch daily visit counts" },
       { status: 500 }

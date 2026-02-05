@@ -206,7 +206,20 @@ resume-v1/
 
 ```env
 DATABASE_URL="postgresql://user:password@host:port/database"
+RESEND_API_KEY="re_your_api_key_here"
 ```
+
+**⚠️ 중요: `.env` 파일 인코딩**
+- `.env` 파일은 **반드시 UTF-8 인코딩**으로 저장해야 합니다.
+- UTF-16으로 저장하면 환경 변수를 읽지 못하거나 한자로 깨져 보일 수 있습니다.
+- **인코딩 확인 방법:**
+  - Windows 메모장: "다른 이름으로 저장" → 인코딩을 "UTF-8"로 선택
+  - VS Code/Cursor: 우측 하단 인코딩 표시 클릭 → "Save with Encoding" → "UTF-8" 선택
+  - 파일이 이미 UTF-16으로 저장된 경우: "Reopen with Encoding" → "UTF-16 LE" 선택 후 내용 확인 → "Save with Encoding" → "UTF-8"로 재저장
+- **파일 형식:**
+  - 각 줄은 `KEY=VALUE` 형식 (공백 없이, 따옴표는 선택사항)
+  - 주석은 `#`으로 시작
+  - 예: `DATABASE_URL=postgresql://...` 또는 `DATABASE_URL="postgresql://..."`
 
 ### 데이터베이스 마이그레이션
 ```bash

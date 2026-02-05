@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 
 export default function Contact() {
@@ -10,6 +11,72 @@ export default function Contact() {
     threshold: 0.1,
     triggerOnce: false,
   });
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    // 입력 시 상태 메시지 초기화
+    if (submitStatus.type) {
+      setSubmitStatus({ type: null, message: "" });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "전송에 실패했습니다.");
+      }
+
+      // 성공
+      setSubmitStatus({
+        type: "success",
+        message: "메시지가 성공적으로 전송되었습니다!",
+      });
+      setFormData({ name: "", email: "", message: "" });
+
+      // 5초 후 상태 메시지 자동 제거
+      setTimeout(() => {
+        setSubmitStatus({ type: null, message: "" });
+      }, 5000);
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message: error instanceof Error ? error.message : "전송에 실패했습니다.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const contactItems = [
     {
@@ -80,35 +147,78 @@ export default function Contact() {
           <Send className="text-blue-400 dark:text-blue-600" size={28} />
           메시지 보내기
         </h3>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <input
               type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
               placeholder="이름"
+              required
               className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
             <input
               type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
               placeholder="이메일"
+              required
               className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
             <textarea
+              name="message"
+              value={formData.message}
+              onChange={handleInputChange}
               placeholder="메시지"
               rows={5}
+              required
               className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
+          
+          <AnimatePresence>
+            {submitStatus.type && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`flex items-center gap-2 px-4 py-3 rounded-lg ${
+                  submitStatus.type === "success"
+                    ? "bg-green-500/20 text-green-400 dark:text-green-600"
+                    : "bg-red-500/20 text-red-400 dark:text-red-600"
+                }`}
+              >
+                {submitStatus.type === "success" ? (
+                  <CheckCircle size={20} />
+                ) : (
+                  <XCircle size={20} />
+                )}
+                <span className="text-sm font-medium">{submitStatus.message}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <motion.button
             type="submit"
-            className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            disabled={isSubmitting}
+            className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+            whileTap={!isSubmitting ? { scale: 0.98 } : {}}
           >
-            전송하기
+            {isSubmitting ? (
+              <>
+                <Loader2 size={20} className="animate-spin" />
+                <span>전송 중...</span>
+              </>
+            ) : (
+              "전송하기"
+            )}
           </motion.button>
         </form>
       </motion.div>

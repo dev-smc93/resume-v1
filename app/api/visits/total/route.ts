@@ -14,7 +14,6 @@ export async function GET() {
       total: totalCount._sum.count || 0,
     });
   } catch (error) {
-    console.error("Error fetching total visit count:", error);
     return NextResponse.json(
       { error: "Failed to fetch total visit count" },
       { status: 500 }
