@@ -70,8 +70,8 @@ export interface Certification {
 }
 
 export const personalInfo: PersonalInfo = {
-  name: "조성만",
-  title: "풀스택 개발자",
+  name: "sungman93",
+  title: "resume",
   email: "sungman93.dev@gmail.com",
   phone: "010-5094-5763",
   location: "수원시 영통구",
@@ -94,7 +94,7 @@ export const personalInfo: PersonalInfo = {
   personalDetails: {
     birthDate: "1993.02.05",
     gender: "남자",
-    introduction: "Java, Python, Next.js 기반의 웹 구축 경험이 있으며, 반복적인 업무를 통해 완성도를 높여가는 데 강점이 있어 개발 직무에만 국한하지 않고 다양한 업무 방향을 열어두고 있습니다. 연봉보다는 직무 적합성과 지속 가능성을 기준으로 지원하고 있습니다 :D",
+    introduction: "여러 언어 기반의 웹 사이트 구축 경험을 바탕으로, 조용한 환경에서 업무에 몰입하며 꾸준히 완성도를 높여왔습니다. 개발에만 한정하지 않고, 저의 성향과 가치관에 맞는 일이라면 신입의 마음가짐으로 임하며 성실히 적응해 나가고자 합니다.",
     audioUrl: "/audio/introduction.mp3", // public 폴더 기준 경로 (샘플파일)
     mbti: "INFP",
     traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"],
