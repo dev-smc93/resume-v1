@@ -70,12 +70,12 @@ export interface Certification {
 }
 
 export const personalInfo: PersonalInfo = {
-  name: "sungman93",
+  name: "조성만",
   title: "resume",
   email: "sungman93.dev@gmail.com",
   phone: "010-5094-5763",
   location: "수원시 영통구",
-  bio: "다양한 업무 중, 성향에 맞는 영역에서 기여하고 싶어요.",
+  bio: "조성만의 이력서 포트폴리오 사이트",
   profileImage: "/profile.jpg",
   // typingTexts: [
   //   "유지보수",
