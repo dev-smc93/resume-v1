@@ -48,7 +48,9 @@ export interface Project {
   technologies: string[];
   link?: string;
   github?: string;
+  youtube?: string; // 유튜브 링크
   image?: string;
+  thumbnail?: string; // 정지 이미지 (GIF 호버 시 사용, 없으면 image 사용)
 }
 
 export interface Education {
@@ -85,9 +87,9 @@ export const personalInfo: PersonalInfo = {
   typingTexts: [
     "기본을 중시",
     "책임감 기반",
-    "성실함",
-    "업무 몰입형",
-    "지속성"
+    "근면성실한",
+    "업무 집중력",
+    "열정적 인재"
   ],
   personalDetails: {
     birthDate: "1993.02.05",
@@ -96,7 +98,7 @@ export const personalInfo: PersonalInfo = {
     audioUrl: "/audio/introduction.mp3", // public 폴더 기준 경로 (샘플파일)
     mbti: "INFP",
     traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"],
-    values: ["작은 일이라도 도움이 되었다고 느낄때"],
+    values: ["맡은 일에 몰입하며, 작은 역할이라도 끝까지 책임지는 태도를 중요하게 생각합니다."],
   },
 };
 
@@ -137,7 +139,7 @@ export const experiences: Experience[] = [
     period: "2011.01 - 2019-09",
     description: [
       "모바일 시료 배송·회수 및 이력 관리",
-      "양산 전 모바일 시료 승인 테스트 수행 및 결과 정리",
+      "양산 전 모바일 시료(*삼성폰) 승인 테스트 수행 및 결과 정리",
     ],
     technologies: [],
     logo: "/company-logos/samsung.png", // 회사 로고 이미지 경로 (선택사항)
@@ -177,25 +179,26 @@ export const skills: Skill[] = [
 export const projects: Project[] = [
   {
     id: "proj-1",
-    title: "E-Commerce 플랫폼",
-    description: "전자상거래 플랫폼을 Next.js와 TypeScript로 구축했습니다. 실시간 재고 관리, 결제 시스템 연동, 관리자 대시보드 등 다양한 기능을 구현했습니다.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Stripe API"],
-    link: "https://example.com",
-    github: "https://github.com/example",
+    title: "폐기물 통계 포털",
+    description: "공공데이터 폐기물 데이터(Excel) 다운로드 → DB 자동적재 → 전국 시군구 폐기물 발생 이력과 실적 업체를 지도 기반으로 시각화한 통계 포털 구축",
+    technologies: ["React", "KaKaoMap", "D3"],
+    link: "https://react-project-psi-smoky.vercel.app/",
+    github: "https://github.com/josungman/react_project",
+    image: "/projects/waste_statistics_portal.gif",
   },
   {
     id: "proj-2",
-    title: "실시간 채팅 애플리케이션",
-    description: "Socket.io를 활용한 실시간 채팅 애플리케이션입니다. 그룹 채팅, 파일 공유, 이모지 반응 등 다양한 기능을 제공합니다.",
-    technologies: ["React", "Node.js", "Socket.io", "MongoDB"],
-    github: "https://github.com/example",
+    title: "지식인 자동답변",
+    description: "사내 프로젝트로 개발한 지식인 자동 답변 시스템. 질문 분석부터 답변 생성·등록까지 자동화했으며, 결과물은 시연 영상으로 확인가능",
+    technologies: ["Python", "PyQt","Selenium","GPT API"],
+    youtube: "https://www.youtube.com/watch?v=5jmxkkwe-ug",
+    image: "/projects/automated_knowledge_qna_response.gif",
   },
   {
     id: "proj-3",
-    title: "날씨 대시보드",
-    description: "날씨 API를 활용한 인터랙티브한 대시보드입니다. 애니메이션과 차트를 통해 직관적인 데이터 시각화를 제공합니다.",
-    technologies: ["React", "Chart.js", "OpenWeather API"],
-    link: "https://example.com",
+    title: "날씨 대시보드(예정)",
+    description: "날씨 및 미세먼지 API를 활용해 실시간 데이터를 시각화한 인터랙티브 대시보드 구현예정",
+    technologies: ["Next.js", "ApexCharts"],
   },
 ];
 
@@ -263,13 +266,13 @@ export const education: Education[] = [
     school: "대전동아고등학교 졸업",
     degree: "전자정보과",
     period: "2008.03 - 2011.02",
-    description: "전자·IT 전반의 기초 지식을 배우며 컴퓨터 활용 역량을 쌓았습니다.",
+    description: "전자·IT 전반의 기초 지식을 바탕으로 컴퓨터 활용 역량을 형성",
   },
   {
     school: "육군 병장 만기 복무",
     degree: "행정/PC운용",
     period: "2012.06 - 2014.03",
-    description: "행정 업무 지원과 PC·전산 장비 운용을 수행했습니다.",
+    description: "행정 업무 지원과 PC·전산 장비 운용을 수행",
     type: "military",
   },
 ];

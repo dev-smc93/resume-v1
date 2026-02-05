@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Code } from "lucide-react";
+import { ExternalLink, Github, Code, Youtube } from "lucide-react";
 import { projects } from "@/data/resume-data";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { ANIMATION_DURATION } from "@/constants/animations";
+import { handleImageError } from "@/utils/image";
 
 export default function Projects() {
   const [ref, inView] = useSectionInView();
@@ -20,8 +21,17 @@ export default function Projects() {
           transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.15 }}
           whileHover={{ y: -10 }}
         >
-          <div className="h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-            <Code size={64} className="text-white opacity-50" />
+          <div className="h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden relative">
+            {project.image ? (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover"
+                onError={handleImageError}
+              />
+            ) : (
+              <Code size={64} className="text-white opacity-50" />
+            )}
           </div>
 
           <div className="p-6">
@@ -46,7 +56,7 @@ export default function Projects() {
               ))}
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap">
               {project.link && (
                 <motion.a
                   href={project.link}
@@ -71,6 +81,19 @@ export default function Projects() {
                 >
                   <Github size={18} />
                   <span className="text-sm font-medium">코드</span>
+                </motion.a>
+              )}
+              {project.youtube && (
+                <motion.a
+                  href={project.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-red-400 dark:text-red-600 hover:text-red-300 dark:hover:text-red-700 transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Youtube size={18} />
+                  <span className="text-sm font-medium">유튜브</span>
                 </motion.a>
               )}
             </div>

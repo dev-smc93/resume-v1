@@ -88,28 +88,32 @@ export default function PersonalInfoModal({
                 {(personalInfo.personalDetails.mbti || personalInfo.personalDetails.traits || personalInfo.personalDetails.values) && (
                   <>
                     <div>
-                      {personalInfo.personalDetails.mbti && (
-                        <div className="mb-4">
-                          <span className="text-sm text-gray-400 dark:text-gray-600 drop-shadow-md">MBTI</span>
-                          <p className="text-lg font-semibold text-blue-400 dark:text-blue-600 mt-1 drop-shadow-md">
-                            {personalInfo.personalDetails.mbti}
-                          </p>
-                        </div>
-                      )}
-                      
-                      {personalInfo.personalDetails.traits && personalInfo.personalDetails.traits.length > 0 && (
-                        <div className="mb-4">
-                          <span className="text-sm text-gray-400 dark:text-gray-600 drop-shadow-md">특징</span>
-                          <div className="mt-2 flex flex-wrap gap-2">
-                            {personalInfo.personalDetails.traits.map((trait, index) => (
-                              <span
-                                key={index}
-                                className="px-3 py-1.5 bg-blue-500/20 dark:bg-blue-500/30 text-blue-300 dark:text-blue-700 rounded-full text-sm font-medium drop-shadow-md"
-                              >
-                                {trait}
-                              </span>
-                            ))}
-                          </div>
+                      {(personalInfo.personalDetails.mbti || (personalInfo.personalDetails.traits && personalInfo.personalDetails.traits.length > 0)) && (
+                        <div className="mb-4 grid grid-cols-3 gap-4">
+                          {personalInfo.personalDetails.mbti && (
+                            <div>
+                              <span className="text-sm text-gray-400 dark:text-gray-600 drop-shadow-md">MBTI</span>
+                              <p className="text-lg font-semibold text-blue-400 dark:text-blue-600 mt-1 drop-shadow-md">
+                                {personalInfo.personalDetails.mbti}
+                              </p>
+                            </div>
+                          )}
+                          
+                          {personalInfo.personalDetails.traits && personalInfo.personalDetails.traits.length > 0 && (
+                            <div className={personalInfo.personalDetails.mbti ? "col-span-2" : "col-start-2 col-span-2"}>
+                              <span className="text-sm text-gray-400 dark:text-gray-600 drop-shadow-md">특징</span>
+                              <div className="mt-2 flex flex-wrap gap-2">
+                                {personalInfo.personalDetails.traits.map((trait, index) => (
+                                  <span
+                                    key={index}
+                                    className="px-3 py-1.5 bg-blue-500/20 dark:bg-blue-500/30 text-blue-300 dark:text-blue-700 rounded-full text-sm font-medium drop-shadow-md"
+                                  >
+                                    {trait}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       )}
                       
@@ -156,7 +160,7 @@ export default function PersonalInfoModal({
                       preload="metadata"
                     />
                   )}
-                  <p className="text-gray-300 dark:text-gray-700 mt-2 leading-relaxed drop-shadow-md whitespace-pre-line">
+                  <p className="text-gray-300 dark:text-gray-700 mt-2 leading-relaxed drop-shadow-md whitespace-pre-line pl-4 border-l-2 border-teal-400 dark:border-teal-600">
                     {personalInfo.personalDetails.introduction}
                   </p>
                 </div>
