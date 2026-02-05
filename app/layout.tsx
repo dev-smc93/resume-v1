@@ -26,9 +26,7 @@ export const metadata: Metadata = {
     description: personalInfo.bio || `${personalInfo.name}의 이력서 포트폴리오`,
     images: [
       {
-        url: personalInfo.profileImage 
-          ? `${siteUrl}${personalInfo.profileImage}` 
-          : `${siteUrl}/og-image.png`,
+        url: `${siteUrl}/og-image.png` ,          
         width: 1200,
         height: 630,
         alt: `${personalInfo.name} 프로필 이미지`,
