@@ -96,7 +96,7 @@ export const personalInfo: PersonalInfo = {
     gender: "남자",
     introduction: "여러 언어 기반의 웹 사이트 구축 경험을 바탕으로, 조용한 환경에서 업무에 몰입하며 꾸준히 완성도를 높여왔습니다. 개발에만 한정하지 않고, 저의 성향과 가치관에 맞는 일이라면 신입의 마음가짐으로 임하며 성실히 적응해 나가고자 합니다.",
     audioUrl: "/audio/introduction.mp3", // public 폴더 기준 경로 (샘플파일)
-    mbti: "INFP",
+    mbti: "ISTJ",
     traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"],
     values: ["맡은 일에 몰입하며, 작은 역할이라도 끝까지 책임지는 태도를 중요하게 생각합니다."],
   },
