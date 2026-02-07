@@ -367,7 +367,7 @@ personalDetails: {
   gender: "남자",
   introduction: "자기소개 텍스트...",
   audioUrl: "/audio/introduction.mp3", // 선택사항: 오디오 파일 경로
-  mbti: "INFP", // 선택사항
+  mbti: "ISTJ", // 선택사항
   traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"], // 선택사항
   values: ["작은 일이라도 도움이 되었다고 느낄때"], // 선택사항
 }
