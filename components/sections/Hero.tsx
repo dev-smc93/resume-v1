@@ -235,15 +235,22 @@ export default function Hero() {
           />
         </motion.div>
 
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-base md:text-lg text-gray-400 dark:text-gray-500">스크롤하여 더 보기</span>
+        <motion.div 
+          className="flex flex-col items-center gap-2 cursor-pointer"
+          onClick={() => scrollToSection("experience")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <span className="text-base md:text-lg text-gray-400 dark:text-gray-500 hover:text-gray-300 dark:hover:text-gray-600 transition-colors">
+            스크롤하여 더 보기
+          </span>
           <motion.div
             variants={scrollIndicatorVariants}
             animate="animate"
           >
             <ArrowDown size={24} className="text-gray-400" />
           </motion.div>
-        </div>
+        </motion.div>
       </motion.div>
 
       {/* 방문 카운터 모달 */}

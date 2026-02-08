@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       });
     } catch (dbError: any) {
       // 테이블이 없거나 DB 연결 문제는 무시하고 이메일 전송 계속
-      if (dbError?.code !== 'P2021' && dbError?.code !== 'P1001') {
+      if (dbError?.code !== 'P2021' && dbError?.code !== 'P1001' && process.env.NODE_ENV === 'development') {
         console.error("Database error (non-critical):", dbError);
       }
     }
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: "이력서 Contact <onboarding@resend.dev>", // Resend에서 도메인 설정 후 변경 필요
       to: personalInfo.email,
       subject: `이력서 관련 메시지: ${name}님으로부터`,

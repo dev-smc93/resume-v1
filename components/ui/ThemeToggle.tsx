@@ -15,8 +15,6 @@ export default function ThemeToggle() {
 
   const handleToggle = () => {
     toggleTheme();
-    // 강제로 리플로우 트리거
-    void document.documentElement.offsetHeight;
   };
 
   // 서버 사이드 렌더링 시 기본 아이콘 표시 (하이드레이션 에러 방지)

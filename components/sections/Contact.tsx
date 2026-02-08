@@ -6,7 +6,6 @@ import { Mail, Phone, MapPin, Send, CheckCircle, XCircle, Loader2 } from "lucide
 import { personalInfo } from "@/data/resume-data";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { ANIMATION_DURATION } from "@/constants/animations";
-import { scrollToSection } from "@/utils/scroll";
 
 export default function Contact() {
   const [ref, inView] = useSectionInView();
