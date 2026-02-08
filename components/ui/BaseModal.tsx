@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { X } from "lucide-react";
 import {
   modalBackdropVariants,
@@ -9,6 +9,9 @@ import {
   modalCardVariants,
   modalCardStyle,
 } from "./modal-animations";
+
+// 여러 모달이 동시에 열릴 수 있는 경우를 위한 전역 카운터
+let openModalCount = 0;
 
 interface BaseModalProps {
   isOpen: boolean;
@@ -38,6 +41,68 @@ export default function BaseModal({
   maxWidth = "md",
   className = "",
 }: BaseModalProps) {
+  // 모달이 열려있을 때 배경 스크롤 막기
+  useEffect(() => {
+    if (isOpen) {
+      // 모달이 열릴 때 카운터 증가
+      openModalCount++;
+      
+      // 첫 번째 모달이 열릴 때만 스크롤 막기
+      if (openModalCount === 1) {
+        // 현재 스크롤 위치 저장 (iOS Safari 대응)
+        const scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+      }
+    } else {
+      // 모달이 닫힐 때 카운터 감소
+      if (openModalCount > 0) {
+        openModalCount--;
+      }
+      
+      // 모든 모달이 닫혔을 때만 스크롤 복원
+      if (openModalCount === 0) {
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        
+        // 저장된 스크롤 위치로 복원 (iOS Safari 대응)
+        if (scrollY) {
+          const parsedScrollY = parseInt(scrollY.replace('px', '').replace('-', ''), 10);
+          if (!isNaN(parsedScrollY)) {
+            window.scrollTo(0, parsedScrollY);
+          }
+        }
+      }
+    }
+    
+    // cleanup: 컴포넌트 언마운트 시에도 처리
+    return () => {
+      if (isOpen && openModalCount > 0) {
+        openModalCount--;
+      }
+      
+      if (openModalCount === 0) {
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        
+        if (scrollY) {
+          const parsedScrollY = parseInt(scrollY.replace('px', '').replace('-', ''), 10);
+          if (!isNaN(parsedScrollY)) {
+            window.scrollTo(0, parsedScrollY);
+          }
+        }
+      }
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && (
