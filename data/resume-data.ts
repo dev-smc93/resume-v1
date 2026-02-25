@@ -49,6 +49,7 @@ export interface Project {
   link?: string;
   github?: string;
   youtube?: string; // 유튜브 링크
+  manual?: string; // 매뉴얼 문서 링크 (Notion, Google Docs, PDF 등)
   image?: string;
   thumbnail?: string; // 정지 이미지 (GIF 호버 시 사용, 없으면 image 사용)
 }
@@ -84,17 +85,12 @@ export const personalInfo: PersonalInfo = {
   //   "웹 개발자",
   //   "전산보조",
   // ],
-  typingTexts: [
-    "기본을 중시",
-    "책임감 기반",
-    "근면성실한",
-    "업무 집중력",
-    "열정적 인재"
-  ],
+  typingTexts: ["기본을 중시", "책임감 기반", "근면성실한", "업무 집중력", "열정적 인재"],
   personalDetails: {
     birthDate: "1993.02.05",
     gender: "남자",
-    introduction: "여러 언어 기반의 웹 사이트 구축 경험을 바탕으로, 조용한 환경에서 업무에 몰입하며 꾸준히 완성도를 높여왔습니다. 개발에만 한정하지 않고, 저의 성향과 가치관에 맞는 일이라면 신입의 마음가짐으로 임하며 성실히 적응해 나가고자 합니다.",
+    introduction:
+      "여러 언어 기반의 웹 사이트 구축 경험을 바탕으로, 조용한 환경에서 업무에 몰입하며 꾸준히 완성도를 높여왔습니다. 개발에만 한정하지 않고, 저의 성향과 가치관에 맞는 일이라면 신입의 마음가짐으로 임하며 성실히 적응해 나가고자 합니다.",
     audioUrl: "/audio/introduction.mp3", // public 폴더 기준 경로 (샘플파일)
     mbti: "ISTJ",
     traits: ["묵묵한 실행력", "맡은 역할에 대한 책임감"],
@@ -114,7 +110,7 @@ export const experiences: Experience[] = [
       "네이버 블로그 콘텐츠 자동 생성·등록 시스템 개발",
       "고객 예약금 실시간 확인 웹사이트 개발",
     ],
-    technologies: ["Python","Flask", "React", "Next.js", "TypeScript"],
+    technologies: ["Python", "Flask", "React", "Next.js", "TypeScript"],
     logo: "/company-logos/ecolife-balance.png", // 회사 로고 이미지 경로 (선택사항)
     link: "https://www.woowarhanclean.com/", // 회사 웹사이트 링크 (선택사항)
   },
@@ -137,10 +133,7 @@ export const experiences: Experience[] = [
     company: "삼성전자",
     position: "PL 서포트",
     period: "2011.01 - 2019-09",
-    description: [
-      "모바일 시료 배송·회수 및 이력 관리",
-      "양산 전 모바일 시료(*삼성폰) 승인 테스트 수행 및 결과 정리",
-    ],
+    description: ["모바일 시료 배송·회수 및 이력 관리", "양산 전 모바일 시료(*삼성폰) 승인 테스트 수행 및 결과 정리"],
     technologies: [],
     logo: "/company-logos/samsung.png", // 회사 로고 이미지 경로 (선택사항)
     link: "https://www.samsungcareers.com/", // 회사 웹사이트 링크 (선택사항)
@@ -179,6 +172,16 @@ export const skills: Skill[] = [
 export const projects: Project[] = [
   {
     id: "proj-1",
+    title: "반려동물 알림장(MVP)",
+    description: "반려동물 돌봄 시설(유치원·호텔)과 보호자가 알림장으로 소통하는 웹/앱",
+    technologies: ["Next.js", "Prisma", "PWA", "Web Push"],
+    link: "https://petkidsnote-mvp.vercel.app",
+    manual: "https://extreme-tarsal-657.notion.site/MVP-30fe0c8cfbd080e69a35c7b679a79481", // 매뉴얼 URL로 교체해주세요
+    github: "https://github.com/dev-smc93/pet-kids-note-mvp",
+    image: "/projects/pet_kids_note2.gif",
+  },
+  {
+    id: "proj-2",
     title: "폐기물 통계 포털",
     description: "공공데이터 폐기물 데이터(Excel) 다운로드 → DB 자동적재 → 전국 시군구 폐기물 발생 이력과 실적 업체를 지도 기반으로 시각화한 통계 포털 구축",
     technologies: ["React", "KaKaoMap", "D3"],
@@ -187,18 +190,12 @@ export const projects: Project[] = [
     image: "/projects/waste_statistics_portal.gif",
   },
   {
-    id: "proj-2",
+    id: "proj-3",
     title: "지식인 자동답변",
     description: "사내 프로젝트로 개발한 지식인 자동 답변 시스템. 질문 분석부터 답변 생성·등록까지 자동화했으며, 결과물은 시연 영상으로 확인가능",
-    technologies: ["Python", "PyQt","Selenium","GPT API"],
+    technologies: ["Python", "PyQt", "Selenium", "GPT API"],
     youtube: "https://www.youtube.com/watch?v=5jmxkkwe-ug",
     image: "/projects/automated_knowledge_qna_response.gif",
-  },
-  {
-    id: "proj-3",
-    title: "날씨 대시보드(예정)",
-    description: "날씨 및 미세먼지 API를 활용해 실시간 데이터를 시각화한 인터랙티브 대시보드 구현예정",
-    technologies: ["Next.js", "ApexCharts"],
   },
 ];
 

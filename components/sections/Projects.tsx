@@ -1,11 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Code, Youtube } from "lucide-react";
-import { projects } from "@/data/resume-data";
+import { ExternalLink, Github, Code, Youtube, FileText } from "lucide-react";
+import { projects, type Project } from "@/data/resume-data";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { ANIMATION_DURATION } from "@/constants/animations";
 import { handleImageError } from "@/utils/image";
+
+// 데이터 필드 순서와 동일하게 표시 (link → manual → github → youtube)
+const LINK_ORDER: { key: keyof Project; icon: typeof ExternalLink; label: string; className: string }[] = [
+  { key: "link", icon: ExternalLink, label: "사이트", className: "text-blue-400 dark:text-blue-600 hover:text-blue-300 dark:hover:text-blue-700" },
+  { key: "manual", icon: FileText, label: "매뉴얼", className: "text-amber-400 dark:text-amber-600 hover:text-amber-300 dark:hover:text-amber-700" },
+  { key: "github", icon: Github, label: "코드", className: "text-gray-400 dark:text-gray-600 hover:text-gray-300 dark:hover:text-gray-700" },
+  { key: "youtube", icon: Youtube, label: "유튜브", className: "text-red-400 dark:text-red-600 hover:text-red-300 dark:hover:text-red-700" },
+];
 
 export default function Projects() {
   const [ref, inView] = useSectionInView();
@@ -26,7 +34,7 @@ export default function Projects() {
               <img
                 src={project.image}
                 alt={project.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 onError={handleImageError}
               />
             ) : (
@@ -57,45 +65,24 @@ export default function Projects() {
             </div>
 
             <div className="flex gap-4 flex-wrap">
-              {project.link && (
-                <motion.a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-blue-400 dark:text-blue-600 hover:text-blue-300 dark:hover:text-blue-700 transition-colors"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <ExternalLink size={18} />
-                  <span className="text-sm font-medium">사이트</span>
-                </motion.a>
-              )}
-              {project.github && (
-                <motion.a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-400 dark:text-gray-600 hover:text-gray-300 dark:hover:text-gray-700 transition-colors"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Github size={18} />
-                  <span className="text-sm font-medium">코드</span>
-                </motion.a>
-              )}
-              {project.youtube && (
-                <motion.a
-                  href={project.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-red-400 dark:text-red-600 hover:text-red-300 dark:hover:text-red-700 transition-colors"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Youtube size={18} />
-                  <span className="text-sm font-medium">유튜브</span>
-                </motion.a>
-              )}
+              {LINK_ORDER.map(({ key, icon: Icon, label, className }) => {
+                const url = project[key];
+                if (typeof url !== "string" || !url) return null;
+                return (
+                  <motion.a
+                    key={key}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center gap-2 transition-colors ${className}`}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Icon size={18} />
+                    <span className="text-sm font-medium">{label}</span>
+                  </motion.a>
+                );
+              })}
             </div>
           </div>
         </motion.div>
