@@ -131,10 +131,15 @@ export const experiences: Experience[] = [
   {
     id: "exp-3",
     company: "삼성전자",
-    position: "PL 서포트",
+    position: "무선사업부(PL서포트) / IT솔루션(제품테스트)",
     period: "2011.01 - 2019-09",
-    description: ["모바일 시료 배송·회수 및 이력 관리", "양산 전 모바일 시료(*삼성폰) 승인 테스트 수행 및 결과 정리"],
-    technologies: [],
+    description: [
+      "모바일 시료 배송·회수 및 이력 관리",
+      "양산 전 모바일 시료(*삼성폰) 승인 테스트 수행 및 결과 정리",
+      "데스크탑 및 노트북 분해·조립 및 기능 테스트 수행",
+      "엑셀, 파워포인트, 워드 활용 우수",
+    ],
+    technologies: ["Excel", "PowerPoint", "Word"],
     logo: "/company-logos/samsung.png", // 회사 로고 이미지 경로 (선택사항)
     link: "https://www.samsungcareers.com/", // 회사 웹사이트 링크 (선택사항)
   },
