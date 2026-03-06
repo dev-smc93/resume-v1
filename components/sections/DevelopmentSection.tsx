@@ -1,15 +1,11 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 
-const DEV_PARAM = "dev";
+interface DevelopmentSectionProps {
+  hideDev: boolean;
+}
 
-export default function DevelopmentSection() {
-  const searchParams = useSearchParams();
-  const hideDev = searchParams.get(DEV_PARAM) === "false";
-
+export default function DevelopmentSection({ hideDev }: DevelopmentSectionProps) {
   if (hideDev) return null;
 
   return (

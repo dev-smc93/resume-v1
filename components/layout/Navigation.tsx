@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 
@@ -15,9 +14,11 @@ const ALL_NAV_ITEMS = [
   { name: "연락처", href: "#contact" },
 ];
 
-export default function Navigation() {
-  const searchParams = useSearchParams();
-  const hideDev = searchParams.get("dev") === "false";
+interface NavigationProps {
+  hideDev: boolean;
+}
+
+export default function Navigation({ hideDev }: NavigationProps) {
   const navItems = useMemo(
     () => (hideDev ? ALL_NAV_ITEMS.filter((item) => item.href !== "#dev-related") : ALL_NAV_ITEMS),
     [hideDev]

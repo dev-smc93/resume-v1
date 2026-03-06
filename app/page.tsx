@@ -7,17 +7,24 @@ import EducationAndMilitary from "@/components/sections/EducationAndMilitary";
 import Certifications from "@/components/sections/Certifications";
 import Contact from "@/components/sections/Contact";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ dev?: string }>;
+}) {
+  const params = await searchParams;
+  const hideDev = params.dev === "false";
+
   return (
     <main className="min-h-screen bg-gray-900 dark:bg-white">
-      <Navigation />
+      <Navigation hideDev={hideDev} />
       <div id="hero">
         <Hero />
       </div>
       <Section id="experience" title="경력" className="bg-gray-800 dark:bg-gray-50">
         <Experience />
       </Section>
-      <DevelopmentSection />
+      <DevelopmentSection hideDev={hideDev} />
       <Section id="education" title="학력 및 병역" className="bg-gray-900 dark:bg-white">
         <EducationAndMilitary />
       </Section>
