@@ -109,6 +109,7 @@ export const experiences: Experience[] = [
       "네이버 지식인 자동 답변 시스템 구축",
       "네이버 블로그 콘텐츠 자동 생성·등록 시스템 개발",
       "고객 예약금 실시간 확인 웹사이트 개발",
+      "고객 문의·불편 사항 대응 및 개선 제안",
     ],
     technologies: ["Python", "Flask", "React", "Next.js", "TypeScript"],
     logo: "/company-logos/ecolife-balance.png", // 회사 로고 이미지 경로 (선택사항)
@@ -123,6 +124,7 @@ export const experiences: Experience[] = [
       "여수 통합플랫폼 구축, 스마트 버스정류장 장비 업체 연계 개발",
       "안산 통합플랫폼 구축, 공공데이터 포털(무더위쉼터) 연계 개발",
       "의정부 통합플랫폼 구축, 스쿨존 장비 업체 연계 개발",
+      "시스템 장애·이슈 대응 및 점검",
     ],
     technologies: ["Java", "Spring Boot", "Angular"],
     logo: "/company-logos/metabuild.png", // 회사 로고 이미지 경로 (선택사항)
@@ -131,13 +133,14 @@ export const experiences: Experience[] = [
   {
     id: "exp-3",
     company: "삼성전자",
-    position: "무선사업부(PL서포트)·IT솔루션(제품테스트)",
+    position: "무선사업부(PL지원)·IT솔루션(제품테스트)",
     period: "2011.01 - 2019-09",
     description: [
       "모바일 시료 배송·회수 및 이력 관리",
       "양산 전 모바일 시료(*삼성폰) 승인 테스트 수행 및 결과 정리",
       "데스크탑 및 노트북 분해·조립 및 기능 테스트 수행",
-      "엑셀, 파워포인트, 워드 활용 우수",
+      "엑셀을 활용한 테스트 결과 및 시료 이력 관리",
+      "워드·파워포인트를 활용한 보고 자료 작성",
     ],
     technologies: ["Excel", "PowerPoint", "Word"],
     logo: "/company-logos/samsung.png", // 회사 로고 이미지 경로 (선택사항)

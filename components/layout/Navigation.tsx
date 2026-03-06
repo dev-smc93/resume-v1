@@ -1,21 +1,27 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 
-const navItems = [
+const ALL_NAV_ITEMS = [
   { name: "홈", href: "#hero" },
   { name: "경력", href: "#experience" },
-  { name: "기술", href: "#skills" },
-  { name: "프로젝트", href: "#projects" },
-  { name: "학력 및 병적", href: "#education" },
+  { name: "개발 관련", href: "#dev-related" },
+  { name: "학력 및 병역", href: "#education" },
   { name: "자격 및 수상", href: "#certifications" },
   { name: "연락처", href: "#contact" },
 ];
 
 export default function Navigation() {
+  const searchParams = useSearchParams();
+  const hideDev = searchParams.get("dev") === "false";
+  const navItems = useMemo(
+    () => (hideDev ? ALL_NAV_ITEMS.filter((item) => item.href !== "#dev-related") : ALL_NAV_ITEMS),
+    [hideDev]
+  );
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -71,7 +77,7 @@ export default function Navigation() {
     
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navItems]);
 
   const scrollToSection = (href: string) => {
     // 모바일 메뉴가 열려있으면 먼저 완전히 제거

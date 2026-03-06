@@ -2,8 +2,7 @@ import Hero from "@/components/sections/Hero";
 import Section from "@/components/ui/Section";
 import Navigation from "@/components/layout/Navigation";
 import Experience from "@/components/sections/Experience";
-import Skills from "@/components/sections/Skills";
-import Projects from "@/components/sections/Projects";
+import DevelopmentSection from "@/components/sections/DevelopmentSection";
 import EducationAndMilitary from "@/components/sections/EducationAndMilitary";
 import Certifications from "@/components/sections/Certifications";
 import Contact from "@/components/sections/Contact";
@@ -18,13 +17,8 @@ export default function Home() {
       <Section id="experience" title="경력" className="bg-gray-800 dark:bg-gray-50">
         <Experience />
       </Section>
-      <Section id="skills" title="기술 스택" className="bg-gray-900 dark:bg-white">
-        <Skills />
-      </Section>
-      <Section id="projects" title="프로젝트" className="bg-gray-800 dark:bg-gray-50">
-        <Projects />
-      </Section>
-      <Section id="education" title="학력 및 병적" className="bg-gray-900 dark:bg-white">
+      <DevelopmentSection />
+      <Section id="education" title="학력 및 병역" className="bg-gray-900 dark:bg-white">
         <EducationAndMilitary />
       </Section>
       <Section id="certifications" title="자격 및 수상" className="bg-gray-800 dark:bg-gray-50 !py-28 min-h-[70vh]">
