@@ -131,7 +131,7 @@ export const experiences: Experience[] = [
   {
     id: "exp-3",
     company: "삼성전자",
-    position: "무선사업부(PL서포트) / IT솔루션(제품테스트)",
+    position: "무선사업부(PL서포트)·IT솔루션(제품테스트)",
     period: "2011.01 - 2019-09",
     description: [
       "모바일 시료 배송·회수 및 이력 관리",
