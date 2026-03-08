@@ -19,6 +19,17 @@ model VisitCount {
   @@index([date])
 }
 
+model VisitLog {
+  id          Int      @id @default(autoincrement())
+  ip          String   @unique
+  userAgent   String
+  deviceType  String   // 예: "pc", "mobile", "tablet", "unknown"
+  lastVisited DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@index([lastVisited])
+}
+
 model ContactMessage {
   id        Int      @id @default(autoincrement())
   name      String
