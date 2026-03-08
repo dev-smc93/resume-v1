@@ -85,7 +85,7 @@ export const personalInfo: PersonalInfo = {
   //   "웹 개발자",
   //   "전산보조",
   // ],
-  typingTexts: ["웹 개발", "업무 효율화", "자동화 구축", "체계적 수행", "장애 대응", "엑셀 활용"],
+  typingTexts: ["웹 개발", "업무 효율화", "자동화 구축", "문제 분석·해결", "장애 대응", "엑셀 활용"],
   personalDetails: {
     birthDate: "1993.02.05",
     gender: "남자",
