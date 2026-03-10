@@ -204,7 +204,11 @@ export default function Certifications() {
                     </p>
                   </div>
                   <span className="inline-block mt-2 px-2 py-1 text-xs rounded-full bg-gray-700 dark:bg-gray-100 text-gray-300 dark:text-gray-700">
-                    {cert.type === "certification" ? "📜 자격증" : "🏆 수상"}
+                    {cert.type === "certification"
+                      ? "📜 자격증"
+                      : cert.type === "award"
+                        ? "🏆 수상"
+                        : "📋 위촉"}
                   </span>
                 </div>
               </div>

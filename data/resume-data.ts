@@ -67,7 +67,7 @@ export interface Certification {
   name: string;
   image: string;
   acquiredDate: string; // 취득월 (예: "2024.01")
-  type: "certification" | "award"; // 자격증 또는 수상
+  type: "certification" | "award" | "appointment"; // 자격증, 수상, 위촉
 }
 
 export const personalInfo: PersonalInfo = {
@@ -269,7 +269,7 @@ export const certifications: Certification[] = [
     name: "서울 지방기능대회 심사위원",
     image: "/certifications/judge_appointment.png",
     acquiredDate: "2018",
-    type: "award",
+    type: "appointment",
   },
 ];
 
