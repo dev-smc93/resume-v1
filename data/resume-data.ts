@@ -264,6 +264,13 @@ export const certifications: Certification[] = [
     acquiredDate: "2010",
     type: "award",
   },
+  {
+    id: "award-2",
+    name: "서울 지방기능대회 심사위원",
+    image: "/certifications/judge_appointment.png",
+    acquiredDate: "2018",
+    type: "award",
+  },
 ];
 
 export const education: Education[] = [
