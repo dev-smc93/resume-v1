@@ -575,3 +575,33 @@ html {
 .animate-blink-fast {
   animation: blink-fast 0.8s infinite;
 }
+
+/* 채팅 입력 중 점 애니메이션 */
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+.animate-typing-dots {
+  animation: typing 0.6s ease-in-out infinite;
+}
+
+/* 스크롤은 되지만 스크롤바 숨김 (핸드폰 채팅 영역 등) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 핸드폰 채팅 버블 텍스트 - 라이트 모드에서 검정색 고정 (글로벌 스타일 덮어쓰기) */
+html:not(.dark) .phone-chat-bubble-text {
+  color: #000000 !important;
+}

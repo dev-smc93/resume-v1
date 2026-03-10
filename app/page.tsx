@@ -5,6 +5,7 @@ import Experience from "@/components/sections/Experience";
 import DevelopmentSection from "@/components/sections/DevelopmentSection";
 import EducationAndMilitary from "@/components/sections/EducationAndMilitary";
 import Certifications from "@/components/sections/Certifications";
+import QnA from "@/components/sections/QnA";
 import Contact from "@/components/sections/Contact";
 
 export default async function Home({
@@ -30,6 +31,9 @@ export default async function Home({
       </Section>
       <Section id="certifications" title="자격 및 수상" className="bg-gray-800 dark:bg-gray-50 !py-28 min-h-[70vh]">
         <Certifications />
+      </Section>
+      <Section id="qna" title="QnA" className="bg-gray-800 dark:bg-gray-50">
+        <QnA />
       </Section>
       <Section id="contact" title="연락처" className="bg-gray-900 dark:bg-white">
         <Contact />

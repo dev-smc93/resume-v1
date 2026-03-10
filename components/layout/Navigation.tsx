@@ -11,6 +11,7 @@ const ALL_NAV_ITEMS = [
   { name: "개발 관련", href: "#dev-related" },
   { name: "학력 및 병역", href: "#education" },
   { name: "자격 및 수상", href: "#certifications" },
+  { name: "QnA", href: "#qna" },
   { name: "연락처", href: "#contact" },
 ];
 

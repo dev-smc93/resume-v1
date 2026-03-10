@@ -41,6 +41,7 @@ resume-v1/
 │   │   ├── Projects.tsx  # 프로젝트 섹션
 │   │   ├── EducationAndMilitary.tsx # 학력 및 병역 섹션
 │   │   ├── Certifications.tsx # 자격 및 수상 섹션
+│   │   ├── QnA.tsx       # QnA 섹션 (채팅형 데모)
 │   │   └── Contact.tsx   # 연락처 섹션
 │   ├── layout/           # 레이아웃 관련 컴포넌트
 │   │   └── Navigation.tsx # 네비게이션 바
@@ -65,7 +66,8 @@ resume-v1/
 ├── contexts/             # React Context
 │   └── ThemeContext.tsx  # 다크 모드 테마 관리
 ├── data/
-│   └── resume-data.ts    # 이력서 데이터 (중앙 집중식 관리)
+│   ├── resume-data.ts    # 이력서 데이터 (중앙 집중식 관리)
+│   └── qna-data.ts       # QnA 섹션 데이터 (탭별 채팅·카드 콘텐츠)
 ├── lib/
 │   └── prisma.ts         # Prisma 클라이언트 설정
 ├── prisma/
@@ -126,7 +128,8 @@ resume-v1/
 3. **개발 관련**: 기술 스택 + 프로젝트 (`?dev=false` 시 전체 숨김)
 4. **EducationAndMilitary**: 학력 및 병역 사항
 5. **Certifications**: 자격 및 수상 (이미지 슬라이드, 무한 루프, 이미지 확대)
-6. **Contact**: 연락처 및 메시지 폼 (Resend를 통한 이메일 전송)
+6. **QnA**: 채팅형 데모 (탭별 수거 신청/완료/이런 분께, 카드 UI) — 데이터는 `data/qna-data.ts`에서 관리
+7. **Contact**: 연락처 및 메시지 폼 (Resend를 통한 이메일 전송)
 
 #### 7. 인적사항 모달 기능 (최신)
 - ✅ Hero 섹션의 인적사항 버튼 클릭 시 모달 표시
@@ -295,6 +298,13 @@ resume-v1/
 - ✅ **자기 소개 스타일 통일**: 자기 소개에도 가치관과 동일한 좌측 초록색 세로줄 (`border-teal-400`) 추가
 - ✅ **일관된 디자인**: 가치관과 자기 소개가 동일한 스타일로 통일되어 시각적 일관성 향상
 
+#### 24. QnA 섹션 및 데이터 분리 (최신)
+- ✅ **QnA 전용 데이터 파일**: `data/qna-data.ts` 생성 — QnA 섹션 데이터를 이력서 데이터와 분리하여 유지보수성 향상
+- ✅ **타입·상수·데이터 통합**: `ChatMsg`, `ContentCard`, `QnATabId` 타입 및 `CHAT_BY_TAB`, `CONTENT_BY_TAB`, `TABS`, 타이밍 상수 등 한 곳에서 관리
+- ✅ **컴포넌트 정리**: `components/sections/QnA.tsx`에서 데이터·타입 제거 후 `@/data/qna-data`에서 import
+- ✅ **채팅 카드 연동**: 채팅 버블 내 카드 표시를 `CONTENT_BY_TAB.persona[0]`와 연동하여 데이터 일원화
+- ✅ QnA 문구·탭·카드 내용 수정 시 `data/qna-data.ts`만 편집하면 됨
+
 ## 🚀 실행 방법
 
 ### 환경 변수 설정
@@ -346,8 +356,9 @@ npx prisma studio
 
 ## 📝 데이터 수정 방법
 
-이력서 내용을 수정하려면 `data/resume-data.ts` 파일을 편집하세요:
+이력서 내용을 수정하려면 `data/resume-data.ts` 파일을 편집하세요. QnA 섹션(채팅형 데모) 내용은 `data/qna-data.ts`에서 관리합니다.
 
+**resume-data.ts**
 - `personalInfo`: 개인 정보
   - `typingTexts`: 타이핑 애니메이션에 사용될 텍스트 배열
   - `personalDetails`: 인적사항 정보
@@ -365,6 +376,12 @@ npx prisma studio
 - `certifications`: 자격 및 수상 (이미지, 이름, 취득월, 타입)
 
 데이터만 수정하면 자동으로 페이지에 반영됩니다.
+
+**qna-data.ts (QnA 섹션)**  
+- `CHAT_BY_TAB`: 탭별 채팅 메시지 (수거 신청 / 수거 완료 / 이런 분께)
+- `CONTENT_BY_TAB`: 탭별 하단 카드 콘텐츠 (제목, 설명, 아이콘·스타일)
+- `TABS`, `TAB_ORDER`: 탭 메타 정보
+- 타이밍 상수: `TYPING_DURATION_MS`, `GAP_AFTER_MESSAGE_MS` 등
 
 ### 인적사항 수정 예시
 ```typescript
