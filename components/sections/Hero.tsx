@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ArrowDown, Mail, MapPin, Phone, User } from "lucide-react";
+import { ArrowDown, MessageCircle, User } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 import VisitCounter from "@/components/ui/VisitCounter";
 import VisitCounterModal from "@/components/ui/VisitCounterModal";
@@ -202,32 +202,12 @@ export default function Hero() {
 
           <motion.button
             onClick={() => scrollToSection("contact")}
-            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg cursor-pointer"
+            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full hover:from-blue-600 hover:to-purple-700 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Mail size={20} />
-            <span className="hidden md:inline">이메일</span>
-          </motion.button>
-
-          <motion.button
-            onClick={() => scrollToSection("contact")}
-            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors shadow-lg cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Phone size={20} />
-            <span className="hidden md:inline">전화</span>
-          </motion.button>
-
-          <motion.button
-            onClick={() => scrollToSection("contact")}
-            className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-full hover:from-pink-600 hover:to-pink-700 transition-colors shadow-lg cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <MapPin size={20} />
-            <span className="hidden md:inline">위치</span>
+            <MessageCircle size={20} />
+            <span className="hidden md:inline">문의하기</span>
           </motion.button>
         </motion.div>
 
