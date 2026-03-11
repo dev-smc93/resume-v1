@@ -33,6 +33,14 @@ const itemVariants = {
   },
 };
 
+// Hero 백그라운드 영상 (1~3개, 2개 이상이면 순환 재생)
+// public/video/hero/ 에 영상 추가 후 경로 등록
+const HERO_VIDEOS: string[] = [
+  "/video/hero/background.mp4",
+  "/video/hero/background2.mp4",
+  "/video/hero/background3.mp4",
+];
+
 const scrollIndicatorVariants = {
   animate: {
     y: [0, 10, 0],
@@ -53,19 +61,67 @@ export default function Hero() {
   const [visitCount, setVisitCount] = useState(0);
   const [isVisitCounterModalOpen, setIsVisitCounterModalOpen] = useState(false);
   const [profileImageError, setProfileImageError] = useState(false);
+  const [videoOpacity, setVideoOpacity] = useState(1);
+  const [videoIndex, setVideoIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollMoreRef = useRef<HTMLDivElement>(null);
 
+  const videoSources = HERO_VIDEOS.filter(Boolean).slice(0, 3); // 최대 3개
+  const currentSrc = videoSources[videoIndex % videoSources.length];
+
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || videoSources.length === 0) return;
     video.muted = true;
     const tryPlay = () => video.play().catch(() => {});
     video.addEventListener("canplay", tryPlay, { once: true });
     tryPlay();
     const t = setTimeout(tryPlay, 800);
     return () => { clearTimeout(t); video.removeEventListener("canplay", tryPlay); };
-  }, []);
+  }, [videoSources.length]);
+
+  // 영상 로테이션 또는 루프 시 페이드 처리
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || videoSources.length === 0) return;
+
+    const FADE_DURATION = 0.8;
+    const isRotation = videoSources.length > 1;
+
+    if (isRotation) {
+      const handleEnded = () => {
+        setVideoOpacity(0);
+        setTimeout(() => {
+          setVideoIndex((i) => (i + 1) % videoSources.length);
+          setVideoOpacity(1);
+        }, 800);
+      };
+      video.addEventListener("ended", handleEnded);
+      return () => video.removeEventListener("ended", handleEnded);
+    }
+
+    // 단일 영상: 루프 시 끊김 방지
+    const handleTimeUpdate = () => {
+      const { currentTime, duration } = video;
+      if (duration <= 1) return;
+      if (currentTime >= duration - FADE_DURATION) {
+        setVideoOpacity(0);
+      } else if (currentTime < FADE_DURATION) {
+        setVideoOpacity(1);
+      }
+    };
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+  }, [videoSources, videoSources.length]);
+
+  // videoIndex 변경 시 src 반영
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !currentSrc) return;
+    video.src = currentSrc;
+    video.load();
+    video.play().catch(() => {});
+  }, [currentSrc, videoIndex]);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -148,10 +204,14 @@ export default function Hero() {
     <section className="relative min-h-screen min-h-[100svh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50 overflow-hidden">
       {/* MP4 백그라운드 비디오 (무한 재생, 음소거) - public/video/hero/background.mp4 */}
       <div className="absolute inset-0 z-0 w-full h-full">
+        <div
+          className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
+          style={{ opacity: videoOpacity }}
+        >
         <video
           ref={videoRef}
           autoPlay
-          loop
+          loop={videoSources.length === 1}
           muted
           playsInline
           preload="metadata"
@@ -161,8 +221,9 @@ export default function Hero() {
           style={{ objectFit: "cover" }}
           aria-hidden
         >
-          <source src="/video/hero/background.mp4" type="video/mp4" />
+          <source src={currentSrc} type="video/mp4" />
         </video>
+        </div>
         <div className="absolute inset-0 bg-black/40 dark:bg-gradient-to-br dark:from-blue-950/40 dark:via-gray-900/30 dark:to-purple-950/40" aria-hidden />
       </div>
 
