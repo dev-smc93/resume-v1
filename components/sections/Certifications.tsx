@@ -14,6 +14,7 @@ export default function Certifications() {
   const [offset, setOffset] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
   const [isHovered, setIsHovered] = useState(false);
+  const [hoverDirection, setHoverDirection] = useState<"<<" | "<" | "—" | ">" | ">>">("—"); // 툴팁 방향 표시
   const [isMobile, setIsMobile] = useState(false);
   const [dragOffset, setDragOffset] = useState(0); // 모바일 스와이프 중 표시용 (vw)
   const [isSwiping, setIsSwiping] = useState(false); // 모바일 스와이프 중
@@ -40,6 +41,14 @@ export default function Certifications() {
 
   const pixelToVw = (px: number) => (px / (typeof window !== "undefined" ? window.innerWidth : 1920)) * 100;
   const normalizeOffset = (o: number, setWidth: number) => ((o % setWidth) + setWidth) % setWidth;
+
+  const getHoverDirection = (ratio: number): "<<" | "<" | "—" | ">" | ">>" => {
+    if (ratio < 0.2) return "<<";
+    if (ratio < 0.35) return "<";
+    if (ratio <= 0.65) return "—";
+    if (ratio <= 0.8) return ">";
+    return ">>";
+  };
 
   useEffect(() => {
     isHoveredRef.current = isHovered;
@@ -183,6 +192,7 @@ export default function Certifications() {
             if (rect.width > 0) {
               const ratio = (e.clientX - rect.left) / rect.width;
               hoverSpeedRef.current = Math.max(-1, Math.min(1, (0.5 - ratio) * 2));
+              setHoverDirection(getHoverDirection(ratio));
             }
           }
         }
@@ -190,6 +200,7 @@ export default function Certifications() {
       onMouseLeave={() => {
         if (!isMobile) {
           setIsHovered(false);
+          setHoverDirection("—");
           hoverSpeedRef.current = 0;
         }
       }}
@@ -201,6 +212,7 @@ export default function Certifications() {
             if (rect.width > 0) {
               const ratio = (e.clientX - rect.left) / rect.width;
               hoverSpeedRef.current = Math.max(-1, Math.min(1, (0.5 - ratio) * 2));
+              setHoverDirection(getHoverDirection(ratio));
             }
           }
         }
@@ -218,10 +230,10 @@ export default function Certifications() {
         }
       }}
     >
-      {/* 호버 시 툴팁 (모바일 제외) */}
+      {/* 호버 시 툴팁 (모바일 제외, 위치에 따라 방향 표시) */}
       {isHovered && !isMobile && (
         <motion.div
-          className="absolute top-4 z-10 px-4 py-2 bg-blue-500/70 dark:bg-blue-600/70 text-white text-sm font-medium rounded-lg shadow-lg backdrop-blur-sm pointer-events-none"
+          className="absolute top-4 z-10 px-4 py-2 bg-blue-500/70 dark:bg-blue-600/70 text-white text-sm font-medium rounded-lg shadow-lg backdrop-blur-sm pointer-events-none flex items-center gap-2"
           initial={{ opacity: 0, y: -10 }}
           animate={{
             opacity: [0.7, 1, 0.7],
@@ -238,7 +250,19 @@ export default function Certifications() {
             },
           }}
         >
-          좌우로 마우스를 움직여 슬라이드
+          {hoverDirection === "<<" || hoverDirection === "<" ? (
+            <>
+              <span className="opacity-90">{hoverDirection}</span>
+              <span>좌우로 마우스를 움직여 슬라이드</span>
+            </>
+          ) : hoverDirection === ">>" || hoverDirection === ">" ? (
+            <>
+              <span>좌우로 마우스를 움직여 슬라이드</span>
+              <span className="opacity-90">{hoverDirection}</span>
+            </>
+          ) : (
+            "좌우로 마우스를 움직여 슬라이드"
+          )}
         </motion.div>
       )}
 
