@@ -77,7 +77,7 @@ export const personalInfo: PersonalInfo = {
   title: "resume",
   email: "sungman93.dev@gmail.com",
   phone: "010-5094-5763",
-  location: "수원·대전 근무 가능",
+  location: "수원·대전",
   bio: "조성만의 이력서 포트폴리오 사이트",
   profileImage: "/profile.jpg",
   githubUrl: "https://github.com/dev-smc93/resume-v1#readme",

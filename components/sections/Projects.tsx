@@ -46,11 +46,10 @@ export default function Projects() {
         return (
           <motion.div
             key={project.id}
-            className="bg-gray-800 dark:bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all group group/card"
+            className="bg-gray-800 dark:bg-white rounded-lg overflow-hidden shadow-lg transition-all group group/card"
             initial={{ opacity: 0, y: 50 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
             transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.15 }}
-            whileHover={{ y: -10 }}
             onMouseEnter={() => setHoveredCardId(project.id)}
             onMouseLeave={() => setHoveredCardId(null)}
           >
@@ -119,7 +118,7 @@ export default function Projects() {
             </div>
 
           <div className="p-6">
-            <h3 className="text-2xl font-bold mb-2 text-gray-100 dark:text-gray-800 group-hover:text-blue-400 dark:group-hover:text-blue-600 transition-colors">
+            <h3 className="text-2xl font-bold mb-2 text-gray-100 dark:text-gray-800">
               {project.title}
             </h3>
             <p className="text-gray-400 dark:text-gray-600 mb-4 leading-relaxed">

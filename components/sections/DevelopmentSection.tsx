@@ -14,17 +14,17 @@ export default function DevelopmentSection({ hideDev }: DevelopmentSectionProps)
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           개발 관련
         </h2>
-        <div id="skills">
-          <h3 className="text-2xl font-bold mb-6 text-center text-gray-400 dark:text-gray-600">
-            기술 스택
-          </h3>
-          <Skills />
-        </div>
-        <div id="projects" className="mt-16">
+        <div id="projects">
           <h3 className="text-2xl font-bold mb-6 text-center text-gray-400 dark:text-gray-600">
             프로젝트
           </h3>
           <Projects />
+        </div>
+        <div id="skills" className="mt-16">
+          <h3 className="text-2xl font-bold mb-6 text-center text-gray-400 dark:text-gray-600">
+            기술 스택
+          </h3>
+          <Skills />
         </div>
       </div>
     </section>

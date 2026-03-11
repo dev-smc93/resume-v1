@@ -91,7 +91,7 @@ export default function Contact() {
     },
     {
       icon: MapPin,
-      label: "위치",
+      label: "근무 가능 지역",
       value: personalInfo.location,
       href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(personalInfo.location)}`,
       color: "from-pink-500 to-pink-600",
@@ -131,12 +131,12 @@ export default function Contact() {
               onClick={handleClick}
               target={item.label === "위치" ? "_blank" : undefined}
               rel={item.label === "위치" ? "noopener noreferrer" : undefined}
-              className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-all group cursor-pointer"
+              className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg transition-all group cursor-pointer"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
-              <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+              <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center mb-4`}>
                 <Icon className="text-white" size={24} />
               </div>
               <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-600 mb-1">{item.label}</h3>
