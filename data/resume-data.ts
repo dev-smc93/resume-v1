@@ -80,7 +80,7 @@ export const personalInfo: PersonalInfo = {
   location: "수원·대전 근무 가능",
   bio: "조성만의 이력서 포트폴리오 사이트",
   profileImage: "/profile.jpg",
-  githubUrl: "https://github.com/dev-smc93/resume-v1",
+  githubUrl: "https://github.com/dev-smc93/resume-v1#readme",
   // typingTexts: [
   //   "유지보수",
   //   "PC조립",
