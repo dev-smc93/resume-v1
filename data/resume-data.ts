@@ -74,11 +74,11 @@ export interface Certification {
 
 export const personalInfo: PersonalInfo = {
   name: "조성만",
-  title: "resume",
+  title: "이력서",
   email: "sungman93.dev@gmail.com",
   phone: "010-5094-5763",
   location: "수원·대전",
-  bio: "조성만의 이력서 포트폴리오 사이트",
+  bio: "인터랙티브한 이력서를 만나보세요",
   profileImage: "/profile.jpg",
   githubUrl: "https://github.com/dev-smc93/resume-v1#readme",
   // typingTexts: [
