@@ -35,7 +35,7 @@ export default async function Home({
       <Section id="qna" title="Q&A" className="bg-gray-800 dark:bg-gray-50">
         <QnA />
       </Section>
-      <Section id="contact" title="연락처" className="bg-gray-900 dark:bg-white">
+      <Section id="contact" title="문의하기" className="bg-gray-900 dark:bg-white">
         <Contact />
       </Section>
       <footer className="bg-black dark:bg-gray-100 text-gray-400 dark:text-gray-600 text-center py-8">

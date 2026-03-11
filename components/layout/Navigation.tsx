@@ -12,7 +12,7 @@ const ALL_NAV_ITEMS = [
   { name: "학력 및 병역", href: "#education" },
   { name: "자격 및 수상", href: "#certifications" },
   { name: "Q&A", href: "#qna" },
-  { name: "연락처", href: "#contact" },
+  { name: "문의하기", href: "#contact" },
 ];
 
 interface NavigationProps {
@@ -42,7 +42,7 @@ export default function Navigation({ hideDev }: NavigationProps) {
       
       let current = "";
       
-      // 페이지 하단에 가까우면 마지막 섹션(연락처)을 우선 활성화
+      // 페이지 하단에 가까우면 마지막 섹션(문의하기)을 우선 활성화
       if (isNearBottom) {
         const lastSection = sections[sections.length - 1];
         const lastElement = document.getElementById(lastSection);

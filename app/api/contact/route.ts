@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       });
     } catch (dbError: any) {
       // 테이블이 없거나 DB 연결 문제는 무시하고 이메일 전송 계속
-      if (dbError?.code !== 'P2021' && dbError?.code !== 'P1001' && process.env.NODE_ENV === 'development') {
+      if (dbError?.code !== "P2021" && dbError?.code !== "P1001" && process.env.NODE_ENV === "development") {
         console.error("Database error (non-critical):", dbError);
       }
     }
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
             <p><strong>메시지:</strong></p>
             <p style="white-space: pre-wrap; background-color: white; padding: 15px; border-radius: 4px;">${message}</p>
           </div>
-          <p style="color: #6b7280; font-size: 12px;">이 메시지는 sungman93의 이력서 웹사이트의 연락처 폼을 통해 전송되었습니다.</p>
+          <p style="color: #6b7280; font-size: 12px;">이 메시지는 sungman93의 이력서 웹사이트의 문의하기 폼을 통해 전송되었습니다.</p>
         </div>
       `,
       replyTo: email,
@@ -65,10 +65,7 @@ export async function POST(request: NextRequest) {
       return handleApiError("이메일 전송에 실패했습니다. 다시 시도해주세요.");
     }
 
-    return NextResponse.json(
-      { message: "메시지가 성공적으로 전송되었습니다!" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "메시지가 성공적으로 전송되었습니다!" }, { status: 200 });
   } catch (error) {
     return handleApiError("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
   }

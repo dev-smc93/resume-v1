@@ -21,9 +21,7 @@ export default function Contact() {
     message: string;
   }>({ type: null, message: "" });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -58,7 +56,7 @@ export default function Contact() {
       // 성공
       setSubmitStatus({
         type: "success",
-        message: "메시지가 성공적으로 전송되었습니다!",
+        message: "문의 메시지가 성공적으로 전송되었습니다!",
       });
       setFormData({ name: "", email: "", message: "" });
 
@@ -111,7 +109,7 @@ export default function Contact() {
         {contactItems.map((item, index) => {
           const Icon = item.icon;
           const isEmail = item.label === "이메일";
-          
+
           const handleClick = (e: React.MouseEvent) => {
             if (isEmail) {
               e.preventDefault();
@@ -141,12 +139,8 @@ export default function Contact() {
               <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                 <Icon className="text-white" size={24} />
               </div>
-              <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-600 mb-1">
-                {item.label}
-              </h3>
-              <p className="text-base md:text-lg font-bold text-gray-100 dark:text-gray-800 break-words">
-                {item.value}
-              </p>
+              <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-600 mb-1">{item.label}</h3>
+              <p className="text-base md:text-lg font-bold text-gray-100 dark:text-gray-800 break-words">{item.value}</p>
             </motion.a>
           );
         })}
@@ -161,7 +155,7 @@ export default function Contact() {
       >
         <h3 className="text-2xl font-bold mb-6 text-gray-100 dark:text-gray-800 flex items-center gap-2">
           <Send className="text-blue-400 dark:text-blue-600" size={28} />
-          메시지 보내기
+          문의 보내기
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -170,7 +164,7 @@ export default function Contact() {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              placeholder="이름"
+              placeholder="성함"
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -181,7 +175,7 @@ export default function Contact() {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              placeholder="이메일"
+              placeholder="회신받을 이메일"
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -191,13 +185,13 @@ export default function Contact() {
               name="message"
               value={formData.message}
               onChange={handleInputChange}
-              placeholder="메시지"
+              placeholder="문의 내용을 입력해 주세요."
               rows={5}
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-700 dark:border-gray-300 bg-gray-900 dark:bg-white text-gray-100 dark:text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
-          
+
           <AnimatePresence>
             {submitStatus.type && (
               <motion.div
@@ -205,16 +199,10 @@ export default function Contact() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 className={`flex items-center gap-2 px-4 py-3 rounded-lg ${
-                  submitStatus.type === "success"
-                    ? "bg-green-500/20 text-green-400 dark:text-green-600"
-                    : "bg-red-500/20 text-red-400 dark:text-red-600"
+                  submitStatus.type === "success" ? "bg-green-500/20 text-green-400 dark:text-green-600" : "bg-red-500/20 text-red-400 dark:text-red-600"
                 }`}
               >
-                {submitStatus.type === "success" ? (
-                  <CheckCircle size={20} />
-                ) : (
-                  <XCircle size={20} />
-                )}
+                {submitStatus.type === "success" ? <CheckCircle size={20} /> : <XCircle size={20} />}
                 <span className="text-sm font-medium">{submitStatus.message}</span>
               </motion.div>
             )}
@@ -233,7 +221,7 @@ export default function Contact() {
                 <span>전송 중...</span>
               </>
             ) : (
-              "전송하기"
+              "보내기"
             )}
           </motion.button>
         </form>
