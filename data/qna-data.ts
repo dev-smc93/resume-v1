@@ -4,7 +4,7 @@ import { Briefcase, Code2, Server, Package, ClipboardList, Target, Zap, CheckCir
 export type ChatMsg = {
   id: string;
   side: "left" | "right";
-  type: "text" | "card";
+  type: "text" | "card" | "personalInfoLink";
   text?: string;
 };
 
@@ -58,6 +58,9 @@ export const CHAT_BY_TAB: Record<QnATabId, ChatMsg[]> = {
     { id: "c4", side: "right", type: "text", text: "단점은 무엇인가요?" },
     { id: "c5", side: "left", type: "text", text: "처음에는 문제를 깊이 분석하려는 성향 때문에 시간이 오래 걸리는 경우가 있었습니다." },
     { id: "c6", side: "left", type: "text", text: "현재는 우선순위를 정하고 빠르게 실행한 뒤 개선하는 방식으로 보완하고 있습니다." },
+    { id: "c7", side: "right", type: "text", text: "성향이나 가치관은 어떻게 되나요?" },
+    { id: "c8", side: "left", type: "text", text: "MBTI, 특성, 가치관을 정리해 두었습니다. 아래 인적 사항을 클릭하면 상세 하게 보실 수 있습니다." },
+    { id: "c9", side: "left", type: "personalInfoLink" },
   ],
   // 3️⃣ 앞으로 방향 (퇴사 이유 / 목표)
   persona: [

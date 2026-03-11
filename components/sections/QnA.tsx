@@ -16,8 +16,13 @@ import {
   NEXT_TAB_DELAY_MS,
   type QnATabId,
 } from "@/data/qna-data";
+import { Paperclip } from "lucide-react";
 
 const PERSONA_CARD_IN_CHAT = CONTENT_BY_TAB.persona[0];
+
+function openPersonalInfoFromQnA() {
+  window.dispatchEvent(new CustomEvent("openPersonalInfoModal"));
+}
 
 export default function QnA() {
   const [ref, inView] = useSectionInView();
@@ -179,8 +184,18 @@ export default function QnA() {
                               msg.side === "left" ? "rounded-tl-sm bg-white dark:bg-gray-700" : "rounded-br-sm bg-emerald-500 text-white"
                             }`}
                           >
-                            <p className={msg.side === "left" ? "text-sm phone-chat-bubble-text dark:text-gray-200" : "text-sm"}>{msg.text}</p>
+                            <p className={`text-sm ${msg.side === "left" ? "phone-chat-bubble-text dark:text-gray-200" : ""}`}>{msg.text}</p>
                           </div>
+                        )}
+                        {msg.type === "personalInfoLink" && (
+                          <button
+                            type="button"
+                            onClick={openPersonalInfoFromQnA}
+                            className="max-w-[85%] rounded-2xl rounded-tl-sm bg-white dark:bg-gray-700 shadow-sm px-3 py-2 flex items-center gap-2 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                          >
+                            <span className="text-sm font-medium phone-chat-bubble-text dark:text-gray-200">인적사항</span>
+                            <Paperclip className="w-4 h-4 shrink-0 phone-chat-bubble-text dark:text-gray-200" aria-hidden />
+                          </button>
                         )}
                         {msg.type === "card" && (() => {
                           const CardIcon = PERSONA_CARD_IN_CHAT.icon;

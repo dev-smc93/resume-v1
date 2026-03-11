@@ -84,6 +84,13 @@ export default function Hero() {
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, currentTextIndex, typingTexts, typingSpeed]);
 
+  // Q&A 섹션 등에서 "인적사항" 클릭 시 모달 열기
+  useEffect(() => {
+    const handler = () => setIsPersonalInfoModalOpen(true);
+    window.addEventListener("openPersonalInfoModal", handler);
+    return () => window.removeEventListener("openPersonalInfoModal", handler);
+  }, []);
+
   // 방문 카운트 증가 및 조회
   useEffect(() => {
     const incrementVisitCount = async () => {
