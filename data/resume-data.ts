@@ -227,7 +227,7 @@ export const certifications: Certification[] = [
   },
   {
     id: "cert-2",
-    name: "컴퓨터활용능력1급",
+    name: "컴활(1급)",
     image: "/certifications/computer_specialist.png",
     acquiredDate: "2008.09",
     type: "certification",
