@@ -54,6 +54,7 @@ export default function Hero() {
   const [isVisitCounterModalOpen, setIsVisitCounterModalOpen] = useState(false);
   const [profileImageError, setProfileImageError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const scrollMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -129,6 +130,18 @@ export default function Hero() {
       clearTimeout(delayId);
       clearInterval(intervalId);
     };
+  }, []);
+
+  // 모바일: touchEnd에서 즉시 스크롤 (click 지연 우회)
+  useEffect(() => {
+    const el = scrollMoreRef.current;
+    if (!el) return;
+    const handler = (e: TouchEvent) => {
+      e.preventDefault();
+      scrollToSection("experience");
+    };
+    el.addEventListener("touchend", handler, { passive: false });
+    return () => el.removeEventListener("touchend", handler);
   }, []);
 
   return (
@@ -235,7 +248,8 @@ export default function Hero() {
           />
         </motion.div>
 
-        <motion.div 
+        <motion.div
+          ref={scrollMoreRef}
           className="flex flex-col items-center gap-2 cursor-pointer"
           onClick={() => scrollToSection("experience")}
           whileHover={{ scale: 1.05 }}
