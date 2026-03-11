@@ -98,7 +98,7 @@ export default function QnA() {
         animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: ANIMATION_DURATION.NORMAL }}
       >
-        복잡한 앱 설치 없이, 카카오톡으로 30초 신청
+        경력, 일하는 방식, 커리어 방향을 Q&A로 정리했습니다
       </motion.p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center max-w-6xl mx-auto">
@@ -149,8 +149,8 @@ export default function QnA() {
                       />
                     </div>
                     <div>
-                      <p className="text-white font-semibold text-sm leading-tight">우아한정리 분리수거</p>
-                      <p className="text-emerald-100 text-xs">{TABS.find((t) => t.id === activeTab)?.label ?? "실제 사용 후기"}</p>
+                      <p className="text-white font-semibold text-sm leading-tight">면접 예상 Q&A</p>
+                      <p className="text-emerald-100 text-xs">{TABS.find((t) => t.id === activeTab)?.label ?? "경력·커리어"}</p>
                     </div>
                   </div>
                   {/* 페이지 인디케이터 (메뉴 버튼 자리, 탭과 연동) */}
@@ -204,7 +204,7 @@ export default function QnA() {
                                   <span className="font-bold text-sm phone-chat-bubble-text dark:text-gray-100">{PERSONA_CARD_IN_CHAT.title}</span>
                                 </div>
                                 <p className="text-xs leading-relaxed mb-2 phone-chat-bubble-text dark:text-gray-300">{PERSONA_CARD_IN_CHAT.description}</p>
-                                <span className="inline-block px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs">주 3회 이용</span>
+                                <span className="inline-block px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs">성장 목표</span>
                               </div>
                             </div>
                           );
