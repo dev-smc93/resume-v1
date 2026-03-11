@@ -32,7 +32,7 @@ export default async function Home({
       <Section id="certifications" title="자격 및 수상" className="bg-gray-800 dark:bg-gray-50 !py-28 min-h-[70vh]">
         <Certifications />
       </Section>
-      <Section id="qna" title="QnA" className="bg-gray-800 dark:bg-gray-50">
+      <Section id="qna" title="Q&A" className="bg-gray-800 dark:bg-gray-50">
         <QnA />
       </Section>
       <Section id="contact" title="연락처" className="bg-gray-900 dark:bg-white">

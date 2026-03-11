@@ -91,16 +91,6 @@ export default function QnA() {
 
   return (
     <div ref={ref} className="w-full">
-      {/* 상단 헤더 */}
-      <motion.p
-        className="text-center text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-10 md:mb-14"
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: ANIMATION_DURATION.NORMAL }}
-      >
-        경력, 일하는 방식, 커리어 방향을 Q&A로 정리했습니다
-      </motion.p>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center max-w-6xl mx-auto">
         {/* 왼쪽: 모바일 폰 목업 + 채팅 UI */}
         <motion.div
@@ -149,7 +139,7 @@ export default function QnA() {
                       />
                     </div>
                     <div>
-                      <p className="text-white font-semibold text-sm leading-tight">면접 예상 Q&A</p>
+                      <p className="text-white font-semibold text-sm leading-tight">주요 Q&A</p>
                       <p className="text-emerald-100 text-xs">{TABS.find((t) => t.id === activeTab)?.label ?? "경력·커리어"}</p>
                     </div>
                   </div>
@@ -203,8 +193,7 @@ export default function QnA() {
                                   </div>
                                   <span className="font-bold text-sm phone-chat-bubble-text dark:text-gray-100">{PERSONA_CARD_IN_CHAT.title}</span>
                                 </div>
-                                <p className="text-xs leading-relaxed mb-2 phone-chat-bubble-text dark:text-gray-300">{PERSONA_CARD_IN_CHAT.description}</p>
-                                <span className="inline-block px-2.5 py-1 rounded-full bg-emerald-500 text-white text-xs">성장 목표</span>
+                                <p className="text-xs leading-relaxed phone-chat-bubble-text dark:text-gray-300">{PERSONA_CARD_IN_CHAT.description}</p>
                               </div>
                             </div>
                           );
