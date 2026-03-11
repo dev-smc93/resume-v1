@@ -198,7 +198,7 @@ export default function VisitCounterModal({
                                       해당 일자의 상세 방문 로그가 없습니다.
                                     </div>
                                   ) : (
-                                    <ul className="max-h-40 overflow-y-auto divide-y divide-gray-700/60 dark:divide-gray-300/60 text-xs">
+                                    <ul className="max-h-40 overflow-y-auto overflow-x-hidden divide-y divide-gray-700/60 dark:divide-gray-300/60 text-xs scrollbar-hide">
                                       {(logsByDate[visit.date] || []).map((log, logIndex) => {
                                         const { label, icon: Icon } = getDeviceLabelAndIcon(log.deviceType);
                                         return (
