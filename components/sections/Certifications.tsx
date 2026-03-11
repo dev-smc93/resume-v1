@@ -25,8 +25,8 @@ export default function Certifications() {
   } | null>(null);
   const animationRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
-  const speed = 0.06; // 자동 재생 속도
-  const hoverSpeedMultiplier = 2.6; // 호버 시 슬라이드 속도 배율 (더 빠르게)
+  const speed = 0.04; // 자동 재생 속도
+  const hoverSpeedMultiplier = 2.4; // 호버 시 슬라이드 속도 배율 (더 빠르게)
   const hoverSpeedRef = useRef<number>(0); // -1 ~ 1, 호버 시 마우스 X에 따른 속도 배율
   const isHoveredRef = useRef<boolean>(false);
   const modalOpenRef = useRef<boolean>(false);
