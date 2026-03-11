@@ -254,20 +254,21 @@ export default function Certifications() {
         </motion.div>
       )}
 
-      <div
-        className="relative flex justify-center w-full flex-1"
-        onTouchStart={(e) => {
-          if (isMobile && e.touches.length) {
-            swipeEndHandled.current = false;
-            touchStartClientX.current = e.touches[0].clientX;
-            touchStartOffsetRef.current = offsetRef.current;
-            hasMovedEnough.current = false;
-            dragOccurredRef.current = false;
-            mobileSwipeRef.current = true;
-            setIsSwiping(true);
-          }
-        }}
-      >
+      <div className="relative flex justify-center w-full flex-1 py-6 px-4 md:py-0 md:px-0">
+        <div
+          className="flex-1 min-h-0 flex justify-center overflow-hidden"
+          onTouchStart={(e) => {
+            if (isMobile && e.touches.length) {
+              swipeEndHandled.current = false;
+              touchStartClientX.current = e.touches[0].clientX;
+              touchStartOffsetRef.current = offsetRef.current;
+              hasMovedEnough.current = false;
+              dragOccurredRef.current = false;
+              mobileSwipeRef.current = true;
+              setIsSwiping(true);
+            }
+          }}
+        >
         <motion.ul
           className="flex gap-4 list-none p-0 m-0 items-center"
           animate={{
@@ -321,6 +322,7 @@ export default function Certifications() {
             </li>
           ))}
         </motion.ul>
+        </div>
       </div>
 
       {/* 이미지 확대 모달 */}
