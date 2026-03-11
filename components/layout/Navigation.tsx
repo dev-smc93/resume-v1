@@ -27,6 +27,14 @@ export default function Navigation({ hideDev }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [isMobile, setIsMobile] = useState(true);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(typeof window !== "undefined" && window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,7 +119,7 @@ export default function Navigation({ hideDev }: NavigationProps) {
   return (
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        activeSection === "hero"
+        !isMobile && activeSection === "hero"
           ? "bg-transparent shadow-none"
           : "bg-gray-900/40 dark:bg-gray-800/40 backdrop-blur-md shadow-lg"
       }`}
