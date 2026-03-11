@@ -7,6 +7,8 @@ export interface PersonalInfo {
   location: string;
   bio: string;
   profileImage?: string;
+  /** 푸터에 표시할 GitHub 레포지토리 URL (예: https://github.com/username/resume-v1) */
+  githubUrl?: string;
   typingTexts?: string[];
   personalDetails?: {
     birthDate: string;
@@ -78,6 +80,7 @@ export const personalInfo: PersonalInfo = {
   location: "수원·대전 근무 가능",
   bio: "조성만의 이력서 포트폴리오 사이트",
   profileImage: "/profile.jpg",
+  githubUrl: "https://github.com/dev-smc93/resume-v1",
   // typingTexts: [
   //   "유지보수",
   //   "PC조립",

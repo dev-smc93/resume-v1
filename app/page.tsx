@@ -7,6 +7,8 @@ import EducationAndMilitary from "@/components/sections/EducationAndMilitary";
 import Certifications from "@/components/sections/Certifications";
 import QnA from "@/components/sections/QnA";
 import Contact from "@/components/sections/Contact";
+import { personalInfo } from "@/data/resume-data";
+import { Github } from "lucide-react";
 
 export default async function Home({
   searchParams,
@@ -39,9 +41,22 @@ export default async function Home({
         <Contact />
       </Section>
       <footer className="bg-black dark:bg-gray-100 text-gray-400 dark:text-gray-600 text-center py-8">
-        <p className="text-gray-400">
-          © {new Date().getFullYear()} sungman93. resume.
-        </p>
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-0">
+          <p className="text-gray-400 dark:text-gray-600">
+            © {new Date().getFullYear()} sungman93. resume.
+          </p>
+          {personalInfo.githubUrl && (
+            <a
+              href={personalInfo.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-gray-400 dark:text-gray-600 hover:text-white dark:hover:text-gray-900 transition-colors"
+            >
+              <Github className="w-5 h-5" />
+              <span>GitHub</span>
+            </a>
+          )}
+        </div>
       </footer>
     </main>
   );
