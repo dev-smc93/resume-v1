@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowDown, MessageCircle, User } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 import VisitCounter from "@/components/ui/VisitCounter";
@@ -51,6 +51,18 @@ export default function Hero() {
   const [typingSpeed, setTypingSpeed] = useState(100);
   const [visitCount, setVisitCount] = useState(0);
   const [isVisitCounterModalOpen, setIsVisitCounterModalOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    const tryPlay = () => video.play().catch(() => {});
+    video.addEventListener("canplay", tryPlay, { once: true });
+    tryPlay();
+    const t = setTimeout(tryPlay, 800);
+    return () => { clearTimeout(t); video.removeEventListener("canplay", tryPlay); };
+  }, []);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -87,31 +99,24 @@ export default function Hero() {
   useEffect(() => {
     const incrementVisitCount = async () => {
       try {
-        const response = await fetch("/api/visits", {
-          method: "POST",
-        });
+        const response = await fetch("/api/visits", { method: "POST" });
         if (response.ok) {
           const data = await response.json();
           setVisitCount(data.count);
         }
-        } catch (error) {
-          // 에러 발생 시에도 기존 카운트 조회 시도
-          try {
-            const response = await fetch("/api/visits");
-            if (response.ok) {
-              const data = await response.json();
-              setVisitCount(data.count);
-            }
-          } catch (err) {
-            // 조용히 실패
+      } catch (error) {
+        try {
+          const response = await fetch("/api/visits");
+          if (response.ok) {
+            const data = await response.json();
+            setVisitCount(data.count);
           }
-        }
+        } catch (err) {}
+      }
     };
 
-    // 초기 카운트 증가
     incrementVisitCount();
 
-    // 주기적으로 카운트 조회 (4초마다)
     const intervalId = setInterval(async () => {
       try {
         const response = await fetch("/api/visits");
@@ -119,20 +124,32 @@ export default function Hero() {
           const data = await response.json();
           setVisitCount(data.count);
         }
-      } catch (error) {
-        // 조용히 실패
-      }
-    }, 4000); // 4초마다 업데이트
+      } catch (error) {}
+    }, 4000);
 
     return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <section className="relative min-h-screen min-h-[100svh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-        <div className="absolute top-40 right-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-20 left-40 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+    <section className="relative min-h-screen min-h-[100svh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50 overflow-hidden">
+      {/* MP4 백그라운드 비디오 (무한 재생, 음소거) - public/video/hero/background.mp4 */}
+      <div className="absolute inset-0 z-0 w-full h-full">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectFit: "cover" }}
+          aria-hidden
+        >
+          <source src="/video/hero/background.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-black/40 dark:bg-gradient-to-br dark:from-blue-950/40 dark:via-gray-900/30 dark:to-purple-950/40" aria-hidden />
       </div>
 
       <motion.div
