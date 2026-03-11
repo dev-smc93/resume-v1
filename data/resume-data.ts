@@ -269,7 +269,7 @@ export const certifications: Certification[] = [
   },
   {
     id: "award-2",
-    name: "서울 지방기능대회 심사위원",
+    name: "지방대회 심사위원",
     image: "/certifications/judge_appointment.png",
     acquiredDate: "2018",
     type: "appointment",
