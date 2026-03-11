@@ -52,15 +52,12 @@ export default function Projects() {
 
             <div className="flex flex-wrap gap-2 mb-4">
               {project.technologies.map((tech, i) => (
-                <motion.span
+                <span
                   key={i}
                   className="px-2 py-1 bg-gray-700 dark:bg-gray-100 text-gray-300 dark:text-gray-700 rounded text-xs"
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ delay: index * 0.15 + i * 0.05 }}
                 >
                   {tech}
-                </motion.span>
+                </span>
               ))}
             </div>
 
