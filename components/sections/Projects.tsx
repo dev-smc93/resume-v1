@@ -47,8 +47,8 @@ export default function Projects() {
           <motion.div
             key={project.id}
             className="bg-gray-800 dark:bg-white rounded-lg overflow-hidden shadow-lg transition-all group group/card"
-            initial={{ opacity: 0, y: 50 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.15 }}
             onMouseEnter={() => setHoveredCardId(project.id)}
             onMouseLeave={() => setHoveredCardId(null)}

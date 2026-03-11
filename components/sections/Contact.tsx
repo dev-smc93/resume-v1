@@ -132,9 +132,9 @@ export default function Contact() {
               target={item.label === "위치" ? "_blank" : undefined}
               rel={item.label === "위치" ? "noopener noreferrer" : undefined}
               className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg transition-all group cursor-pointer"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.1 }}
             >
               <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${item.color} flex items-center justify-center mb-4`}>
                 <Icon className="text-white" size={24} />

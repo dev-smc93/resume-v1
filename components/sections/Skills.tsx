@@ -19,8 +19,8 @@ export default function Skills() {
         <motion.div
           key={skillGroup.category}
           className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
-          initial={{ opacity: 0, y: 50 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: ANIMATION_DURATION.NORMAL, delay: groupIndex * 0.2 }}
         >
           <h3 className="text-2xl font-bold mb-4 text-blue-400 dark:text-blue-600">

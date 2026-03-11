@@ -134,8 +134,8 @@ export default function QnA() {
         {/* 왼쪽: 모바일 폰 목업 + 채팅 UI */}
         <motion.div
           className="flex justify-center"
-          initial={{ opacity: 0, x: -30 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: ANIMATION_DURATION.NORMAL, delay: 0.1 }}
         >
           <div className="relative w-[280px] md:w-[320px]">
@@ -317,8 +317,8 @@ export default function QnA() {
         {/* 오른쪽: 버튼 그룹 + 사용자 페르소나 */}
         <motion.div
           className="flex flex-col"
-          initial={{ opacity: 0, x: 30 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: ANIMATION_DURATION.NORMAL, delay: 0.2 }}
         >
           {/* 알약 버튼 그룹 */}

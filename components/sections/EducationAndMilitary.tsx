@@ -15,8 +15,8 @@ export default function EducationAndMilitary() {
         <motion.div
           key={index}
           className="bg-gray-800 dark:bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
-          initial={{ opacity: 0, x: -50 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: ANIMATION_DURATION.NORMAL, delay: index * 0.2 }}
         >
           <div className="flex items-start gap-4">

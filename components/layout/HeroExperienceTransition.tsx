@@ -19,6 +19,9 @@ export default function HeroExperienceTransition() {
   // Experience: 스크롤 시 아래에서 위로 슬라이드 업
   const experienceY = useTransform(scrollYProgress, [0, 1], ["100vh", "0px"]);
 
+  // Experience: 반투명에서 스크롤 진행 시 100% 불투명으로
+  const experienceOpacity = useTransform(scrollYProgress, [0, 1], [0.5, 1]);
+
   // Hero 페이드아웃 시 pointer-events: none으로 전환 → 아래 섹션 클릭 가능하도록
   const heroPointerEvents = useTransform(scrollYProgress, [0, 0.3], ["auto", "none"]);
 
@@ -45,7 +48,7 @@ export default function HeroExperienceTransition() {
       <motion.section
         id="experience"
         className="relative z-20 py-20 px-6 bg-gray-800 dark:bg-gray-50"
-        style={{ y: experienceY }}
+        style={{ y: experienceY, opacity: experienceOpacity }}
       >
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
