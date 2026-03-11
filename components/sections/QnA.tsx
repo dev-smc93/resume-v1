@@ -17,6 +17,7 @@ import {
   type QnATabId,
 } from "@/data/qna-data";
 import { Paperclip } from "lucide-react";
+import { scrollToSection } from "@/utils/scroll";
 
 const PERSONA_CARD_IN_CHAT = CONTENT_BY_TAB.persona[0];
 
@@ -251,17 +252,22 @@ export default function QnA() {
                     </div>
                   </div>
                   {/* 입력창 - 하단 고정, 전송 버튼이 잘리지 않도록 오른쪽 여백 확보 */}
-                  <div className="flex items-center gap-2 pt-4 pb-0.5 shrink-0 pr-1">
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection("contact")}
+                    className="flex items-center gap-2 pt-4 pb-0.5 shrink-0 pr-1 w-full cursor-pointer"
+                    aria-label="문의하기 섹션으로 이동"
+                  >
                     <input
                       type="text"
-                      placeholder="메시지를 입력하세요..."
+                      placeholder="궁금한 점을 남겨주세요.."
                       readOnly
-                      className="flex-1 min-w-0 rounded-full bg-white border border-gray-200 px-4 py-2.5 text-sm text-gray-600 placeholder-gray-400"
+                      className="flex-1 min-w-0 rounded-full bg-white border border-gray-200 px-4 py-2.5 text-sm text-gray-600 placeholder-gray-400 pointer-events-none"
                     />
-                    <button type="button" aria-label="전송" className="w-10 h-10 flex-shrink-0 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+                    <span className="w-10 h-10 flex-shrink-0 rounded-full bg-emerald-500 flex items-center justify-center text-white" aria-hidden>
                       <span className="text-lg">➤</span>
-                    </button>
-                  </div>
+                    </span>
+                  </button>
                 </div>
                 {/* 홈 인디케이터(제스처 바) - 진짜 핸드폰처럼 */}
                 <div className="bg-sky-50/90 pb-2 pt-1 flex justify-center shrink-0">
