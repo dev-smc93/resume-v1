@@ -12,9 +12,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ logs: [] });
     }
 
-    // 날짜 범위 계산 (UTC 기준 하루 범위)
-    const start = new Date(`${date}T00:00:00.000Z`);
-    const end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+    // 날짜 범위 계산: VisitCount와 동일하게 로컬 타임존 기준 사용
+    const [y, m, d] = date.split("-").map(Number);
+    const start = new Date(y, m - 1, d, 0, 0, 0, 0);
+    const end = new Date(y, m - 1, d + 1, 0, 0, 0, 0);
 
     const logs = await prisma.visitLog.findMany({
       where: {
