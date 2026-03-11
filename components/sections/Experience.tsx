@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Briefcase, Calendar } from "lucide-react";
 import { experiences } from "@/data/resume-data";
@@ -49,11 +50,14 @@ export default function Experience() {
                   transition={{ type: "spring", stiffness: 300 }}
                 >
                   {exp.logo && (
-                    <img
+                    <Image
                       src={exp.logo}
                       alt={exp.company}
-                      className="w-10 h-10 object-contain rounded-lg bg-white dark:bg-gray-100 p-1 group-hover:opacity-80 transition-opacity"
-                      onError={handleImageError}
+                      width={40}
+                      height={40}
+                      sizes="40px"
+                      className="object-contain rounded-lg bg-white dark:bg-gray-100 p-1 group-hover:opacity-80 transition-opacity"
+                      onError={(e) => handleImageError(e as React.SyntheticEvent<HTMLImageElement, Event>)}
                     />
                   )}
                   <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600 group-hover:text-blue-300 dark:group-hover:text-blue-500 transition-colors">
@@ -63,11 +67,14 @@ export default function Experience() {
               ) : (
                 <div className="flex items-center gap-3">
                   {exp.logo && (
-                    <img
+                    <Image
                       src={exp.logo}
                       alt={exp.company}
-                      className="w-10 h-10 object-contain rounded-lg bg-white dark:bg-gray-100 p-1"
-                      onError={handleImageError}
+                      width={40}
+                      height={40}
+                      sizes="40px"
+                      className="object-contain rounded-lg bg-white dark:bg-gray-100 p-1"
+                      onError={(e) => handleImageError(e as React.SyntheticEvent<HTMLImageElement, Event>)}
                     />
                   )}
                   <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600">

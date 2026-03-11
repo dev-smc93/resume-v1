@@ -1,14 +1,35 @@
+import dynamic from "next/dynamic";
 import Section from "@/components/ui/Section";
 import Navigation from "@/components/layout/Navigation";
 import HeroExperienceTransition from "@/components/layout/HeroExperienceTransition";
-import DevelopmentSection from "@/components/sections/DevelopmentSection";
-import EducationAndMilitary from "@/components/sections/EducationAndMilitary";
-import Certifications from "@/components/sections/Certifications";
-import QnA from "@/components/sections/QnA";
-import Contact from "@/components/sections/Contact";
 import PersonalInfoModalGate from "@/components/ui/PersonalInfoModalGate";
 import { personalInfo } from "@/data/resume-data";
 import { Github } from "lucide-react";
+
+const DevelopmentSection = dynamic(
+  () => import("@/components/sections/DevelopmentSection"),
+  { ssr: true }
+);
+
+const EducationAndMilitary = dynamic(
+  () => import("@/components/sections/EducationAndMilitary"),
+  { ssr: true }
+);
+
+const Certifications = dynamic(
+  () => import("@/components/sections/Certifications"),
+  { ssr: true }
+);
+
+const QnA = dynamic(
+  () => import("@/components/sections/QnA"),
+  { ssr: true }
+);
+
+const Contact = dynamic(
+  () => import("@/components/sections/Contact"),
+  { ssr: true }
+);
 
 export default async function Home({
   searchParams,

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import BaseModal from "./BaseModal";
 import { handleImageError } from "@/utils/image";
 
@@ -27,12 +28,14 @@ export default function ImageModal({
       className="p-6"
       noScroll
     >
-      <div className="w-full flex-1 min-h-0 flex items-center justify-center overflow-hidden rounded-lg bg-gray-900 dark:bg-gray-100">
-        <img
+      <div className="w-full flex-1 min-h-0 flex items-center justify-center overflow-hidden rounded-lg bg-gray-900 dark:bg-gray-100 relative">
+        <Image
           src={imageSrc}
           alt={imageAlt}
-          className="max-w-full max-h-full object-contain"
-          onError={handleImageError}
+          fill
+          sizes="(max-width: 1024px) 100vw, 1024px"
+          className="object-contain"
+          onError={(e) => handleImageError(e as React.SyntheticEvent<HTMLImageElement, Event>)}
         />
       </div>
     </BaseModal>

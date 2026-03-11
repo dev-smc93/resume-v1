@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useSectionInView } from "@/hooks/useSectionInView";
@@ -169,11 +170,14 @@ export default function QnA() {
                 {/* 앱 헤더 (초록 이어짐) */}
                 <div className="bg-emerald-500 px-4 pb-3 flex items-center justify-between shrink-0">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl overflow-hidden bg-gray-200 dark:bg-gray-600 flex-shrink-0 flex items-center justify-center">
-                      <img
+                    <div className="w-8 h-8 rounded-xl overflow-hidden bg-gray-200 dark:bg-gray-600 flex-shrink-0 flex items-center justify-center relative">
+                      <Image
                         src="/profile.jpg"
                         alt="프로필"
-                        className="w-full h-full object-cover"
+                        width={32}
+                        height={32}
+                        sizes="32px"
+                        className="object-cover"
                       />
                     </div>
                     <div>
@@ -257,8 +261,8 @@ export default function QnA() {
                         className={`flex items-end gap-1.5 ${typingSide === "left" ? "justify-start" : "justify-end"}`}
                       >
                         {typingSide === "left" && (
-                          <div className="w-8 h-8 rounded-xl overflow-hidden bg-gray-200 dark:bg-gray-600 flex-shrink-0 shadow-sm flex items-center justify-center">
-                            <img src="/profile.jpg" alt="" className="w-full h-full object-cover" />
+                          <div className="w-8 h-8 rounded-xl overflow-hidden bg-gray-200 dark:bg-gray-600 flex-shrink-0 shadow-sm flex items-center justify-center relative">
+                            <Image src="/profile.jpg" alt="" width={32} height={32} sizes="32px" className="object-cover" />
                           </div>
                         )}
                         <div

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Github, Code, Youtube, FileText } from "lucide-react";
@@ -67,16 +68,19 @@ export default function Projects() {
               aria-label={showGif ? "GIF 재생 중 (클릭하여 정지)" : "클릭하여 GIF 재생"}
             >
               {project.image ? (
-                <img
+                <Image
                   key={`${project.id}-${showGif ? "gif" : "thumb"}`}
                   src={imageSrc}
                   alt={project.title}
-                  className="w-full h-full object-contain"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-contain"
+                  unoptimized={imageSrc.endsWith(".gif")}
                   onError={(e) => {
                     if (imageSrc === project.thumbnail) {
                       handleThumbnailError(project.id);
                     } else {
-                      handleImageError(e);
+                      handleImageError(e as React.SyntheticEvent<HTMLImageElement, Event>);
                     }
                   }}
                 />

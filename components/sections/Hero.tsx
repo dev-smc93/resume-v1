@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { ArrowDown, MessageCircle, User } from "lucide-react";
@@ -51,6 +52,7 @@ export default function Hero() {
   const [typingSpeed, setTypingSpeed] = useState(100);
   const [visitCount, setVisitCount] = useState(0);
   const [isVisitCounterModalOpen, setIsVisitCounterModalOpen] = useState(false);
+  const [profileImageError, setProfileImageError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -95,39 +97,38 @@ export default function Hero() {
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, currentTextIndex, typingTexts, typingSpeed]);
 
-  // 방문 카운트 증가 및 조회
+  // 방문 카운트 증가 및 조회 (초기 로딩 경쟁 완화: 지연 호출 + 폴링 간격 확대)
   useEffect(() => {
-    const incrementVisitCount = async () => {
+    const fetchCount = async (method: "GET" | "POST" = "GET") => {
       try {
-        const response = await fetch("/api/visits", { method: "POST" });
+        const response = await fetch("/api/visits", { method });
         if (response.ok) {
           const data = await response.json();
           setVisitCount(data.count);
         }
-      } catch (error) {
-        try {
-          const response = await fetch("/api/visits");
-          if (response.ok) {
-            const data = await response.json();
-            setVisitCount(data.count);
-          }
-        } catch (err) {}
+      } catch {
+        if (method === "POST") {
+          try {
+            const res = await fetch("/api/visits");
+            if (res.ok) {
+              const data = await res.json();
+              setVisitCount(data.count);
+            }
+          } catch {}
+        }
       }
     };
 
-    incrementVisitCount();
+    // 1.5초 지연 후 POST (초기 렌더링/LCP와 경쟁 완화)
+    const delayId = setTimeout(() => fetchCount("POST"), 1500);
 
-    const intervalId = setInterval(async () => {
-      try {
-        const response = await fetch("/api/visits");
-        if (response.ok) {
-          const data = await response.json();
-          setVisitCount(data.count);
-        }
-      } catch (error) {}
-    }, 4000);
+    // 15초마다 GET 폴링 (4초 → 15초)
+    const intervalId = setInterval(() => fetchCount("GET"), 15000);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      clearTimeout(delayId);
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
@@ -140,7 +141,7 @@ export default function Hero() {
           loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           width={1920}
           height={1080}
           className="absolute inset-0 w-full h-full object-cover"
@@ -167,12 +168,17 @@ export default function Hero() {
             style={{ borderRadius: "50%" }}
             onClick={() => { captureScrollY(); window.dispatchEvent(new CustomEvent("openPersonalInfoModal")); }}
           >
-            {personalInfo.profileImage ? (
-              <img
+            {personalInfo.profileImage && !profileImageError ? (
+              <Image
                 src={personalInfo.profileImage}
                 alt={personalInfo.name}
+                width={128}
+                height={128}
+                sizes="128px"
+                priority
+                unoptimized
                 className="w-full h-full object-cover rounded-full"
-                style={{ borderRadius: "50%" }}
+                onError={() => setProfileImageError(true)}
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500" />

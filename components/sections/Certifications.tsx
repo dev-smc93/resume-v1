@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { certifications } from "@/data/resume-data";
 import { useState, useEffect, useRef, useMemo } from "react";
@@ -312,7 +313,15 @@ export default function Certifications() {
                       if (isMobile) setIsHovered(false);
                     }}
                   >
-                    <img src={cert.image} alt={cert.name} className="w-full h-full object-contain" onError={handleImageError} />
+                    <Image
+                      src={cert.image}
+                      alt={cert.name}
+                      width={200}
+                      height={200}
+                      sizes="(max-width: 768px) 50vw, 200px"
+                      className="w-full h-full object-contain"
+                      onError={(e) => handleImageError(e as React.SyntheticEvent<HTMLImageElement, Event>)}
+                    />
                   </div>
                   <div className="text-center flex-1 flex flex-col justify-between">
                     <div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { skills } from "@/data/resume-data";
 import { useSectionInView } from "@/hooks/useSectionInView";
@@ -35,11 +36,15 @@ export default function Skills() {
               const content = (
                 <>
                   {skillImage && (
-                    <img
+                    <Image
                       src={skillImage}
                       alt={skillName}
-                      className="w-5 h-5 object-contain"
-                      onError={handleImageError}
+                      width={20}
+                      height={20}
+                      sizes="20px"
+                      className="object-contain w-5 h-5"
+                      unoptimized={skillImage.endsWith(".svg")}
+                      onError={(e) => handleImageError(e as React.SyntheticEvent<HTMLImageElement, Event>)}
                     />
                   )}
                   <span>{skillName}</span>
