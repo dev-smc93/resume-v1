@@ -291,7 +291,12 @@ export default function Certifications() {
                 minWidth: 0,
               }}
             >
-              <div className="bg-gray-800 dark:bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center h-full w-full">
+              <div
+                className="bg-gray-800 dark:bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center h-full w-full"
+                onTouchStart={(e) => {
+                  if (isMobile) e.stopPropagation();
+                }}
+              >
                 <div
                   className="w-full h-48 md:h-56 lg:h-64 xl:h-72 mb-3 rounded-lg overflow-hidden bg-gray-700 dark:bg-gray-100 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
                   onClick={() => {
