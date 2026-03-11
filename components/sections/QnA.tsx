@@ -105,6 +105,31 @@ export default function QnA() {
   return (
     <div ref={ref} className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center max-w-6xl mx-auto">
+        {/* 모바일: 탭 버튼을 핸드폰 목업 위에 일렬로 노출 (설명글 숨김, 아이콘만) */}
+        <div className="lg:hidden flex justify-center mb-2">
+          <div className="flex flex-nowrap items-center justify-center gap-1">
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => handleTabClick(tab.id)}
+                  aria-label={tab.label}
+                  className={`flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-emerald-500 text-white shadow-md"
+                      : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* 왼쪽: 모바일 폰 목업 + 채팅 UI */}
         <motion.div
           className="flex justify-center"
@@ -293,7 +318,7 @@ export default function QnA() {
           transition={{ duration: ANIMATION_DURATION.NORMAL, delay: 0.2 }}
         >
           {/* 알약 버튼 그룹 */}
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="hidden lg:flex flex-wrap gap-2 mb-8">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -313,8 +338,8 @@ export default function QnA() {
             })}
           </div>
 
-          {/* 탭에 따른 하단 내용 (테두리 없음) */}
-          <div className="space-y-5">
+          {/* 탭에 따른 하단 내용 (테두리 없음) - 모바일에서는 설명 카드는 숨김 */}
+          <div className="space-y-5 hidden lg:block">
             {CONTENT_BY_TAB[activeTab].map((item, index) => {
               const Icon = item.icon;
               return (
