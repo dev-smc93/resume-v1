@@ -123,8 +123,8 @@ export default function BaseModal({
             <motion.div
               className={`bg-gray-800/80 dark:bg-white/80 rounded-2xl p-6 md:p-8 ${maxWidthClasses[maxWidth]} w-full shadow-2xl relative backdrop-blur-sm ${className} ${
                 noScroll
-                  ? "h-[80vh] max-h-[80vh] flex flex-col min-h-0 overflow-hidden"
-                  : "max-h-[80vh] overflow-y-auto overflow-x-hidden"
+                  ? "h-[80vh] h-[80svh] max-h-[80vh] max-h-[80svh] flex flex-col min-h-0 overflow-hidden"
+                  : "max-h-[80vh] max-h-[80svh] overflow-y-auto overflow-x-hidden"
               }`}
               onClick={(e) => e.stopPropagation()}
               {...modalCardVariants}

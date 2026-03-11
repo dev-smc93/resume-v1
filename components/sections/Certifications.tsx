@@ -198,7 +198,7 @@ export default function Certifications() {
         sectionElRef.current = node;
         (inViewRef as (n: HTMLDivElement | null) => void)(node);
       }}
-      className="w-full overflow-hidden flex flex-col items-center min-h-[60vh] relative"
+      className="w-full overflow-hidden flex flex-col items-center min-h-[60vh] min-h-[60svh] relative"
       onMouseEnter={(e) => {
         if (!isMobile) {
           setIsHovered(true);

@@ -143,7 +143,7 @@ export default function VisitCounterModal({
                       <Calendar size={20} className="text-blue-400 dark:text-blue-600" />
                       일자별 방문 수 (최근 30일)
                     </h4>
-                    <div className="space-y-2 max-h-[50vh] overflow-y-auto overflow-x-hidden">
+                    <div className="space-y-2 max-h-[50vh] max-h-[50svh] overflow-y-auto overflow-x-hidden">
                       {dailyVisits.length === 0 ? (
                         <div className="text-center py-8 text-gray-400 dark:text-gray-600">
                           방문 기록이 없습니다.

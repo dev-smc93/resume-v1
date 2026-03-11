@@ -31,7 +31,7 @@ export default async function Home({
       <Section id="education" title="학력 및 병역" className="bg-gray-900 dark:bg-white">
         <EducationAndMilitary />
       </Section>
-      <Section id="certifications" title="자격 및 수상" className="bg-gray-800 dark:bg-gray-50 !py-28 min-h-[70vh]">
+      <Section id="certifications" title="자격 및 수상" className="bg-gray-800 dark:bg-gray-50 !py-28 min-h-[70vh] min-h-[70svh]">
         <Certifications />
       </Section>
       <Section id="qna" title="Q&A" className="bg-gray-800 dark:bg-gray-50">
