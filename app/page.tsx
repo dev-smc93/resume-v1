@@ -19,7 +19,7 @@ export default async function Home({
   const hideDev = params.dev === "false";
 
   return (
-    <main className="min-h-screen bg-gray-900 dark:bg-white">
+    <main className="min-h-screen min-h-[100svh] bg-gray-900 dark:bg-white">
       <Navigation hideDev={hideDev} />
       <div id="hero">
         <Hero />
