@@ -609,6 +609,15 @@ html.dark .visit-counter-digit {
   display: none;
 }
 
+/* 전체 페이지 스크롤바 숨김 (스크롤 동작은 유지) */
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
 /* 핸드폰 채팅 버블 텍스트 - 라이트 모드에서 검정색 고정 (글로벌 스타일 덮어쓰기) */
 html:not(.dark) .phone-chat-bubble-text {
   color: #000000 !important;
