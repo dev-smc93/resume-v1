@@ -25,8 +25,9 @@ export default function ImageModal({
       title={title}
       maxWidth="4xl"
       className="p-6"
+      noScroll
     >
-      <div className="w-full h-[70vh] flex items-center justify-center overflow-hidden rounded-lg bg-gray-900 dark:bg-gray-100">
+      <div className="w-full flex-1 min-h-0 flex items-center justify-center overflow-hidden rounded-lg bg-gray-900 dark:bg-gray-100">
         <img
           src={imageSrc}
           alt={imageAlt}

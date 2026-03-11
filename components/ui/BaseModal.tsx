@@ -21,6 +21,8 @@ interface BaseModalProps {
   titleIcon?: ReactNode;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "4xl";
   className?: string;
+  /** true면 카드 스크롤 비활성(overflow-hidden), 내용이 남는 공간만 사용. ImageModal 등에 사용 */
+  noScroll?: boolean;
 }
 
 const maxWidthClasses = {
@@ -40,6 +42,7 @@ export default function BaseModal({
   titleIcon,
   maxWidth = "md",
   className = "",
+  noScroll = false,
 }: BaseModalProps) {
   // 모달이 열려있을 때 배경 스크롤 막기
   useEffect(() => {
@@ -117,7 +120,11 @@ export default function BaseModal({
             {...modalContainerVariants}
           >
             <motion.div
-              className={`bg-gray-800/80 dark:bg-white/80 rounded-2xl p-6 md:p-8 ${maxWidthClasses[maxWidth]} w-full max-h-[80vh] overflow-y-auto overflow-x-hidden shadow-2xl relative backdrop-blur-sm ${className}`}
+              className={`bg-gray-800/80 dark:bg-white/80 rounded-2xl p-6 md:p-8 ${maxWidthClasses[maxWidth]} w-full shadow-2xl relative backdrop-blur-sm ${className} ${
+                noScroll
+                  ? "h-[80vh] max-h-[80vh] flex flex-col min-h-0 overflow-hidden"
+                  : "max-h-[80vh] overflow-y-auto overflow-x-hidden"
+              }`}
               onClick={(e) => e.stopPropagation()}
               {...modalCardVariants}
               style={modalCardStyle}
