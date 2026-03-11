@@ -1,7 +1,6 @@
-import Hero from "@/components/sections/Hero";
 import Section from "@/components/ui/Section";
 import Navigation from "@/components/layout/Navigation";
-import Experience from "@/components/sections/Experience";
+import HeroExperienceTransition from "@/components/layout/HeroExperienceTransition";
 import DevelopmentSection from "@/components/sections/DevelopmentSection";
 import EducationAndMilitary from "@/components/sections/EducationAndMilitary";
 import Certifications from "@/components/sections/Certifications";
@@ -22,12 +21,7 @@ export default async function Home({
   return (
     <main className="min-h-screen min-h-[100svh] bg-gray-900 dark:bg-white">
       <Navigation hideDev={hideDev} />
-      <div id="hero">
-        <Hero />
-      </div>
-      <Section id="experience" title="경력" className="bg-gray-800 dark:bg-gray-50">
-        <Experience />
-      </Section>
+      <HeroExperienceTransition />
       <DevelopmentSection hideDev={hideDev} />
       <Section id="education" title="학력 및 병역" className="bg-gray-900 dark:bg-white">
         <EducationAndMilitary />

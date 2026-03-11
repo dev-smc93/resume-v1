@@ -1,9 +1,10 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { smoothScrollTo } from "@/utils/scroll";
 
 const ALL_NAV_ITEMS = [
   { name: "홈", href: "#hero" },
@@ -28,6 +29,7 @@ export default function Navigation({ hideDev }: NavigationProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [isMobile, setIsMobile] = useState(true);
+  const programmaticScrollRef = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(typeof window !== "undefined" && window.innerWidth < 768);
@@ -39,11 +41,19 @@ export default function Navigation({ hideDev }: NavigationProps) {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      if (programmaticScrollRef.current) return; // 네비 클릭 직후 스크롤 중엔 handleScroll 무시
 
       // 현재 활성 섹션 감지
       const sections = navItems.map((item) => item.href.substring(1));
       const navHeight = 80; // 네비게이션 바 높이
       const threshold = navHeight + 50; // 활성화 기준점
+      const heroZoneEnd = window.innerHeight * 0.3; // Hero 구간: 상단 30% 미만 스크롤 시 홈 활성화
+      
+      // Hero(홈) 구간: 스크롤이 적으면 홈 활성화
+      if (window.scrollY < heroZoneEnd) {
+        setActiveSection("hero");
+        return;
+      }
       
       // 스크롤이 페이지 하단에 가까운지 확인 (200px 이내)
       const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
@@ -63,56 +73,69 @@ export default function Navigation({ hideDev }: NavigationProps) {
         }
       }
       
-      // 그렇지 않으면 역순으로 확인하여 가장 위에 있는 활성 섹션을 찾음
+      // 역순으로 확인 (hero 제외 - fixed로 항상 rect.top=0이라 경력 구간에서 hero가 잘못 선택됨)
       if (!current) {
         for (let i = sections.length - 1; i >= 0; i--) {
           const section = sections[i];
+          if (section === "hero") continue; // hero는 heroZoneEnd에서만 처리
           const element = document.getElementById(section);
           if (element) {
             const rect = element.getBoundingClientRect();
-            // 섹션이 화면 상단 기준점을 지나갔는지 확인
             if (rect.top <= threshold) {
               current = section;
               break;
             }
           }
         }
+        if (!current) current = "hero"; // 상단에 다른 섹션이 없으면 hero
       }
       
       setActiveSection(current || "");
     };
 
-    // 초기 실행
     handleScroll();
-    
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    const onScrollToSection = (e: Event) => {
+      setActiveSection((e as CustomEvent<string>).detail || "");
+    };
+    window.addEventListener("scrollToSection", onScrollToSection);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scrollToSection", onScrollToSection);
+    };
   }, [navItems]);
 
   const scrollToSection = (href: string) => {
+    const sectionId = href.substring(1);
+    setActiveSection(sectionId); // 클릭 즉시 활성 스타일 적용
+
     // 모바일 메뉴가 열려있으면 먼저 완전히 제거
     if (isMobileMenuOpen) {
       setIsMobileMenuOpen(false);
-      // 메뉴를 즉시 DOM에서 제거 (display: none)
       const mobileMenu = document.querySelector('.md\\:hidden.mt-4') as HTMLElement;
       if (mobileMenu) {
         mobileMenu.style.display = 'none';
       }
     }
 
-    // requestAnimationFrame으로 다음 프레임에 스크롤 시작 (레이아웃 안정화 후)
     requestAnimationFrame(() => {
-      const element = document.querySelector(href);
-      if (element) {
-        const navHeight = 40; // 네비게이션 바 높이
-        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-        const offsetPosition = elementPosition - navHeight;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        });
+      const navHeight = 40;
+      let duration = 1000;
+      if (href === "#hero") {
+        smoothScrollTo(0, 1200);
+        duration = 1200;
+      } else if (href === "#experience") {
+        smoothScrollTo(window.innerHeight - navHeight, 1000);
+      } else {
+        const element = document.querySelector(href);
+        if (element) {
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+          smoothScrollTo(elementPosition - navHeight, 1000);
+        }
       }
+      programmaticScrollRef.current = true;
+      setTimeout(() => { programmaticScrollRef.current = false; }, duration + 50);
     });
   };
 
