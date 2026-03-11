@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { certifications } from "@/data/resume-data";
 import { useState, useEffect, useRef, useMemo } from "react";
 import ImageModal from "@/components/ui/ImageModal";
@@ -8,12 +8,15 @@ import { useSectionInView } from "@/hooks/useSectionInView";
 import { handleImageError } from "@/utils/image";
 
 export default function Certifications() {
-  const [ref, inView] = useSectionInView();
+  const [inViewRef, inView] = useSectionInView();
+  const sectionElRef = useRef<HTMLDivElement | null>(null);
 
   const [offset, setOffset] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0); // 모바일 스와이프 중 표시용 (vw)
+  const [isSwiping, setIsSwiping] = useState(false); // 모바일 스와이프 중
   const [selectedImage, setSelectedImage] = useState<{
     src: string;
     alt: string;
@@ -21,19 +24,37 @@ export default function Certifications() {
   } | null>(null);
   const animationRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
-  const speed = 0.06; // 이동 속도 (더 느리게)
+  const speed = 0.06; // 자동 재생 속도
+  const hoverSpeedMultiplier = 2.6; // 호버 시 슬라이드 속도 배율 (더 빠르게)
+  const hoverSpeedRef = useRef<number>(0); // -1 ~ 1, 호버 시 마우스 X에 따른 속도 배율
+  const isHoveredRef = useRef<boolean>(false);
+  const modalOpenRef = useRef<boolean>(false);
+  const offsetRef = useRef<number>(0);
+  const touchStartClientX = useRef<number>(0);
+  const touchStartOffsetRef = useRef<number>(0);
+  const dragOffsetRef = useRef<number>(0);
+  const hasMovedEnough = useRef(false);
+  const dragOccurredRef = useRef(false);
+  const swipeEndHandled = useRef(false);
+  const mobileSwipeRef = useRef(false); // 스와이프 중 자동재생 일시정지용
+
+  const pixelToVw = (px: number) => (px / (typeof window !== "undefined" ? window.innerWidth : 1920)) * 100;
+  const normalizeOffset = (o: number, setWidth: number) => ((o % setWidth) + setWidth) % setWidth;
+
+  useEffect(() => {
+    isHoveredRef.current = isHovered;
+  }, [isHovered]);
+
+  useEffect(() => {
+    modalOpenRef.current = !!selectedImage;
+  }, [selectedImage]);
+
+  useEffect(() => {
+    offsetRef.current = offset;
+  }, [offset]);
 
   // 무한 루프를 위한 충분히 복제된 배열 (메모이제이션)
-  const duplicatedCerts = useMemo(
-    () => [
-      ...certifications,
-      ...certifications,
-      ...certifications,
-      ...certifications,
-      ...certifications,
-    ],
-    [certifications]
-  );
+  const duplicatedCerts = useMemo(() => [...certifications, ...certifications, ...certifications, ...certifications, ...certifications], [certifications]);
 
   // 반응형으로 화면 크기에 따라 보여줄 항목 수 조정
   useEffect(() => {
@@ -62,9 +83,48 @@ export default function Certifications() {
   // 한 세트(원본 배열 길이)의 총 너비
   const singleSetWidth = certifications.length * itemWidthPercent;
 
-  // 연속적으로 좌에서 우로 이동
+  // 모바일 스와이프 중 document 터치 리스너
   useEffect(() => {
-    if (!inView || certifications.length === 0 || isHovered) return;
+    if (!isSwiping) return;
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length) {
+        const delta = e.touches[0].clientX - touchStartClientX.current;
+        if (Math.abs(delta) > 5) hasMovedEnough.current = true;
+        const vw = pixelToVw(delta);
+        dragOffsetRef.current = vw;
+        setDragOffset(vw);
+        e.preventDefault();
+      }
+    };
+
+    const onEnd = () => {
+      if (swipeEndHandled.current) return;
+      swipeEndHandled.current = true;
+      const startOffset = touchStartOffsetRef.current;
+      const currentDragVw = dragOffsetRef.current;
+      setOffset(() => normalizeOffset(startOffset - currentDragVw, singleSetWidth));
+      setDragOffset(0);
+      dragOffsetRef.current = 0;
+      setIsSwiping(false);
+      mobileSwipeRef.current = false;
+      dragOccurredRef.current = hasMovedEnough.current;
+    };
+
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("touchend", onEnd);
+    document.addEventListener("touchcancel", onEnd);
+
+    return () => {
+      document.removeEventListener("touchmove", onTouchMove);
+      document.removeEventListener("touchend", onEnd);
+      document.removeEventListener("touchcancel", onEnd);
+    };
+  }, [isSwiping, singleSetWidth]);
+
+  // 연속 슬라이드: 비호버 시 기본 속도, 호버 시 마우스 X 위치에 따라 좌/우 수동 슬라이드 (모바일 스와이프 중 일시정지)
+  useEffect(() => {
+    if (!inView || certifications.length === 0) return;
 
     const animate = (currentTime: number) => {
       if (lastTimeRef.current === 0) {
@@ -74,14 +134,21 @@ export default function Certifications() {
       const deltaTime = currentTime - lastTimeRef.current;
       lastTimeRef.current = currentTime;
 
+      if (mobileSwipeRef.current) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      const useHoverSpeed = isHoveredRef.current && !modalOpenRef.current;
+      const speedMultiplier = useHoverSpeed ? hoverSpeedRef.current * hoverSpeedMultiplier : 1;
+      const effectiveSpeed = speed * speedMultiplier;
+
       setOffset((prev) => {
-        const newOffset = prev + (speed * deltaTime) / 16; // 60fps 기준으로 정규화
-        
-        // 리셋 포인트에 도달하면 처음으로 돌아가기 (끊김 없이)
-        if (newOffset >= singleSetWidth) {
-          return newOffset - singleSetWidth;
-        }
-        
+        const newOffset = prev + (effectiveSpeed * deltaTime) / 16;
+
+        if (newOffset >= singleSetWidth) return newOffset - singleSetWidth;
+        if (newOffset < 0) return newOffset + singleSetWidth;
+
         return newOffset;
       });
 
@@ -96,35 +163,67 @@ export default function Certifications() {
       }
       lastTimeRef.current = 0;
     };
-  }, [inView, certifications.length, singleSetWidth, itemsPerView, isHovered]);
+  }, [inView, certifications.length, singleSetWidth, itemsPerView]);
 
   if (certifications.length === 0) return null;
 
   return (
-    <div 
-      ref={ref} 
+    <div
+      ref={(node) => {
+        sectionElRef.current = node;
+        (inViewRef as (n: HTMLDivElement | null) => void)(node);
+      }}
       className="w-full overflow-hidden flex flex-col items-center min-h-[60vh] relative"
-      onMouseEnter={() => {
+      onMouseEnter={(e) => {
         if (!isMobile) {
           setIsHovered(true);
+          const el = sectionElRef.current;
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.width > 0) {
+              const ratio = (e.clientX - rect.left) / rect.width;
+              hoverSpeedRef.current = Math.max(-1, Math.min(1, (0.5 - ratio) * 2));
+            }
+          }
         }
       }}
       onMouseLeave={() => {
         if (!isMobile) {
           setIsHovered(false);
+          hoverSpeedRef.current = 0;
         }
       }}
-      onTouchStart={() => {
-        // 모바일 터치 시 호버 상태 변경 방지
+      onMouseMove={(e) => {
+        if (!isMobile) {
+          const el = sectionElRef.current;
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.width > 0) {
+              const ratio = (e.clientX - rect.left) / rect.width;
+              hoverSpeedRef.current = Math.max(-1, Math.min(1, (0.5 - ratio) * 2));
+            }
+          }
+        }
+      }}
+      onTouchStart={(e) => {
         setIsHovered(false);
+        if (isMobile && e.touches.length) {
+          swipeEndHandled.current = false;
+          touchStartClientX.current = e.touches[0].clientX;
+          touchStartOffsetRef.current = offsetRef.current;
+          hasMovedEnough.current = false;
+          dragOccurredRef.current = false;
+          mobileSwipeRef.current = true;
+          setIsSwiping(true);
+        }
       }}
     >
-      {/* 일시정지 툴팁 - 호버 시에만 표시 (모바일 제외) */}
+      {/* 호버 시 툴팁 (모바일 제외) */}
       {isHovered && !isMobile && (
         <motion.div
           className="absolute top-4 z-10 px-4 py-2 bg-blue-500/70 dark:bg-blue-600/70 text-white text-sm font-medium rounded-lg shadow-lg backdrop-blur-sm pointer-events-none"
           initial={{ opacity: 0, y: -10 }}
-          animate={{ 
+          animate={{
             opacity: [0.7, 1, 0.7],
             y: 0,
           }}
@@ -139,7 +238,7 @@ export default function Certifications() {
             },
           }}
         >
-          일시정지 중 · 마우스를 떼면 재생
+          좌우로 마우스를 움직여 슬라이드
         </motion.div>
       )}
 
@@ -147,7 +246,7 @@ export default function Certifications() {
         <motion.ul
           className="flex gap-4 list-none p-0 m-0 items-center"
           animate={{
-            x: `calc(50vw - ${offset}vw - ${(100 / itemsPerView) / 2}vw)`,
+            x: `calc(50vw - ${offset - dragOffset}vw - ${100 / itemsPerView / 2}vw)`,
           }}
           transition={{
             duration: 0,
@@ -156,76 +255,52 @@ export default function Certifications() {
             width: "max-content",
           }}
         >
-            {duplicatedCerts.map((cert, index) => (
-              <li
-                key={`${cert.id}-${index}`}
-                className="flex-shrink-0"
-                style={{
-                  width: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
-                  maxWidth: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
-                  minWidth: 0,
-                }}
-              >
+          {duplicatedCerts.map((cert, index) => (
+            <li
+              key={`${cert.id}-${index}`}
+              className="flex-shrink-0"
+              style={{
+                width: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
+                maxWidth: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
+                minWidth: 0,
+              }}
+            >
               <div className="bg-gray-800 dark:bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center h-full w-full">
-                <div 
+                <div
                   className="w-full h-48 md:h-56 lg:h-64 xl:h-72 mb-3 rounded-lg overflow-hidden bg-gray-700 dark:bg-gray-100 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
                   onClick={() => {
+                    if (dragOccurredRef.current) {
+                      dragOccurredRef.current = false;
+                      return;
+                    }
                     setSelectedImage({
                       src: cert.image,
                       alt: cert.name,
                       title: cert.name,
                     });
-                    // 모바일에서 클릭 시 호버 상태 리셋
-                    if (isMobile) {
-                      setIsHovered(false);
-                    }
-                  }}
-                  onMouseEnter={(e) => {
-                    // 모바일이 아닐 때만 호버 처리
-                    if (!isMobile) {
-                      e.stopPropagation();
-                    }
+                    if (isMobile) setIsHovered(false);
                   }}
                 >
-                  <img
-                    src={cert.image}
-                    alt={cert.name}
-                    className="w-full h-full object-contain"
-                    onError={handleImageError}
-                  />
+                  <img src={cert.image} alt={cert.name} className="w-full h-full object-contain" onError={handleImageError} />
                 </div>
                 <div className="text-center flex-1 flex flex-col justify-between">
                   <div>
-                    <p className="text-lg font-semibold text-gray-100 dark:text-gray-800 mb-1">
-                      {cert.name}
-                    </p>
-                    <p className="text-sm text-gray-400 dark:text-gray-600">
-                      {cert.acquiredDate}
-                    </p>
+                    <p className="text-lg font-semibold text-gray-100 dark:text-gray-800 mb-1">{cert.name}</p>
+                    <p className="text-sm text-gray-400 dark:text-gray-600">{cert.acquiredDate}</p>
                   </div>
                   <span className="inline-block mt-2 px-2 py-1 text-xs rounded-full bg-gray-700 dark:bg-gray-100 text-gray-300 dark:text-gray-700">
-                    {cert.type === "certification"
-                      ? "📜 자격증"
-                      : cert.type === "award"
-                        ? "🏆 수상"
-                        : "📋 위촉"}
+                    {cert.type === "certification" ? "📜 자격증" : cert.type === "award" ? "🏆 수상" : "📋 위촉"}
                   </span>
                 </div>
               </div>
             </li>
-            ))}
+          ))}
         </motion.ul>
       </div>
-      
+
       {/* 이미지 확대 모달 */}
       {selectedImage && (
-        <ImageModal
-          isOpen={!!selectedImage}
-          onClose={() => setSelectedImage(null)}
-          imageSrc={selectedImage.src}
-          imageAlt={selectedImage.alt}
-          title={selectedImage.title}
-        />
+        <ImageModal isOpen={!!selectedImage} onClose={() => setSelectedImage(null)} imageSrc={selectedImage.src} imageAlt={selectedImage.alt} title={selectedImage.title} />
       )}
     </div>
   );
