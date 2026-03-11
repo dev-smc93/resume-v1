@@ -269,64 +269,64 @@ export default function Certifications() {
             }
           }}
         >
-        <motion.ul
-          className="flex gap-4 list-none p-0 m-0 items-center"
-          animate={{
-            x: `calc(50vw - ${offset - dragOffset}vw - ${100 / itemsPerView / 2}vw)`,
-          }}
-          transition={{
-            duration: 0,
-          }}
-          style={{
-            width: "max-content",
-          }}
-        >
-          {duplicatedCerts.map((cert, index) => (
-            <li
-              key={`${cert.id}-${index}`}
-              className="flex-shrink-0"
-              style={{
-                width: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
-                maxWidth: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
-                minWidth: 0,
-              }}
-            >
-              <div
-                className="bg-gray-800 dark:bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center h-full w-full"
-                onTouchStart={(e) => {
-                  if (isMobile) e.stopPropagation();
+          <motion.ul
+            className="flex gap-4 list-none p-0 m-0 items-center"
+            animate={{
+              x: `calc(50vw - ${offset - dragOffset}vw - ${100 / itemsPerView / 2}vw)`,
+            }}
+            transition={{
+              duration: 0,
+            }}
+            style={{
+              width: "max-content",
+            }}
+          >
+            {duplicatedCerts.map((cert, index) => (
+              <li
+                key={`${cert.id}-${index}`}
+                className="flex-shrink-0"
+                style={{
+                  width: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
+                  maxWidth: `calc((100vw - ${gapSize * (itemsPerView - 1)}px) / ${itemsPerView})`,
+                  minWidth: 0,
                 }}
               >
                 <div
-                  className="w-full h-48 md:h-56 lg:h-64 xl:h-72 mb-3 rounded-lg overflow-hidden bg-gray-700 dark:bg-gray-100 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => {
-                    if (dragOccurredRef.current) {
-                      dragOccurredRef.current = false;
-                      return;
-                    }
-                    setSelectedImage({
-                      src: cert.image,
-                      alt: cert.name,
-                      title: cert.name,
-                    });
-                    if (isMobile) setIsHovered(false);
+                  className="bg-gray-800 dark:bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-shadow flex flex-col items-center h-full w-full"
+                  onTouchStart={(e) => {
+                    if (isMobile) e.stopPropagation();
                   }}
                 >
-                  <img src={cert.image} alt={cert.name} className="w-full h-full object-contain" onError={handleImageError} />
-                </div>
-                <div className="text-center flex-1 flex flex-col justify-between">
-                  <div>
-                    <p className="text-lg font-semibold text-gray-100 dark:text-gray-800 mb-1">{cert.name}</p>
-                    <p className="text-sm text-gray-400 dark:text-gray-600">{cert.acquiredDate}</p>
+                  <div
+                    className="w-full h-48 md:h-56 lg:h-64 xl:h-72 mb-3 rounded-lg overflow-hidden bg-gray-700 dark:bg-gray-100 flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={() => {
+                      if (dragOccurredRef.current) {
+                        dragOccurredRef.current = false;
+                        return;
+                      }
+                      setSelectedImage({
+                        src: cert.image,
+                        alt: cert.name,
+                        title: cert.name,
+                      });
+                      if (isMobile) setIsHovered(false);
+                    }}
+                  >
+                    <img src={cert.image} alt={cert.name} className="w-full h-full object-contain" onError={handleImageError} />
                   </div>
-                  <span className="inline-block mt-2 px-2 py-1 text-xs rounded-full bg-gray-700 dark:bg-gray-100 text-gray-300 dark:text-gray-700">
-                    {cert.type === "certification" ? "📜 자격증" : cert.type === "award" ? "🏆 수상" : "📋 위촉"}
-                  </span>
+                  <div className="text-center flex-1 flex flex-col justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-gray-100 dark:text-gray-800 mb-1">{cert.name}</p>
+                      <p className="text-sm text-gray-400 dark:text-gray-600">{cert.acquiredDate}</p>
+                    </div>
+                    <span className="inline-block mt-2 px-2 py-1 text-xs rounded-full bg-gray-700 dark:bg-gray-100 text-gray-300 dark:text-gray-700">
+                      {cert.type === "certification" ? "📜 자격증" : cert.type === "award" ? "🏆 수상" : "📋 위촉"}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </motion.ul>
+              </li>
+            ))}
+          </motion.ul>
         </div>
       </div>
 
