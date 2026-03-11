@@ -6,8 +6,8 @@ import { ArrowDown, MessageCircle, User } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 import VisitCounter from "@/components/ui/VisitCounter";
 import VisitCounterModal from "@/components/ui/VisitCounterModal";
-import PersonalInfoModal from "@/components/ui/PersonalInfoModal";
 import { scrollToSection } from "@/utils/scroll";
+import { captureScrollY } from "@/utils/personalInfoModalScroll";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -51,7 +51,6 @@ export default function Hero() {
   const [typingSpeed, setTypingSpeed] = useState(100);
   const [visitCount, setVisitCount] = useState(0);
   const [isVisitCounterModalOpen, setIsVisitCounterModalOpen] = useState(false);
-  const [isPersonalInfoModalOpen, setIsPersonalInfoModalOpen] = useState(false);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -83,13 +82,6 @@ export default function Hero() {
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, currentTextIndex, typingTexts, typingSpeed]);
-
-  // Q&A 섹션 등에서 "인적사항" 클릭 시 모달 열기
-  useEffect(() => {
-    const handler = () => setIsPersonalInfoModalOpen(true);
-    window.addEventListener("openPersonalInfoModal", handler);
-    return () => window.removeEventListener("openPersonalInfoModal", handler);
-  }, []);
 
   // 방문 카운트 증가 및 조회
   useEffect(() => {
@@ -158,7 +150,7 @@ export default function Hero() {
             style={{ borderRadius: "50%" }}
             whileHover={{ scale: 1.1, rotate: 5 }}
             transition={{ type: "spring", stiffness: 300 }}
-            onClick={() => setIsPersonalInfoModalOpen(true)}
+            onClick={() => { captureScrollY(); window.dispatchEvent(new CustomEvent("openPersonalInfoModal")); }}
           >
             {personalInfo.profileImage ? (
               <img
@@ -191,7 +183,7 @@ export default function Hero() {
           variants={itemVariants}
         >
           <motion.button
-            onClick={() => setIsPersonalInfoModalOpen(true)}
+            onClick={() => { captureScrollY(); window.dispatchEvent(new CustomEvent("openPersonalInfoModal")); }}
             className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-full hover:from-teal-600 hover:to-cyan-600 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -244,12 +236,6 @@ export default function Hero() {
       <VisitCounterModal
         isOpen={isVisitCounterModalOpen}
         onClose={() => setIsVisitCounterModalOpen(false)}
-      />
-      
-      {/* 인적사항 모달 */}
-      <PersonalInfoModal
-        isOpen={isPersonalInfoModalOpen}
-        onClose={() => setIsPersonalInfoModalOpen(false)}
       />
     </section>
   );

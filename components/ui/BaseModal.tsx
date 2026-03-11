@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactNode, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import {
   modalBackdropVariants,
@@ -23,6 +24,8 @@ interface BaseModalProps {
   className?: string;
   /** true면 카드 스크롤 비활성(overflow-hidden), 내용이 남는 공간만 사용. ImageModal 등에 사용 */
   noScroll?: boolean;
+  /** 클릭 시점에 저장한 스크롤 위치(스크롤 이동 방지용). 없으면 window.scrollY 사용 */
+  savedScrollY?: number;
 }
 
 const maxWidthClasses = {
@@ -43,6 +46,7 @@ export default function BaseModal({
   maxWidth = "md",
   className = "",
   noScroll = false,
+  savedScrollY: savedScrollYProp,
 }: BaseModalProps) {
   // 모달이 열려있을 때 배경 스크롤 막기
   useEffect(() => {
@@ -52,8 +56,8 @@ export default function BaseModal({
       
       // 첫 번째 모달이 열릴 때만 스크롤 막기
       if (openModalCount === 1) {
-        // 현재 스크롤 위치 저장 (iOS Safari 대응)
-        const scrollY = window.scrollY;
+        // 클릭 시점에 저장된 값 우선 사용 (QnA 등에서 스크롤 이동 방지)
+        const scrollY = savedScrollYProp !== undefined && savedScrollYProp >= 0 ? savedScrollYProp : window.scrollY;
         document.body.style.position = 'fixed';
         document.body.style.top = `-${scrollY}px`;
         document.body.style.width = '100%';
@@ -105,9 +109,9 @@ export default function BaseModal({
         });
       }
     };
-  }, [isOpen]);
+  }, [isOpen, savedScrollYProp]);
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         <>
@@ -149,4 +153,7 @@ export default function BaseModal({
       )}
     </AnimatePresence>
   );
+
+  if (typeof document === "undefined") return modalContent;
+  return createPortal(modalContent, document.body);
 }

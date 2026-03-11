@@ -18,10 +18,17 @@ import {
 } from "@/data/qna-data";
 import { Paperclip } from "lucide-react";
 import { scrollToSection } from "@/utils/scroll";
+import { captureScrollY } from "@/utils/personalInfoModalScroll";
 
 const PERSONA_CARD_IN_CHAT = CONTENT_BY_TAB.persona[0];
 
 function openPersonalInfoFromQnA() {
+  const scrollY = window.scrollY;
+  captureScrollY();
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = "100%";
+  document.body.style.overflow = "hidden";
   window.dispatchEvent(new CustomEvent("openPersonalInfoModal"));
 }
 

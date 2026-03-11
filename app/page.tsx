@@ -7,6 +7,7 @@ import EducationAndMilitary from "@/components/sections/EducationAndMilitary";
 import Certifications from "@/components/sections/Certifications";
 import QnA from "@/components/sections/QnA";
 import Contact from "@/components/sections/Contact";
+import PersonalInfoModalGate from "@/components/ui/PersonalInfoModalGate";
 import { personalInfo } from "@/data/resume-data";
 import { Github } from "lucide-react";
 
@@ -40,6 +41,7 @@ export default async function Home({
       <Section id="contact" title="문의하기" className="bg-gray-900 dark:bg-white">
         <Contact />
       </Section>
+      <PersonalInfoModalGate />
       <footer className="bg-black dark:bg-gray-100 text-gray-400 dark:text-gray-600 text-center py-8">
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-0">
           <p className="text-gray-400 dark:text-gray-600">
