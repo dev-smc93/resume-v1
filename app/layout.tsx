@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { personalInfo } from "@/data/resume-data";
+import ScrollToTopOnMount from "@/components/ui/ScrollToTopOnMount";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,6 +73,9 @@ export default function RootLayout({
                     root.classList.add('dark');
                   }
                 } catch (e) {}
+                // 새로고침 시 스크롤 복원 비활성화 및 최상단으로
+                if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+                window.scrollTo(0, 0);
               })();
             `,
           }}
@@ -81,6 +85,7 @@ export default function RootLayout({
         className={`${geistSans.variable} antialiased`}
       >
         <ThemeProvider>
+          <ScrollToTopOnMount />
           {children}
         </ThemeProvider>
       </body>
