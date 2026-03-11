@@ -594,10 +594,10 @@ html {
 
 /* 방문 카운터 숫자 박스 - 반투명 (globals 덮어쓰기 회피) */
 .visit-counter-digit {
-  background-color: rgba(31, 41, 55, 0.5);
+  background-color: rgba(31, 41, 55, 0.35);
 }
 html.dark .visit-counter-digit {
-  background-color: rgba(55, 65, 81, 0.5);
+  background-color: rgba(55, 65, 81, 0.35);
 }
 
 /* 스크롤은 되지만 스크롤바 숨김 (핸드폰 채팅 영역 등) */
