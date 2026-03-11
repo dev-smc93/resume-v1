@@ -65,43 +65,44 @@ export default function BaseModal({
         openModalCount--;
       }
       
-      // 모든 모달이 닫혔을 때만 스크롤 복원
+      // 모든 모달이 닫혔을 때만 스크롤 복원 (모바일: 스타일 제거와 scrollTo를 같은 프레임에 처리해 홈으로 깜빡이는 현상 방지)
       if (openModalCount === 0) {
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.body.style.overflow = '';
-        
-        // 저장된 스크롤 위치로 복원 (iOS Safari 대응)
-        if (scrollY) {
-          const parsedScrollY = parseInt(scrollY.replace('px', '').replace('-', ''), 10);
-          if (!isNaN(parsedScrollY)) {
-            window.scrollTo(0, parsedScrollY);
+        const savedScrollY = document.body.style.top;
+        requestAnimationFrame(() => {
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
+          document.body.style.overflow = '';
+          if (savedScrollY) {
+            const parsedScrollY = parseInt(savedScrollY.replace('px', '').replace('-', ''), 10);
+            if (!isNaN(parsedScrollY)) {
+              window.scrollTo(0, parsedScrollY);
+            }
           }
-        }
+        });
       }
     }
-    
+
     // cleanup: 컴포넌트 언마운트 시에도 처리
     return () => {
       if (isOpen && openModalCount > 0) {
         openModalCount--;
       }
-      
+
       if (openModalCount === 0) {
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.body.style.overflow = '';
-        
-        if (scrollY) {
-          const parsedScrollY = parseInt(scrollY.replace('px', '').replace('-', ''), 10);
-          if (!isNaN(parsedScrollY)) {
-            window.scrollTo(0, parsedScrollY);
+        const savedScrollY = document.body.style.top;
+        requestAnimationFrame(() => {
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
+          document.body.style.overflow = '';
+          if (savedScrollY) {
+            const parsedScrollY = parseInt(savedScrollY.replace('px', '').replace('-', ''), 10);
+            if (!isNaN(parsedScrollY)) {
+              window.scrollTo(0, parsedScrollY);
+            }
           }
-        }
+        });
       }
     };
   }, [isOpen]);
