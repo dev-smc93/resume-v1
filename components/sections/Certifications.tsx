@@ -216,18 +216,7 @@ export default function Certifications() {
       onMouseMove={(e) => {
         if (!isMobile) updateHoverFromClientX(e.clientX);
       }}
-      onTouchStart={(e) => {
-        setIsHovered(false);
-        if (isMobile && e.touches.length) {
-          swipeEndHandled.current = false;
-          touchStartClientX.current = e.touches[0].clientX;
-          touchStartOffsetRef.current = offsetRef.current;
-          hasMovedEnough.current = false;
-          dragOccurredRef.current = false;
-          mobileSwipeRef.current = true;
-          setIsSwiping(true);
-        }
-      }}
+      onTouchStart={() => setIsHovered(false)}
     >
       {/* 호버 시 툴팁 (모바일 제외, 위치에 따라 방향 표시) */}
       {isHovered && !isMobile && (
@@ -265,7 +254,20 @@ export default function Certifications() {
         </motion.div>
       )}
 
-      <div className="relative flex justify-center w-full flex-1">
+      <div
+        className="relative flex justify-center w-full flex-1"
+        onTouchStart={(e) => {
+          if (isMobile && e.touches.length) {
+            swipeEndHandled.current = false;
+            touchStartClientX.current = e.touches[0].clientX;
+            touchStartOffsetRef.current = offsetRef.current;
+            hasMovedEnough.current = false;
+            dragOccurredRef.current = false;
+            mobileSwipeRef.current = true;
+            setIsSwiping(true);
+          }
+        }}
+      >
         <motion.ul
           className="flex gap-4 list-none p-0 m-0 items-center"
           animate={{
