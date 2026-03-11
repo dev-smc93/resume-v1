@@ -121,17 +121,16 @@ export default function Navigation({ hideDev }: NavigationProps) {
 
     requestAnimationFrame(() => {
       const navHeight = 40;
-      let duration = 1000;
+      const duration = 2000; // 스크롤 애니메이션 속도 (2초)
       if (href === "#hero") {
-        smoothScrollTo(0, 1200);
-        duration = 1200;
+        smoothScrollTo(0, duration);
       } else if (href === "#experience") {
-        smoothScrollTo(window.innerHeight - navHeight, 1000);
+        smoothScrollTo(window.innerHeight - navHeight, duration);
       } else {
         const element = document.querySelector(href);
         if (element) {
           const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-          smoothScrollTo(elementPosition - navHeight, 1000);
+          smoothScrollTo(elementPosition - navHeight, duration);
         }
       }
       programmaticScrollRef.current = true;
