@@ -50,6 +50,22 @@ export default function Certifications() {
     return ">>";
   };
 
+  const hoverDirectionRef = useRef<"<<" | "<" | "—" | ">" | ">>">("—");
+
+  const updateHoverFromClientX = (clientX: number) => {
+    const el = sectionElRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const ratio = (clientX - rect.left) / rect.width;
+    hoverSpeedRef.current = Math.max(-1, Math.min(1, (0.5 - ratio) * 2));
+    const nextDir = getHoverDirection(ratio);
+    if (hoverDirectionRef.current !== nextDir) {
+      hoverDirectionRef.current = nextDir;
+      setHoverDirection(nextDir);
+    }
+  };
+
   useEffect(() => {
     isHoveredRef.current = isHovered;
   }, [isHovered]);
@@ -186,36 +202,19 @@ export default function Certifications() {
       onMouseEnter={(e) => {
         if (!isMobile) {
           setIsHovered(true);
-          const el = sectionElRef.current;
-          if (el) {
-            const rect = el.getBoundingClientRect();
-            if (rect.width > 0) {
-              const ratio = (e.clientX - rect.left) / rect.width;
-              hoverSpeedRef.current = Math.max(-1, Math.min(1, (0.5 - ratio) * 2));
-              setHoverDirection(getHoverDirection(ratio));
-            }
-          }
+          updateHoverFromClientX(e.clientX);
         }
       }}
       onMouseLeave={() => {
         if (!isMobile) {
           setIsHovered(false);
+          hoverDirectionRef.current = "—";
           setHoverDirection("—");
           hoverSpeedRef.current = 0;
         }
       }}
       onMouseMove={(e) => {
-        if (!isMobile) {
-          const el = sectionElRef.current;
-          if (el) {
-            const rect = el.getBoundingClientRect();
-            if (rect.width > 0) {
-              const ratio = (e.clientX - rect.left) / rect.width;
-              hoverSpeedRef.current = Math.max(-1, Math.min(1, (0.5 - ratio) * 2));
-              setHoverDirection(getHoverDirection(ratio));
-            }
-          }
-        }
+        if (!isMobile) updateHoverFromClientX(e.clientX);
       }}
       onTouchStart={(e) => {
         setIsHovered(false);
