@@ -592,6 +592,14 @@ html {
   animation: typing 0.6s ease-in-out infinite;
 }
 
+/* 방문 카운터 숫자 박스 - 반투명 (globals 덮어쓰기 회피) */
+.visit-counter-digit {
+  background-color: rgba(31, 41, 55, 0.5);
+}
+html.dark .visit-counter-digit {
+  background-color: rgba(55, 65, 81, 0.5);
+}
+
 /* 스크롤은 되지만 스크롤바 숨김 (핸드폰 채팅 영역 등) */
 .scrollbar-hide {
   -ms-overflow-style: none;

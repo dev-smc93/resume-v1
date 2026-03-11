@@ -43,7 +43,7 @@ export default function VisitCounter({ count, onClick }: VisitCounterProps) {
         {digits.map((digit, index) => (
           <div
             key={`${index}-box`}
-            className="w-8 h-10 bg-gray-800 dark:bg-gray-700 rounded-md flex items-center justify-center shadow-lg border border-gray-200 dark:border-gray-600 relative overflow-hidden"
+            className="visit-counter-digit w-8 h-10 rounded-md flex items-center justify-center shadow-lg border border-white/20 dark:border-gray-500/50 relative overflow-hidden backdrop-blur-md"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
