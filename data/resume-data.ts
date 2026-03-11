@@ -190,6 +190,7 @@ export const projects: Project[] = [
     manual: "https://extreme-tarsal-657.notion.site/MVP-30fe0c8cfbd080e69a35c7b679a79481", // 매뉴얼 URL로 교체해주세요
     github: "https://github.com/dev-smc93/pet-kids-note-mvp",
     image: "/projects/pet_kids_note2.gif",
+    thumbnail: "/projects/pet_kids_note2_thumb.png",
   },
   {
     id: "proj-2",
@@ -199,6 +200,7 @@ export const projects: Project[] = [
     link: "https://react-project-psi-smoky.vercel.app/",
     github: "https://github.com/josungman/react_project",
     image: "/projects/waste_statistics_portal.gif",
+    thumbnail: "/projects/waste_statistics_portal_thumb.png",
   },
   {
     id: "proj-3",
@@ -207,6 +209,7 @@ export const projects: Project[] = [
     technologies: ["Python", "PyQt", "Selenium", "GPT API"],
     youtube: "https://www.youtube.com/watch?v=5jmxkkwe-ug",
     image: "/projects/automated_knowledge_qna_response.gif",
+    thumbnail: "/projects/automated_knowledge_qna_response_thumb.png",
   },
 ];
 
