@@ -41,13 +41,11 @@ export default function Experience() {
 
             <div className="mb-4">
               {exp.link ? (
-                <motion.a
+                <a
                   href={exp.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 group cursor-pointer"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300 }}
+                  className="flex items-center gap-3 group cursor-pointer transition-colors duration-200"
                 >
                   {exp.logo && (
                     <Image
@@ -63,7 +61,7 @@ export default function Experience() {
                   <h4 className="text-xl font-semibold text-blue-400 dark:text-blue-600 group-hover:text-blue-300 dark:group-hover:text-blue-500 transition-colors">
                     {exp.company}
                   </h4>
-                </motion.a>
+                </a>
               ) : (
                 <div className="flex items-center gap-3">
                   {exp.logo && (
