@@ -110,7 +110,11 @@ export default function Navigation({ hideDev }: NavigationProps) {
 
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300 bg-gray-900/40 dark:bg-gray-800/40 backdrop-blur-md shadow-lg"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        activeSection === "hero"
+          ? "bg-transparent shadow-none"
+          : "bg-gray-900/40 dark:bg-gray-800/40 backdrop-blur-md shadow-lg"
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
