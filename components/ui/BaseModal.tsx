@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import {
@@ -10,6 +10,7 @@ import {
   modalCardVariants,
   modalCardStyle,
 } from "./modal-animations";
+import { useScrollLock } from "@/contexts/ScrollLockContext";
 
 // 여러 모달이 동시에 열릴 수 있는 경우를 위한 전역 카운터
 let openModalCount = 0;
@@ -48,8 +49,10 @@ export default function BaseModal({
   noScroll = false,
   savedScrollY: savedScrollYProp,
 }: BaseModalProps) {
-  // 모달이 열려있을 때 배경 스크롤 막기
-  useEffect(() => {
+  const { setLockedScrollY } = useScrollLock();
+
+  // 모달이 열려있을 때 배경 스크롤 막기 (paint 전 실행으로 홈 섹션 깜빡임 방지)
+  useLayoutEffect(() => {
     if (isOpen) {
       // 모달이 열릴 때 카운터 증가
       openModalCount++;
@@ -62,6 +65,8 @@ export default function BaseModal({
         document.body.style.top = `-${scrollY}px`;
         document.body.style.width = '100%';
         document.body.style.overflow = 'hidden';
+        // Hero opacity 유지를 위해 잠긴 스크롤 위치 전달 (window.scrollY가 0으로 리셋되는 문제 방지)
+        setLockedScrollY(scrollY);
       }
     } else {
       // 모달이 닫힐 때 카운터 감소
@@ -71,6 +76,7 @@ export default function BaseModal({
       
       // 모든 모달이 닫혔을 때만 스크롤 복원 (모바일: 스타일 제거와 scrollTo를 같은 프레임에 처리해 홈으로 깜빡이는 현상 방지)
       if (openModalCount === 0) {
+        setLockedScrollY(null);
         const savedScrollY = document.body.style.top;
         requestAnimationFrame(() => {
           document.body.style.position = '';
@@ -94,6 +100,7 @@ export default function BaseModal({
       }
 
       if (openModalCount === 0) {
+        setLockedScrollY(null);
         const savedScrollY = document.body.style.top;
         requestAnimationFrame(() => {
           document.body.style.position = '';
@@ -109,7 +116,7 @@ export default function BaseModal({
         });
       }
     };
-  }, [isOpen, savedScrollYProp]);
+  }, [isOpen, savedScrollYProp, setLockedScrollY]);
 
   const modalContent = (
     <AnimatePresence>

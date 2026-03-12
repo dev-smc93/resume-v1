@@ -10,6 +10,8 @@ interface ImageModalProps {
   imageSrc: string;
   imageAlt: string;
   title?: string;
+  /** 클릭 시점 스크롤 위치 (모달 열릴 때 배경 홈으로 이동 방지) */
+  savedScrollY?: number;
 }
 
 export default function ImageModal({
@@ -18,6 +20,7 @@ export default function ImageModal({
   imageSrc,
   imageAlt,
   title,
+  savedScrollY,
 }: ImageModalProps) {
   return (
     <BaseModal
@@ -27,6 +30,7 @@ export default function ImageModal({
       maxWidth="4xl"
       className="p-6"
       noScroll
+      savedScrollY={savedScrollY}
     >
       <div className="w-full flex-1 min-h-0 flex items-center justify-center overflow-hidden rounded-lg bg-gray-900 dark:bg-gray-100 relative">
         <Image

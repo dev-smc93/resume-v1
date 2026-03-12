@@ -13,3 +13,12 @@ export function takeSavedScrollY(): number | null {
   savedScrollY = null;
   return value;
 }
+
+/** 클릭 직후 동기 호출로 body 스크롤 즉시 잠금 (모달 paint 전 홈 섹션 깜빡임 방지) */
+export function applyScrollLockImmediate(scrollY: number): void {
+  if (typeof document === "undefined") return;
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = "100%";
+  document.body.style.overflow = "hidden";
+}

@@ -7,6 +7,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import ImageModal from "@/components/ui/ImageModal";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { handleImageError } from "@/utils/image";
+import { applyScrollLockImmediate } from "@/utils/personalInfoModalScroll";
 
 export default function Certifications() {
   const [inViewRef, inView] = useSectionInView();
@@ -15,20 +16,21 @@ export default function Certifications() {
   const [offset, setOffset] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
   const [isHovered, setIsHovered] = useState(false);
-  const [hoverDirection, setHoverDirection] = useState<"<<" | "<" | "—" | ">" | ">>">("—"); // 툴팁 방향 표시
+  const [hoverDirection, setHoverDirection] = useState<"<<" | "<" | "?" | ">" | ">>">("?"); // ??? ?? ???
   const [isMobile, setIsMobile] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0); // 모바일 스와이프 중 표시용 (vw)
-  const [isSwiping, setIsSwiping] = useState(false); // 모바일 스와이프 중
+  const [dragOffset, setDragOffset] = useState(0); // ??????????? ???????(vw)
+  const [isSwiping, setIsSwiping] = useState(false); // ??????????? ??
   const [selectedImage, setSelectedImage] = useState<{
     src: string;
     alt: string;
     title: string;
   } | null>(null);
+  const savedScrollYRef = useRef<number | undefined>(undefined);
   const animationRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
-  const speed = 0.04; // 자동 재생 속도
-  const hoverSpeedMultiplier = 2.4; // 호버 시 슬라이드 속도 배율 (더 빠르게)
-  const hoverSpeedRef = useRef<number>(0); // -1 ~ 1, 호버 시 마우스 X에 따른 속도 배율
+  const speed = 0.04; // ??? ??? ???
+  const hoverSpeedMultiplier = 2.4; // ??? ???????? ??? ?? (??????
+  const hoverSpeedRef = useRef<number>(0); // -1 ~ 1, ??? ??????X????? ??? ??
   const isHoveredRef = useRef<boolean>(false);
   const modalOpenRef = useRef<boolean>(false);
   const offsetRef = useRef<number>(0);
@@ -38,20 +40,21 @@ export default function Certifications() {
   const hasMovedEnough = useRef(false);
   const dragOccurredRef = useRef(false);
   const swipeEndHandled = useRef(false);
-  const mobileSwipeRef = useRef(false); // 스와이프 중 자동재생 일시정지용
+  const mobileSwipeRef = useRef(false); // ??????? ???????? ?????????
 
+  const slideHintText = "??? ???? ??? ????";
   const pixelToVw = (px: number) => (px / (typeof window !== "undefined" ? window.innerWidth : 1920)) * 100;
   const normalizeOffset = (o: number, setWidth: number) => ((o % setWidth) + setWidth) % setWidth;
 
-  const getHoverDirection = (ratio: number): "<<" | "<" | "—" | ">" | ">>" => {
+  const getHoverDirection = (ratio: number): "<<" | "<" | "?" | ">" | ">>" => {
     if (ratio < 0.2) return "<<";
     if (ratio < 0.35) return "<";
-    if (ratio <= 0.65) return "—";
+    if (ratio <= 0.65) return "?";
     if (ratio <= 0.8) return ">";
     return ">>";
   };
 
-  const hoverDirectionRef = useRef<"<<" | "<" | "—" | ">" | ">>">("—");
+  const hoverDirectionRef = useRef<"<<" | "<" | "?" | ">" | ">>">("?");
 
   const updateHoverFromClientX = (clientX: number) => {
     const el = sectionElRef.current;
@@ -79,22 +82,22 @@ export default function Certifications() {
     offsetRef.current = offset;
   }, [offset]);
 
-  // 무한 루프를 위한 충분히 복제된 배열 (메모이제이션)
+  // ?? ??????? ?????????? (????????)
   const duplicatedCerts = useMemo(() => [...certifications, ...certifications, ...certifications, ...certifications, ...certifications], [certifications]);
 
-  // 반응형으로 화면 크기에 따라 보여줄 항목 수 조정
+  // ?????????? ???????? ???????? ????
   useEffect(() => {
     const updateItemsPerView = () => {
       const width = window.innerWidth;
-      setIsMobile(width < 768); // 모바일 감지
+      setIsMobile(width < 768); // ???????
       if (width < 768) {
-        setItemsPerView(2); // 모바일: 2개
+        setItemsPerView(2); // ???? 2??
       } else if (width < 1024) {
-        setItemsPerView(3); // 태블릿: 3개
+        setItemsPerView(3); // ????? 3??
       } else if (width < 1280) {
-        setItemsPerView(4); // 중간 데스크톱: 4개
+        setItemsPerView(4); // ?? ??????: 4??
       } else {
-        setItemsPerView(5); // 큰 데스크톱: 5개
+        setItemsPerView(5); // ????????: 5??
       }
     };
 
@@ -103,13 +106,13 @@ export default function Certifications() {
     return () => window.removeEventListener("resize", updateItemsPerView);
   }, []);
 
-  // 각 항목의 너비 계산 - CSS calc 사용
+  // ??????????? ?? - CSS calc ???
   const gapSize = 16; // gap-4 = 1rem = 16px
   const itemWidthPercent = 100 / itemsPerView;
-  // 한 세트(원본 배열 길이)의 총 너비
+  // ?????(??? ?? ??)???????
   const singleSetWidth = certifications.length * itemWidthPercent;
 
-  // 모바일 스와이프 중 document 터치 리스너
+  // ??????????? ??document ??? ????
   useEffect(() => {
     if (!isSwiping) return;
 
@@ -148,7 +151,7 @@ export default function Certifications() {
     };
   }, [isSwiping, singleSetWidth]);
 
-  // 연속 슬라이드: 비호버 시 기본 속도, 호버 시 마우스 X 위치에 따라 좌/우 수동 슬라이드 (모바일 스와이프 중 일시정지)
+  // ??? ??????: ???????? ???, ??? ??????X ???????? ??????? ?????? (??????????? ?????????)
   useEffect(() => {
     if (!inView || certifications.length === 0) return;
 
@@ -209,8 +212,8 @@ export default function Certifications() {
       onMouseLeave={() => {
         if (!isMobile) {
           setIsHovered(false);
-          hoverDirectionRef.current = "—";
-          setHoverDirection("—");
+          hoverDirectionRef.current = "?";
+          setHoverDirection("?");
           hoverSpeedRef.current = 0;
         }
       }}
@@ -219,7 +222,7 @@ export default function Certifications() {
       }}
       onTouchStart={() => setIsHovered(false)}
     >
-      {/* 호버 시 툴팁 (모바일 제외, 위치에 따라 방향 표시) */}
+      {/* ??? ????? (???????, ???????? ?? ???) */}
       {isHovered && !isMobile && (
         <motion.div
           className="absolute top-4 z-10 px-4 py-2 bg-blue-500/70 dark:bg-blue-600/70 text-white text-sm font-medium rounded-lg shadow-lg backdrop-blur-sm pointer-events-none flex items-center gap-2"
@@ -305,6 +308,9 @@ export default function Certifications() {
                         dragOccurredRef.current = false;
                         return;
                       }
+                      const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
+                      savedScrollYRef.current = scrollY;
+                      applyScrollLockImmediate(scrollY);
                       setSelectedImage({
                         src: cert.image,
                         alt: cert.name,
@@ -341,7 +347,14 @@ export default function Certifications() {
 
       {/* 이미지 확대 모달 */}
       {selectedImage && (
-        <ImageModal isOpen={!!selectedImage} onClose={() => setSelectedImage(null)} imageSrc={selectedImage.src} imageAlt={selectedImage.alt} title={selectedImage.title} />
+        <ImageModal
+          isOpen={!!selectedImage}
+          onClose={() => setSelectedImage(null)}
+          imageSrc={selectedImage.src}
+          imageAlt={selectedImage.alt}
+          title={selectedImage.title}
+          savedScrollY={savedScrollYRef.current}
+        />
       )}
     </div>
   );

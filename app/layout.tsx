@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ScrollLockProvider } from "@/contexts/ScrollLockContext";
 import { personalInfo } from "@/data/resume-data";
 import ScrollToTopOnMount from "@/components/ui/ScrollToTopOnMount";
 
@@ -85,8 +86,10 @@ export default function RootLayout({
         className={`${geistSans.variable} antialiased`}
       >
         <ThemeProvider>
-          <ScrollToTopOnMount />
-          {children}
+          <ScrollLockProvider>
+            <ScrollToTopOnMount />
+            {children}
+          </ScrollLockProvider>
         </ThemeProvider>
       </body>
     </html>
