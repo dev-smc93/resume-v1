@@ -35,11 +35,7 @@ const itemVariants = {
 
 // Hero 백그라운드 영상 (1~3개, 2개 이상이면 순환 재생)
 // public/video/hero/ 에 영상 추가 후 경로 등록
-const HERO_VIDEOS: string[] = [
-  "/video/hero/background.mp4",
-  "/video/hero/background2.mp4",
-  "/video/hero/background3.mp4",
-];
+const HERO_VIDEOS: string[] = ["/video/hero/background.mp4", "/video/hero/background2.mp4", "/video/hero/background3.mp4"];
 
 const scrollIndicatorVariants = {
   animate: {
@@ -78,10 +74,7 @@ export default function Hero() {
   const videoBRef = useRef<HTMLVideoElement>(null);
   const crossfadeInitialized = useRef(false);
 
-  const videoSources = useMemo(
-    () => HERO_VIDEOS.filter(Boolean).slice(0, 3),
-    []
-  );
+  const videoSources = useMemo(() => HERO_VIDEOS.filter(Boolean).slice(0, 3), []);
   const isRotation = videoSources.length > 1;
   const currentSrc = videoSources[videoIndex % videoSources.length];
 
@@ -211,7 +204,7 @@ export default function Hero() {
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
-    
+
     const handleTyping = () => {
       if (!isDeleting) {
         // 타이핑 중
@@ -292,10 +285,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 w-full h-full">
         {isRotation ? (
           <>
-            <div
-              className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
-              style={{ opacity: videoPlaying ? opacityA : 0 }}
-            >
+            <div className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out" style={{ opacity: videoPlaying ? opacityA : 0 }}>
               <video
                 ref={videoARef}
                 muted
@@ -308,10 +298,7 @@ export default function Hero() {
                 aria-hidden
               />
             </div>
-            <div
-              className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
-              style={{ opacity: videoPlaying ? opacityB : 0 }}
-            >
+            <div className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out" style={{ opacity: videoPlaying ? opacityB : 0 }}>
               <video
                 ref={videoBRef}
                 muted
@@ -326,10 +313,7 @@ export default function Hero() {
             </div>
           </>
         ) : (
-          <div
-            className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
-            style={{ opacity: videoPlaying ? videoOpacity : 0 }}
-          >
+          <div className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out" style={{ opacity: videoPlaying ? videoOpacity : 0 }}>
             <video
               ref={videoRef}
               autoPlay
@@ -350,20 +334,15 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black/40 dark:bg-gradient-to-br dark:from-blue-950/40 dark:via-gray-900/30 dark:to-purple-950/40" aria-hidden />
       </div>
 
-      <motion.div
-        className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div
-          className="mb-8"
-          variants={itemVariants}
-        >
+      <motion.div className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center" variants={containerVariants} initial="hidden" animate="visible">
+        <motion.div className="mb-8" variants={itemVariants}>
           <motion.div
             className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 shadow-2xl overflow-hidden relative cursor-pointer"
             style={{ borderRadius: "50%" }}
-            onClick={() => { captureScrollY(); window.dispatchEvent(new CustomEvent("openPersonalInfoModal")); }}
+            onClick={() => {
+              captureScrollY();
+              window.dispatchEvent(new CustomEvent("openPersonalInfoModal"));
+            }}
           >
             {personalInfo.profileImage && !profileImageError ? (
               <Image
@@ -383,25 +362,20 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        <motion.h1
-          className="text-4xl md:text-6xl font-bold mb-4 text-center flex flex-col items-center gap-2"
-          variants={itemVariants}
-        >
-            <div className="flex items-center gap-2">
-              <span className="bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">
-                {currentText}
-              </span>
-              <span className="animate-blink-fast text-blue-700 relative -top-1">|</span>
-            </div>
+        <motion.h1 className="text-4xl md:text-6xl font-bold mb-4 text-center flex flex-col items-center gap-2" variants={itemVariants}>
+          <div className="flex items-center gap-2">
+            <span className="bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">{currentText}</span>
+            <span className="animate-blink-fast text-blue-700 relative -top-1">|</span>
+          </div>
           <span className="text-gray-300 dark:text-gray-600 [text-shadow:0_2px_8px_rgba(0,0,0,0.5)] dark:[text-shadow:0_2px_12px_rgba(0,0,0,0.7)]">이런 분 찾고 있나요?</span>
         </motion.h1>
 
-        <motion.div
-          className="flex flex-wrap justify-center gap-6 mb-10"
-          variants={itemVariants}
-        >
+        <motion.div className="flex flex-wrap justify-center gap-6 mb-10" variants={itemVariants}>
           <motion.button
-            onClick={() => { captureScrollY(); window.dispatchEvent(new CustomEvent("openPersonalInfoModal")); }}
+            onClick={() => {
+              captureScrollY();
+              window.dispatchEvent(new CustomEvent("openPersonalInfoModal"));
+            }}
             className="flex items-center justify-center gap-2 px-4 py-3 md:px-6 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-full hover:from-teal-600 hover:to-cyan-600 transition-colors shadow-lg cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -422,14 +396,8 @@ export default function Hero() {
         </motion.div>
 
         {/* 방문 카운터 - 스크롤하여 더 보기 위에 표시 */}
-        <motion.div
-          className="mb-8"
-          variants={itemVariants}
-        >
-          <VisitCounter 
-            count={visitCount} 
-            onClick={() => setIsVisitCounterModalOpen(true)}
-          />
+        <motion.div className="mb-8" variants={itemVariants}>
+          <VisitCounter count={visitCount} onClick={() => setIsVisitCounterModalOpen(true)} />
         </motion.div>
 
         <motion.div
@@ -439,23 +407,15 @@ export default function Hero() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <span className="text-base md:text-lg text-gray-400 dark:text-gray-500 hover:text-gray-300 dark:hover:text-gray-600 transition-colors">
-            스크롤하여 더 보기
-          </span>
-          <motion.div
-            variants={scrollIndicatorVariants}
-            animate="animate"
-          >
+          <span className="text-base md:text-lg text-gray-400 dark:text-gray-500 hover:text-gray-300 dark:hover:text-gray-600 transition-colors">스크롤하여 더 보기</span>
+          <motion.div variants={scrollIndicatorVariants} animate="animate">
             <ArrowDown size={24} className="text-gray-400" />
           </motion.div>
         </motion.div>
       </motion.div>
 
       {/* 방문 카운터 모달 */}
-      <VisitCounterModal
-        isOpen={isVisitCounterModalOpen}
-        onClose={() => setIsVisitCounterModalOpen(false)}
-      />
+      <VisitCounterModal isOpen={isVisitCounterModalOpen} onClose={() => setIsVisitCounterModalOpen(false)} />
     </section>
   );
 }
