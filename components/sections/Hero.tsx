@@ -63,6 +63,7 @@ export default function Hero() {
   const [profileImageError, setProfileImageError] = useState(false);
   const [videoOpacity, setVideoOpacity] = useState(1);
   const [videoIndex, setVideoIndex] = useState(0);
+  const [videoPlaying, setVideoPlaying] = useState(false); // 재생 시작 전까지 숨김 → 모바일 재생 아이콘 플래시 방지
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollMoreRef = useRef<HTMLDivElement>(null);
 
@@ -74,10 +75,16 @@ export default function Hero() {
     if (!video || videoSources.length === 0) return;
     video.muted = true;
     const tryPlay = () => video.play().catch(() => {});
+    const handlePlaying = () => setVideoPlaying(true);
     video.addEventListener("canplay", tryPlay, { once: true });
+    video.addEventListener("playing", handlePlaying);
     tryPlay();
     const t = setTimeout(tryPlay, 800);
-    return () => { clearTimeout(t); video.removeEventListener("canplay", tryPlay); };
+    return () => {
+      clearTimeout(t);
+      video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("playing", handlePlaying);
+    };
   }, [videoSources.length]);
 
   // 영상 로테이션 또는 루프 시 페이드 처리
@@ -206,7 +213,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 w-full h-full">
         <div
           className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
-          style={{ opacity: videoOpacity }}
+          style={{ opacity: videoPlaying ? videoOpacity : 0 }}
         >
         <video
           ref={videoRef}
