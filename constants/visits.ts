@@ -11,7 +11,7 @@ export const EXCLUDED_USER_AGENT_PATTERNS = [
 ] as const;
 
 /** 방문 카운트에서 제외할 IP (로컬호스트 등) */
-export const EXCLUDED_IPS = ["::1", "127.0.0.1", "localhost"] as const;
+export const EXCLUDED_IPS = ["::1", "127.0.0.1", "localhost", "180.70.179.126", "118.235.2.92"] as const;
 
 /** 제외 대상 봇/스크립트인지 여부 */
 export function isExcludedVisit(userAgent: string): boolean {
