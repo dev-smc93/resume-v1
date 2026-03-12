@@ -106,7 +106,7 @@ export default function Navigation({ hideDev }: NavigationProps) {
     };
   }, [navItems]);
 
-  const scrollToSection = (href: string) => {
+  const scrollToSection = (href: string, durationMs: number = 2000) => {
     const sectionId = href.substring(1);
     setActiveSection(sectionId); // 클릭 즉시 활성 스타일 적용
 
@@ -121,7 +121,7 @@ export default function Navigation({ hideDev }: NavigationProps) {
 
     requestAnimationFrame(() => {
       const navHeight = 40;
-      const duration = 2000; // 스크롤 애니메이션 속도 (2초)
+      const duration = durationMs;
       if (href === "#hero") {
         smoothScrollTo(0, duration);
       } else if (href === "#experience") {
