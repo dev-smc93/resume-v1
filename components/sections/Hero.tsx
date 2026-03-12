@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { ArrowDown, MessageCircle, User } from "lucide-react";
 import { personalInfo } from "@/data/resume-data";
 import VisitCounter from "@/components/ui/VisitCounter";
@@ -52,6 +52,8 @@ const scrollIndicatorVariants = {
   },
 };
 
+const CROSSFADE_DURATION_MS = 800;
+
 export default function Hero() {
   const typingTexts = personalInfo.typingTexts || ["개발자"];
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
@@ -63,14 +65,29 @@ export default function Hero() {
   const [profileImageError, setProfileImageError] = useState(false);
   const [videoOpacity, setVideoOpacity] = useState(1);
   const [videoIndex, setVideoIndex] = useState(0);
-  const [videoPlaying, setVideoPlaying] = useState(false); // 재생 시작 전까지 숨김 → 모바일 재생 아이콘 플래시 방지
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const scrollMoreRef = useRef<HTMLDivElement>(null);
 
-  const videoSources = HERO_VIDEOS.filter(Boolean).slice(0, 3); // 최대 3개
+  // 크로스페이드 (2개 이상 영상): A/B 전환
+  const [crossfadeSourceIndex, setCrossfadeSourceIndex] = useState(0); // 현재 화면에 보이는 소스 인덱스
+  const [frontIsA, setFrontIsA] = useState(true); // true=A가 앞, false=B가 앞
+  const [opacityA, setOpacityA] = useState(1);
+  const [opacityB, setOpacityB] = useState(0);
+  const videoARef = useRef<HTMLVideoElement>(null);
+  const videoBRef = useRef<HTMLVideoElement>(null);
+  const crossfadeInitialized = useRef(false);
+
+  const videoSources = useMemo(
+    () => HERO_VIDEOS.filter(Boolean).slice(0, 3),
+    []
+  );
+  const isRotation = videoSources.length > 1;
   const currentSrc = videoSources[videoIndex % videoSources.length];
 
+  // 단일 영상: 기존 로직
   useEffect(() => {
+    if (isRotation) return;
     const video = videoRef.current;
     if (!video || videoSources.length === 0) return;
     video.muted = true;
@@ -85,50 +102,112 @@ export default function Hero() {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("playing", handlePlaying);
     };
-  }, [videoSources.length]);
+  }, [videoSources.length, isRotation]);
 
-  // 영상 로테이션 또는 루프 시 페이드 처리
+  // 단일 영상: src 반영
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video || videoSources.length === 0) return;
-
-    const FADE_DURATION = 0.8;
-    const isRotation = videoSources.length > 1;
-
-    if (isRotation) {
-      const handleEnded = () => {
-        setVideoOpacity(0);
-        setTimeout(() => {
-          setVideoIndex((i) => (i + 1) % videoSources.length);
-          setVideoOpacity(1);
-        }, 800);
-      };
-      video.addEventListener("ended", handleEnded);
-      return () => video.removeEventListener("ended", handleEnded);
-    }
-
-    // 단일 영상: 루프 시 끊김 방지
-    const handleTimeUpdate = () => {
-      const { currentTime, duration } = video;
-      if (duration <= 1) return;
-      if (currentTime >= duration - FADE_DURATION) {
-        setVideoOpacity(0);
-      } else if (currentTime < FADE_DURATION) {
-        setVideoOpacity(1);
-      }
-    };
-    video.addEventListener("timeupdate", handleTimeUpdate);
-    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
-  }, [videoSources, videoSources.length]);
-
-  // videoIndex 변경 시 src 반영
-  useEffect(() => {
+    if (isRotation) return;
     const video = videoRef.current;
     if (!video || !currentSrc) return;
     video.src = currentSrc;
     video.load();
     video.play().catch(() => {});
-  }, [currentSrc, videoIndex]);
+  }, [currentSrc, videoIndex, isRotation]);
+
+  // 단일 영상: 루프 시 페이드
+  useEffect(() => {
+    if (isRotation) return;
+    const video = videoRef.current;
+    if (!video || videoSources.length === 0) return;
+    const FADE_DURATION = 0.8;
+    const handleTimeUpdate = () => {
+      const { currentTime, duration } = video;
+      if (duration <= 1) return;
+      if (currentTime >= duration - FADE_DURATION) setVideoOpacity(0);
+      else if (currentTime < FADE_DURATION) setVideoOpacity(1);
+    };
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+  }, [videoSources, videoSources.length, isRotation]);
+
+  // 크로스페이드: 초기 설정 및 src 할당
+  useEffect(() => {
+    if (!isRotation || videoSources.length === 0) return;
+    const va = videoARef.current;
+    const vb = videoBRef.current;
+    if (!va || !vb) return;
+
+    va.muted = true;
+    vb.muted = true;
+
+    const srcFront = videoSources[crossfadeSourceIndex];
+    const srcBack = videoSources[(crossfadeSourceIndex + 1) % videoSources.length];
+
+    if (!crossfadeInitialized.current) {
+      crossfadeInitialized.current = true;
+      if (frontIsA) {
+        va.src = srcFront;
+        vb.src = srcBack;
+      } else {
+        va.src = srcBack;
+        vb.src = srcFront;
+      }
+      va.load();
+      vb.load();
+      va.play().catch(() => {}); // front만 재생, back은 handleEnded에서 재생 (동시 재생 제한 회피)
+    } else {
+      // 전환 후 back에는 다음 전환용 소스 로드만 (play는 handleEnded에서 → 동시 재생 시 프론트가 멈춤 방지)
+      const back = frontIsA ? vb : va;
+      const nextForBack = videoSources[(crossfadeSourceIndex + 1) % videoSources.length];
+      back.src = nextForBack;
+      back.load();
+    }
+  }, [isRotation, videoSources, crossfadeSourceIndex, frontIsA]);
+
+  // 크로스페이드: playing 감지
+  useEffect(() => {
+    if (!isRotation) return;
+    const va = videoARef.current;
+    const vb = videoBRef.current;
+    if (!va || !vb) return;
+
+    const handlePlaying = () => setVideoPlaying(true);
+    va.addEventListener("playing", handlePlaying);
+    vb.addEventListener("playing", handlePlaying);
+    return () => {
+      va.removeEventListener("playing", handlePlaying);
+      vb.removeEventListener("playing", handlePlaying);
+    };
+  }, [isRotation]);
+
+  // 크로스페이드: ended → 전환
+  useEffect(() => {
+    if (!isRotation || videoSources.length === 0) return;
+    const front = frontIsA ? videoARef.current : videoBRef.current;
+    const back = frontIsA ? videoBRef.current : videoARef.current;
+    if (!front || !back) return;
+
+    const handleEnded = () => {
+      front.pause(); // 성능: 페이드아웃 시 디코딩 중단
+      back.currentTime = 0; // 처음부터 재생
+      back.play().catch(() => {}); // back은 이미 로드됨 → 지금 재생 시작 (브라우저 단일재생 정책 회피)
+      if (frontIsA) {
+        setOpacityA(0);
+        setOpacityB(1);
+      } else {
+        setOpacityB(0);
+        setOpacityA(1);
+      }
+      setTimeout(() => {
+        setCrossfadeSourceIndex((i) => (i + 1) % videoSources.length);
+        setFrontIsA((f) => !f);
+        // back 비디오 src는 useEffect 의존성 반영으로 자동 처리
+      }, CROSSFADE_DURATION_MS);
+    };
+
+    front.addEventListener("ended", handleEnded);
+    return () => front.removeEventListener("ended", handleEnded);
+  }, [isRotation, videoSources, frontIsA, crossfadeSourceIndex]);
 
   useEffect(() => {
     const currentFullText = typingTexts[currentTextIndex];
@@ -211,26 +290,63 @@ export default function Hero() {
     <section className="relative min-h-screen min-h-[100svh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-blue-50 dark:via-white dark:to-purple-50 overflow-hidden">
       {/* MP4 백그라운드 비디오 (무한 재생, 음소거) - public/video/hero/background.mp4 */}
       <div className="absolute inset-0 z-0 w-full h-full">
-        <div
-          className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
-          style={{ opacity: videoPlaying ? videoOpacity : 0 }}
-        >
-        <video
-          ref={videoRef}
-          autoPlay
-          loop={videoSources.length === 1}
-          muted
-          playsInline
-          preload="metadata"
-          width={1920}
-          height={1080}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectFit: "cover" }}
-          aria-hidden
-        >
-          <source src={currentSrc} type="video/mp4" />
-        </video>
-        </div>
+        {isRotation ? (
+          <>
+            <div
+              className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
+              style={{ opacity: videoPlaying ? opacityA : 0 }}
+            >
+              <video
+                ref={videoARef}
+                muted
+                playsInline
+                preload="auto"
+                width={1920}
+                height={1080}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectFit: "cover" }}
+                aria-hidden
+              />
+            </div>
+            <div
+              className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
+              style={{ opacity: videoPlaying ? opacityB : 0 }}
+            >
+              <video
+                ref={videoBRef}
+                muted
+                playsInline
+                preload="auto"
+                width={1920}
+                height={1080}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ objectFit: "cover" }}
+                aria-hidden
+              />
+            </div>
+          </>
+        ) : (
+          <div
+            className="absolute inset-0 w-full h-full transition-opacity duration-[800ms] ease-in-out"
+            style={{ opacity: videoPlaying ? videoOpacity : 0 }}
+          >
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              width={1920}
+              height={1080}
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ objectFit: "cover" }}
+              aria-hidden
+            >
+              <source src={currentSrc} type="video/mp4" />
+            </video>
+          </div>
+        )}
         <div className="absolute inset-0 bg-black/40 dark:bg-gradient-to-br dark:from-blue-950/40 dark:via-gray-900/30 dark:to-purple-950/40" aria-hidden />
       </div>
 
