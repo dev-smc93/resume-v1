@@ -38,13 +38,8 @@ export function scrollToSection(sectionId: string) {
       return;
     }
     if (sectionId === "experience") {
-      const expEl = document.getElementById("experience");
-      if (expEl) {
-        const top = expEl.getBoundingClientRect().top + window.pageYOffset;
-        smoothScrollTo(top - navHeight, 1000);
-      } else {
-        smoothScrollTo(window.innerHeight - navHeight, 1000);
-      }
+      // 경력 네비 버튼과 동일: 100vh - navHeight 위치로 스크롤
+      smoothScrollTo(window.innerHeight - navHeight, 2000);
       return;
     }
     const element = document.getElementById(sectionId);
