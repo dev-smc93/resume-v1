@@ -97,7 +97,14 @@ export default function Navigation({ hideDev }: NavigationProps) {
     window.addEventListener("scroll", handleScroll);
 
     const onScrollToSection = (e: Event) => {
-      setActiveSection((e as CustomEvent<string>).detail || "");
+      const detail = (e as CustomEvent<{ sectionId: string; duration?: number } | string>).detail;
+      const sectionId = typeof detail === "object" ? detail?.sectionId ?? "" : detail ?? "";
+      const duration = typeof detail === "object" ? (detail?.duration ?? 2000) : 2000;
+      setActiveSection(sectionId);
+      programmaticScrollRef.current = true;
+      setTimeout(() => {
+        programmaticScrollRef.current = false;
+      }, duration + 50);
     };
     window.addEventListener("scrollToSection", onScrollToSection);
     return () => {

@@ -30,22 +30,26 @@ export function smoothScrollTo(targetY: number, duration: number = 800) {
 
 // 섹션으로 스크롤 이동 (Hero "스크롤하여 더 보기" 등에서 호출)
 export function scrollToSection(sectionId: string) {
-  window.dispatchEvent(new CustomEvent("scrollToSection", { detail: sectionId }));
+  const navHeight = 40; // 네비 높이 (Navigation.tsx와 동일)
+  let duration = 1000;
+  if (sectionId === "experience") duration = 2000;
+
+  window.dispatchEvent(
+    new CustomEvent("scrollToSection", { detail: { sectionId, duration } })
+  );
   requestAnimationFrame(() => {
-    const navHeight = 40; // 네비 높이 (Navigation.tsx와 동일)
     if (sectionId === "hero") {
-      smoothScrollTo(0, 1000);
+      smoothScrollTo(0, duration);
       return;
     }
     if (sectionId === "experience") {
-      // 경력 네비 버튼과 동일: 100vh - navHeight 위치로 스크롤
-      smoothScrollTo(window.innerHeight - navHeight, 2000);
+      smoothScrollTo(window.innerHeight - navHeight, duration);
       return;
     }
     const element = document.getElementById(sectionId);
     if (element) {
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      smoothScrollTo(elementPosition - navHeight, 1000);
+      smoothScrollTo(elementPosition - navHeight, duration);
     }
   });
 }
