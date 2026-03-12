@@ -434,7 +434,7 @@ export default function Hero() {
 
         <motion.div
           ref={scrollMoreRef}
-          className="flex flex-col items-center gap-2 cursor-pointer"
+          className="inline-flex flex-col items-center gap-2 cursor-pointer w-fit mx-auto"
           onClick={() => scrollToSection("experience")}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
