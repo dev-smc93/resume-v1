@@ -32,13 +32,19 @@ export function smoothScrollTo(targetY: number, duration: number = 800) {
 export function scrollToSection(sectionId: string) {
   window.dispatchEvent(new CustomEvent("scrollToSection", { detail: sectionId }));
   requestAnimationFrame(() => {
-    const navHeight = 80;
+    const navHeight = 40; // 네비 높이 (Navigation.tsx와 동일)
     if (sectionId === "hero") {
       smoothScrollTo(0, 1000);
       return;
     }
     if (sectionId === "experience") {
-      smoothScrollTo(window.innerHeight - navHeight, 1000);
+      const expEl = document.getElementById("experience");
+      if (expEl) {
+        const top = expEl.getBoundingClientRect().top + window.pageYOffset;
+        smoothScrollTo(top - navHeight, 1000);
+      } else {
+        smoothScrollTo(window.innerHeight - navHeight, 1000);
+      }
       return;
     }
     const element = document.getElementById(sectionId);
