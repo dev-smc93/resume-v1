@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getTodayDateString } from "@/utils/date";
 import { handleApiError } from "@/utils/api";
+import { isExcludedVisit, isExcludedIp } from "@/constants/visits";
 
 function getClientIp(request: NextRequest): string {
   // Vercel / Proxy 환경 고려
@@ -34,10 +35,36 @@ export async function POST(request: NextRequest) {
   try {
     const today = getTodayDateString();
     const now = new Date();
-    const THIRTY_MINUTES = 30 * 60 * 1000;
+    const DEDUP_WINDOW_MS = 30 * 60 * 1000; // 30분
+
+    const userAgent = request.headers.get("user-agent") || "unknown";
+
+    // 봇/스크린샷 등 제외 (constants/visits.ts에서 패턴 관리)
+    if (isExcludedVisit(userAgent)) {
+      const record = await prisma.visitCount.findUnique({
+        where: { date: today },
+      });
+      return NextResponse.json({
+        count: record?.count || 0,
+        date: today,
+        skipped: true,
+      });
+    }
 
     const ip = getClientIp(request);
-    const userAgent = request.headers.get("user-agent") || "unknown";
+
+    // 로컬호스트(::1, 127.0.0.1) 등 제외
+    if (isExcludedIp(ip)) {
+      const record = await prisma.visitCount.findUnique({
+        where: { date: today },
+      });
+      return NextResponse.json({
+        count: record?.count || 0,
+        date: today,
+        skipped: true,
+      });
+    }
+
     const deviceType = getDeviceType(userAgent);
 
     // IP 로그 확인 및 30분 이내 중복 방문인지 체크
@@ -50,7 +77,7 @@ export async function POST(request: NextRequest) {
         const lastVisited = existingLog.lastVisited;
         const diff = now.getTime() - lastVisited.getTime();
 
-        if (diff < THIRTY_MINUTES) {
+        if (diff < DEDUP_WINDOW_MS) {
           // 30분 이내 재방문: 카운트는 증가시키지 않고 로그만 최신화
           await prisma.visitLog.update({
             where: { ip },

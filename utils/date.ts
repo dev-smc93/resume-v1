@@ -26,3 +26,15 @@ export function formatDate(dateString: string): string {
   const weekday = weekdays[date.getDay()];
   return `${year}.${month}.${day} (${weekday})`;
 }
+
+// 방문 시간 포맷 (ISO 문자열 → HH:mm, 한국 시간)
+export function formatVisitTime(isoString: string): string {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString("ko-KR", {
+    timeZone: TIMEZONE,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+}

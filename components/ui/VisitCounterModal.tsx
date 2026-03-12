@@ -4,7 +4,7 @@ import { TrendingUp, Calendar, Monitor, Smartphone, TabletSmartphone } from "luc
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import BaseModal from "./BaseModal";
-import { formatDate } from "@/utils/date";
+import { formatDate, formatVisitTime } from "@/utils/date";
 
 interface VisitCounterModalProps {
   isOpen: boolean;
@@ -213,8 +213,16 @@ export default function VisitCounterModal({
                                               <div className="flex items-center justify-between gap-2">
                                                 <span className="font-medium text-gray-200 dark:text-gray-800 truncate">
                                                   {log.ip}
+                                                  {log.lastVisited && (
+                                                    <>
+                                                      {" · "}
+                                                      <span className="text-gray-400 dark:text-gray-600 font-normal">
+                                                        {formatVisitTime(log.lastVisited)}
+                                                      </span>
+                                                    </>
+                                                  )}
                                                 </span>
-                                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-700/70 dark:bg-gray-200 text-gray-200 dark:text-gray-700">
+                                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-700/70 dark:bg-gray-200 text-gray-200 dark:text-gray-700 flex-shrink-0">
                                                   {label}
                                                 </span>
                                               </div>
