@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { smoothScrollTo } from "@/utils/scroll";
+import { getLockedScrollYSync } from "@/utils/scrollLockSync";
 
 const ALL_NAV_ITEMS = [
   { name: "홈", href: "#hero" },
@@ -40,7 +41,8 @@ export default function Navigation({ hideDev }: NavigationProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const effectiveScrollY = getLockedScrollYSync() ?? window.scrollY;
+      setIsScrolled(effectiveScrollY > 50);
       if (programmaticScrollRef.current) return; // 네비 클릭 직후 스크롤 중엔 handleScroll 무시
 
       // 현재 활성 섹션 감지
@@ -50,13 +52,13 @@ export default function Navigation({ hideDev }: NavigationProps) {
       const heroZoneEnd = window.innerHeight * 0.3; // Hero 구간: 상단 30% 미만 스크롤 시 홈 활성화
       
       // Hero(홈) 구간: 스크롤이 적으면 홈 활성화
-      if (window.scrollY < heroZoneEnd) {
+      if (effectiveScrollY < heroZoneEnd) {
         setActiveSection("hero");
         return;
       }
       
       // 스크롤이 페이지 하단에 가까운지 확인 (200px 이내)
-      const isNearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
+      const isNearBottom = window.innerHeight + effectiveScrollY >= document.documentElement.scrollHeight - 200;
       
       let current = "";
       

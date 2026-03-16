@@ -314,8 +314,8 @@ export default function Certifications() {
                       }
                       const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
                       savedScrollYRef.current = scrollY;
-                      applyScrollLockImmediate(scrollY);
                       setLockedScrollYSync(scrollY);
+                      applyScrollLockImmediate(scrollY);
                       flushSync(() => setLockedScrollY(scrollY));
                       setSelectedImage({
                         src: cert.image,
