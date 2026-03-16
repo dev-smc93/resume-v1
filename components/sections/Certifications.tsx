@@ -8,8 +8,10 @@ import ImageModal from "@/components/ui/ImageModal";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { handleImageError } from "@/utils/image";
 import { applyScrollLockImmediate } from "@/utils/personalInfoModalScroll";
+import { useScrollLock } from "@/contexts/ScrollLockContext";
 
 export default function Certifications() {
+  const { setLockedScrollY } = useScrollLock();
   const [inViewRef, inView] = useSectionInView();
   const sectionElRef = useRef<HTMLDivElement | null>(null);
 
@@ -311,6 +313,7 @@ export default function Certifications() {
                       const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
                       savedScrollYRef.current = scrollY;
                       applyScrollLockImmediate(scrollY);
+                      setLockedScrollY(scrollY);
                       setSelectedImage({
                         src: cert.image,
                         alt: cert.name,
