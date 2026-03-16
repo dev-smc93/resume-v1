@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { setLockedScrollYSync } from "@/utils/scrollLockSync";
 
 interface ScrollLockContextType {
   /** 모달 열림 시 저장된 스크롤 Y (null이면 모달 닫힘) */
@@ -14,6 +15,7 @@ const ScrollLockContext = createContext<ScrollLockContextType | undefined>(undef
 export function ScrollLockProvider({ children }: { children: ReactNode }) {
   const [lockedScrollY, setLockedScrollYState] = useState<number | null>(null);
   const setLockedScrollY = useCallback((y: number | null) => {
+    setLockedScrollYSync(y);
     setLockedScrollYState(y);
   }, []);
 

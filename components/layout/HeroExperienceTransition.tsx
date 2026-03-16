@@ -5,10 +5,12 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Hero from "@/components/sections/Hero";
 import Experience from "@/components/sections/Experience";
 import { useScrollLock } from "@/contexts/ScrollLockContext";
+import { getLockedScrollYSync } from "@/utils/scrollLockSync";
 
 export default function HeroExperienceTransition() {
   const transitionRef = useRef<HTMLDivElement>(null);
   const { lockedScrollY } = useScrollLock();
+  const lockedScrollYVal = getLockedScrollYSync() ?? lockedScrollY;
 
   const { scrollYProgress } = useScroll({
     target: transitionRef,
@@ -27,12 +29,12 @@ export default function HeroExperienceTransition() {
   // Hero 페이드아웃 시 pointer-events: none으로 전환 → 아래 섹션 클릭 가능하도록
   const heroPointerEvents = useTransform(scrollYProgress, [0, 0.3], ["auto", "none"]);
 
-  // 모달 열림 시 body가 position:fixed 되어 window.scrollY가 0으로 리셋됨 → Hero가 다시 보이는 현상 방지
-  const lockedOpacity = lockedScrollY !== null && typeof window !== "undefined"
-    ? Math.max(0, 1 - lockedScrollY / window.innerHeight)
+  // 모달 열림 시 body가 position:fixed 되어 window.scrollY가 0으로 리셋됨 → Hero가 다시 보이는 현상 방지 (동기 변수 우선, prod 배치 이슈 대응)
+  const lockedOpacity = lockedScrollYVal !== null && typeof window !== "undefined"
+    ? Math.max(0, 1 - lockedScrollYVal / window.innerHeight)
     : null;
-  const lockedPointerEvents = lockedScrollY !== null && typeof window !== "undefined"
-    ? (lockedScrollY / window.innerHeight > 0.3 ? "none" : "auto")
+  const lockedPointerEvents = lockedScrollYVal !== null && typeof window !== "undefined"
+    ? (lockedScrollYVal / window.innerHeight > 0.3 ? "none" : "auto")
     : null;
 
   return (

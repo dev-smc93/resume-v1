@@ -7,7 +7,9 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import ImageModal from "@/components/ui/ImageModal";
 import { useSectionInView } from "@/hooks/useSectionInView";
 import { handleImageError } from "@/utils/image";
+import { flushSync } from "react-dom";
 import { applyScrollLockImmediate } from "@/utils/personalInfoModalScroll";
+import { setLockedScrollYSync } from "@/utils/scrollLockSync";
 import { useScrollLock } from "@/contexts/ScrollLockContext";
 
 export default function Certifications() {
@@ -313,7 +315,8 @@ export default function Certifications() {
                       const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
                       savedScrollYRef.current = scrollY;
                       applyScrollLockImmediate(scrollY);
-                      setLockedScrollY(scrollY);
+                      setLockedScrollYSync(scrollY);
+                      flushSync(() => setLockedScrollY(scrollY));
                       setSelectedImage({
                         src: cert.image,
                         alt: cert.name,
