@@ -74,9 +74,8 @@ export default function BaseModal({
         openModalCount--;
       }
       
-      // 모든 모달이 닫혔을 때만 스크롤 복원 (모바일: 스타일 제거와 scrollTo를 같은 프레임에 처리해 홈으로 깜빡이는 현상 방지)
+      // 모든 모달이 닫혔을 때만 스크롤 복원 (스크롤 복원 후 lockedScrollY 해제 → 홈 섹션 전혀 노출 방지)
       if (openModalCount === 0) {
-        setLockedScrollY(null);
         const savedScrollY = document.body.style.top;
         requestAnimationFrame(() => {
           document.body.style.position = '';
@@ -89,6 +88,10 @@ export default function BaseModal({
               window.scrollTo(0, parsedScrollY);
             }
           }
+          // 스크롤 복원 후 다음 프레임에 lockedScrollY 해제 (Hero가 홈으로 보이는 현상 완전 차단)
+          requestAnimationFrame(() => {
+            setLockedScrollY(null);
+          });
         });
       }
     }
@@ -100,7 +103,6 @@ export default function BaseModal({
       }
 
       if (openModalCount === 0) {
-        setLockedScrollY(null);
         const savedScrollY = document.body.style.top;
         requestAnimationFrame(() => {
           document.body.style.position = '';
@@ -113,6 +115,9 @@ export default function BaseModal({
               window.scrollTo(0, parsedScrollY);
             }
           }
+          requestAnimationFrame(() => {
+            setLockedScrollY(null);
+          });
         });
       }
     };
